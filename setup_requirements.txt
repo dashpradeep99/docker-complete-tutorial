@@ -1,0 +1,21 @@
+Docker Engine
+packages:
+
+
+git
+docker-compose
+tree
+nano
+
+ubuntu is part of the docker group
+1-Node:
+Tutorial 1
+
+Ports:
+Inbound:
+5000
+
+Outbount:
+Everything
+
+
