@@ -1,21 +1,33 @@
-Docker Engine
-packages:
+nodes:
 
+node0, ami=
+node1, ami=
+node2, ami=
+node3, ami=
 
+packages for ami=
+
+docker 1.9
 git
 docker-compose
 tree
-nano
+nano/emacs
 
+packages for ami=
+
+General Requirements:
 ubuntu is part of the docker group
-1-Node:
-Tutorial 1
+
 
 Ports:
+
 Inbound:
 5000
+8080
+80
+443
 
-Outbount:
-Everything
+Outbound:
+All Traffic
 
 
