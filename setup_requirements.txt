@@ -18,16 +18,16 @@ packages for ami=
 General Requirements:
 ubuntu is part of the docker group
 
-
 Ports:
 
 Inbound:
-5000
-8080
-80
-443
+TCP 5000
+TCP 8080
+TCP 80
+TCP 443
 
 Outbound:
 All Traffic
+
 
 
