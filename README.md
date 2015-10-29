@@ -1,7 +1,9 @@
 Background
 We are planning a series of hands-on labs where conference attendees can gain experience with various docker features and use cases. Labs should run 15-30 minutes each, and will range form intro to advanced levels. 
 The idea is for attendees to be able to use their own laptops, and (potentially) access cloud-based environments to complete the work. 
+
 These are the currently planned labs (in rough priority order)
+
 Tutorial 1: Intro to Docker (Owner: Nicola Kabar)
 Description: This lab goes over basic intro-level Docker operations. We will go over Docker engine installation, image search, pulling and pushing images, creating new images from Dockerfiles, and running and troubleshooting containers.
 Status:
@@ -47,6 +49,7 @@ Install latest version of DTR
 Setup DNS, authentication, and licenses
 Trust self-signed TLS certificates
 Push an image to DTR
+
 Tutorial 4: Tutum Test Drive  (Owner: Mike Coleman)
 Description: 
 The goal of this lab is help you gain an understanding of Docker’s SaaS-based management platform, Tutum.
@@ -65,6 +68,7 @@ Time: 30
 Goal: Provide a basic overview of Tutum by walking customers through the welcome tour
 Tasks: Link AWS account, deploy a Docker host (node cluster), create a container (service), deploy an application (stack)
 Setup Requirements: Users need to have a Docker Hub account. We need to provide AWS credentials, including access key and secret key
+
 Tutorial 5: Docker Content Trust  (Owner: Jerry Baker)
 Description: In this lab we'll examine how Docker Notary feature works. We will be creating signed images, distributing them through Docker Hub, and ensuring that only trusted images can be distributed in our environment.
 Status:
@@ -74,6 +78,7 @@ Time: 15 mins
 Goal: Sign,pull and push signed images
 Tasks: 
 Setup Requirements: 
+
 Tutorial 6: Docker Networking (Owner: Nicola Kabar)
 Description: In this lab we'll examine how the new Docker multi-host networking works. We will create networks that spread across multiple Docker engines, how to create key/value stores to distribute network data across the hosts, and how to allow multi-host containers to communicate without host port binding.
  Status:
@@ -86,6 +91,7 @@ Setup Requirements: engine, git, compose
 Create multi-host networks
 Deploy a multi-container application
 FIXME
+
 Tutorial 7: Understanding Docker Data Volumes (Owner: Mike Coleman)
 Description: In this lab students will learn the fundamentals of using Docker data volumes. We will look at the various methods for attaching data volumes, and how they are represented in the host file system. We'll also look at how to use host-based data volumes to hot mount content into a container, and how to use host-only data containers to allow for sharing of common data between multiple containers.
 Status: Lab guide has been tested, working on updating based on feedback
@@ -94,7 +100,7 @@ Difficulty: Intermediate
 Time: 30 mins
 Goal: Understand the different scenarios for dealing with persistent data with Docker
 Tasks: 
-Setup Requirements: Docker engine 1.9 RC1
+Setup Requirements: Docker engine 1.9 RC1+
 
 Tutorial 8: Automated Builds with Docker Hub and GitHub  (Owner: Mike Coleman)
 Description: In this lab we'll examine how to use GitHub and Docker hub to create a basic continuous delivery workflow. Attendees will learn how to integrate the two systems together such that when a change is pushed the GitHub repository, an image is automatically built, and pushed to Docker Hub. 
