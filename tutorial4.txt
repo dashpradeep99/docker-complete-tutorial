@@ -24,7 +24,7 @@ Tutum is a cloud-based system for managing Docker infrastructure that allows use
 
 In order to complete this lab you will need a Docker Hub account. 
 
-If you have an existing Docker Hub account, please proceed to “Logging in to Tutum” below:
+If you have an existing Docker Hub account, please proceed to “Logging in to Tutum” below
 
 **Creating a Docker Hub Account**
 
