@@ -25,6 +25,7 @@ TCP 5000
 TCP 8080
 TCP 80
 TCP 443
+TCP 8001
 
 Outbound:
 All Traffic
