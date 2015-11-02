@@ -126,35 +126,35 @@ In the previous exercises we were able to manipulate data files in a Docker volu
 
 7. Reload the website in your browser, and notice how the change to the local filesystem is immediately reflected by the running Nginx container.
 
-# Use a volume to share data between containers
+#Task 5: Use a volume to share data between containers
 
 You can also use volumes to share data between containers. For instance, one container could be writing data to a log file, and a second container could be reading that data and providing a graphical interpretation.
 
-In our example we’ll simply create a new file from one container in a directory that is mounted point for a named container, and then list the directory from another container.**Note**: *This example is purely for academic purposes. In a real-world deployment, it’s extremely dangerous to have multiple containers writing to the same volume without adequate application awareness and protection against conflicts. *
+In our example we’ll simply create a new file from one container in a directory that is a mount point for a named container, and then list the directory from another container.**Note**: *This example is purely for academic purposes. In a real-world deployment, it’s extremely dangerous to have multiple containers writing to the same volume without adequate application awareness and protection against conflicts. *
 
-1. Create a new named volume$ docker volume create --name shared-datashared-data
+1. Create a new named volume `shared-data`		$ docker volume create --name shared-data		shared-data
 
-2. Create a new container (named foo), mount the named volume to the /foo directory, and log into the shell$ docker run -it -v shared-data:/foo --name foo nginx /bin/bash**Note***: You are now working in the shell of your docker container*
+2. Create a new container `foo`, mount the previously created named volume `shared-data` to the `/foo` directory, and log into the shell		$ docker run -it -v shared-data:/foo --name foo nginx /bin/bash	**Note***: You are now working in the shell of your docker container*
 
-3. Create a new file in the /foo directory (which is mapped to your shared-data volume)echo 'Tu dices "hola"' > /foo/file.txt**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*
+3. Create a new file in the /foo directory (which is mapped to your shared-data volume)		$ echo 'Tu dices "hola"' > /foo/file.txt	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*
 
-4. Verify the content of your newly created file$ cat /foo/file.txtTu dices "hola"
+4. Verify the content of your newly created file		$ cat /foo/file.txt		Tu dices "hola"
 
-5. Exit the container, but leave it running by typing Ctrl-P and then Ctrl-Q
+5. Exit the container, but leave it running by typing `Ctrl-P` and then `Ctrl-Q`
 
-6. Create a second container (named bar), mount the previously created named volume (shared-data) to the /bar directory, and log into the shell$ docker run -it -v shared-data:/bar --name bar nginx /bin/bash**Note***: You are now working in the shell of your docker container*
+6. Create a second container `bar`, mount the previously created named volume `shared-data` to the /bar directory, and log into the shell		$ docker run -it -v shared-data:/bar --name bar nginx /bin/bash	**Note***: You are now working in the shell of your docker container*
 
-7. Create a new file in the /foo directory (which is mapped to your shared-data volume)$ echo 'Y yo digo "adios"'  >> /bar/file.txt**_Note_***: Be careful to use the right single quote (‘) and double quotes (")***Note***: Be sure t use >> otherwise you will overwrite your orignal file*
+7. Create a new file in the /foo directory (which is mapped to your shared-data volume)		$ echo 'Y yo digo "adios"' >> /bar/file.txt	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*	**Note***: Be sure to use >> otherwise you will overwrite your orignal file*
 
-8. Verify the content of your newly created file$ cat /bar/file.txtTu dices "hola"Y yo digo "adios"**Note**: *The text you created in the first container (Tu dices "hola") is still accessible in this container as well as the text you just added  (Y yo digo “adios”)*
+8. Verify the content of your newly created file		$ cat /bar/file.txt		Tu dices "hola"		Y yo digo "adios"	**Note**: *The text you created in the first container (Tu dices "hola") is still accessible in this container 	as well as the text you just added  (Y yo digo “adios”)*
 
-9. Exit this container$ exit**
+9. Exit this container		$ exit
+		
+10. Log back into the shell of the original container using the docker exec command		$ docker exec -it foo /bin/bash	**Note***: You are now working in the shell of your docker container*
 
-10. Log back into the shell of the original container using the docker exec command$ docker exec -it foo /bin/bash**Note***: You are now working in the shell of your docker container*
+11. Check to see if the changes you made in the bar container are reflected in this container		$ cat /foo/file.txt		Tu dices "hola"		Y yo digo "adios"
 
-11. Check to see if the changes you made in the bar container are reflected in this container$ cat /foo/file.txtTu dices "hola"Y yo digo "adios"
-
-12. Exit this container$ exit
+12. Exit this container		$ exit
 
 # Conclusion
 
