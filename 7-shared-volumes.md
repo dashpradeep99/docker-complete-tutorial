@@ -61,7 +61,7 @@ In this task we're going to create a new container, and then add a file to it.
 	
 		CONTAINER ID   IMAGE   COMMAND         CREATED             STATUS                           		0124480582a2   nginx   "/bin/bash"     6 minutes ago       Up 6 minutes                           The important detail is that `STATUS` lists `Up` instead of `Exited`
 
-# Task2: Understand how Docker represents volume data in the file system
+# Task 2: Understand how Docker represents volume data in the file system
 
 As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
 
