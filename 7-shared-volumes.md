@@ -46,7 +46,7 @@ In this task we're going to create a new container, and then add a file to it.
 
 5. Instantiate a Docker container with our barcelona volume mapped to /barcelona in 	the container, and log into the shell
 
-	 	$ docker run -it -v barcelona:/barcelona --name volumeslab nginx /bin/bash	This command will instantiate an Nginx container and mount our volume (`barcelona`) 	at the at the root of the file system (`/barcelona`). It will also execute `/bin/bash` 	giving you an interactive shell inside the container.
+	 	$ docker run -it -v barcelona:/barcelona --name volumeslab nginx /bin/bash	This command will instantiate an Nginx container and mount our volume `barcelona` 	at the at the root of the file system `/barcelona`. It will also execute `/bin/bash` 	giving you an interactive shell inside the container.
 
 	 **_Note_***: You are now working within the shell of your running container*6. Change directory into /barcelona
 
@@ -65,7 +65,8 @@ In this task we're going to create a new container, and then add a file to it.
 
 As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
 
-1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume		$ docker volume inspect barcelona		Your output should be similar to:		[   			{        		"Name": "barcelona",        		"Driver": "local",        		"Mountpoint": "/var/lib/docker/volumes/barcelona/_data"    		}		]	**Note***: The volume mount point above is*: `/var/lib/docker/volumes/barcelona/_data`
+1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume		$ docker volume inspect barcelona	Your output should be similar to:		
+		[   			{        		"Name": "barcelona",        		"Driver": "local",        		"Mountpoint": "/var/lib/docker/volumes/barcelona/_data"    		}		]	**Note***: The volume mount point above is*: `/var/lib/docker/volumes/barcelona/_data`
 
 2. In order to examine the contents of the directory, you’ll need to elevate your user privileges:		$ sudo su
 
