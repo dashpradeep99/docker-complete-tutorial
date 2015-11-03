@@ -1,4 +1,4 @@
-#Tutorial 7 : Understanding Docker Volumes
+# Tutorial 7 : Understanding Docker Volumes
 > **Difficulty**: Intermediate
 
 > **Time**: 30 mins
@@ -13,9 +13,9 @@
 * Map a host directory to a Docker volume
 * Use a volume to share data between containers
 
-# What are Docker data volumes?
+## What are Docker data volumes?
 
-A data volume is a specially-designated directory within one or more containers that bypasses Docker’s storage driver and interacts directly with the host file system. Data volumes provide several useful features for persistent or shared data:
+A data volume is a specially designated directory within one or more containers that bypasses Docker’s storage driver and interacts directly with the host file system. Data volumes provide several useful features for persistent or shared data:
 
 * Volumes are initialized when a container is created. If the container’s base image contains data at the specified mount point, that existing data is copied into the new volume upon volume initialization.
 * Data volumes can be shared and reused among containers.
@@ -25,16 +25,16 @@ A data volume is a specially-designated directory within one or more containers 
 
 Data volumes are designed to persist data, independent of the container’s lifecycle. Docker therefore never automatically deletes volumes when you remove a container, nor will it "garbage collect" volumes that are no longer referenced by a container.
 
-# Task 1: Implementing a volume via the Docker client
+## Task 1: Implementing a volume via the Docker client
 In this task we're going to create a new container, and then add a file to it.
 
-1. SSH into your Docker host with the supplied credentials, for example:	`ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
+1. SSH into your **node-0** AWS instance with your supplied credentials, for example:	`ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
 
 2. Pull down the official Nginx image
 
 	`$ docker pull nginx`
 
-3. Create a new  volume named /barcelona	`$ docker volume create --name barcelona`
+3. Create a new  volume named **barcelona**	`$ docker volume create --name barcelona`
 
 	**Note***: Your new volume will be created on the host in the* `/var/lib/docker/volumes`*directory*
 
@@ -61,7 +61,7 @@ In this task we're going to create a new container, and then add a file to it.
 	
 		CONTAINER ID   IMAGE   COMMAND         CREATED             STATUS                           		0124480582a2   nginx   "/bin/bash"     6 minutes ago       Up 6 minutes                           The important detail is that `STATUS` lists `Up` instead of `Exited`
 
-# Task 2: Understand how Docker represents volume data in the file system
+## Task 2: Understand how Docker represents volume data in the file system
 
 As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
 
@@ -85,7 +85,7 @@ As mentioned above, Docker manages volumes outside of the storage driver that it
 
 9. Exit the container, and return to your docker host		$ exit
 
-#Task 3: Deleting a volume
+## Task 3: Deleting a volume
 
 By default, when you destroy a container Docker does not remove any volumes associated with the container. You can, however, delete a given volume with `docker volume rm` 
 
@@ -106,7 +106,7 @@ By default, when you destroy a container Docker does not remove any volumes asso
 
 8. Ensure the volume was removed		$ docker volume ls		DRIVER              VOLUME NAME	**Note**:*The* `barcelona' *volume is no longer listed, although other volumes may still appear*
 
-#Task 4: Map a host directory to a Docker volume
+## Task 4: Map a host directory to a Docker volume
 
 In the previous exercises we were able to manipulate data files in a Docker volume via the host file system,. However, it was a bit cumbersome: we had to learn the mount point via docker volume inspect, and elevate our privileges to create a new file. In practice, this is impractical.Thankfully there is an easier way to  make local files available inside a running container. Docker allows existing local files and directories to be mounted as volumes into a running container. This allows developers, for instance, to hot-mount code into their containers, and have changes made locally be reflected instantaneously in their container.In this example we’ll be modifying some HTML, and then showing how the changes are reflected immediately on the container-based website. Additionally, we’ll be creating our volume as part of the docker run command using the `-v` option.
 
@@ -118,16 +118,16 @@ In the previous exercises we were able to manipulate data files in a Docker volu
 
 	**Note***: Be sure to use single quotes in the command above.*
 
-4. Instantiate an Nginx container that maps the `~/www` directory on the host to `/usr/share/nginx/html` in the running container	**Note***:* `usr/share/nginx/html` *is the default directory for serving web content on the Nginx server*		$ docker run -d -v ~/www:/usr/share/nginx/html --name mywebserver -p 8001:80 nginx
+4. Instantiate an Nginx container that maps the `~/www` directory on the host to `/usr/share/nginx/html` in the running container	**Note***:* `usr/share/nginx/html` *is the default directory for serving web content on the Nginx server*		$ docker run -d -v ~/www:/usr/share/nginx/html --name mywebserver -p 80:80 nginx
 
-5. Use the browser on your laptop to navigate to navigate to the newly created website at `http://<docker host>:8001/`
-	**Note***: Your docker host name was provided to you when you signed up for this lab*	**Note***: You must add the port number (***8001***) to the URL as we’ve mapped port 80 inside the container to port 8001 on the docker host.*	Your website should display your "Hello, Barcelona" message
+5. Use the browser on your laptop to navigate to navigate to the newly created website at `http://<docker host>`
+	**Note***: Your docker host name was provided to you when you signed up for this lab*	Your website should display your "Hello, Barcelona" message
 
 6. Return to your Docker host’s terminal window, and update the HTML of your website with the following command:		$ echo '<h1>Adios Barcelona!</h1>' > index.html	**Note***: Be sure to use single quotes in the command above.*
 
 7. Reload the website in your browser, and notice how the change to the local filesystem is immediately reflected by the running Nginx container.
 
-#Task 5: Use a volume to share data between containers
+## Task 5: Use a volume to share data between containers
 
 You can also use volumes to share data between containers. For instance, one container could be writing data to a log file, and a second container could be reading that data and providing a graphical interpretation.
 
@@ -157,7 +157,7 @@ In our example we’ll simply create a new file from one container in a director
 
 12. Exit this container		$ exit
 
-# Conclusion
+## Conclusion
 
 In this lab we learned the basics of Docker volumes. We created a new Docker volume using the Docker client, and then explored the host file system to understand the relationship between the local file system and the mounted volume in the container. We then deleted our volume, and mapped a new volume to a specific directory on the host file system. Finally we looked at how you can share a volume between multiple containers.
 
