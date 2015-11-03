@@ -1,26 +1,25 @@
-# Tutorial 5: Docker Content Trust
+# Tutorial 5 : Docker Content Trust
 
-**Description**: This lab is an introductory level tutorial exploring the features of Docker Content Trust. After an overview of essential concepts, participants will enable content trust, sign an image, and push the image to Docker Hub.
+> **Difficulty**: Easy
 
-**Difficulty**: Easy
+> **Time**: 15 mins
 
-**Time**: 15 mins
+> **Prequisites**: 
+> 
+* An existing Docker Hub account
+* SSH onto the provided `<username>-node-0` instance in AWS 
+* Logged into Docker Hub with the Docker client
 
-### Tasks:
-
+> **Tasks**:
+> 
 - Introductory Overview
 - Create a test repository on Docker Hub
 - Enable Content Trust on our client
 - Sign an image and push an image to Docker Hub
 - Test the unsigned and signed images
 
-Note: In order to complete this lab you will need:
 
-- An existing Docker Hub account
-- SSH onto the provided `<username>-node-0` instance in AWS 
-- Logged into Docker Hub with the Docker client
-
-### Overview:
+## What is Docker Content Trust?
 
 Content trust allows operations with a remote Docker registry to enforce client-side signing and verification of image tags. Content trust provides the ability to use digital signatures for data sent to and received from remote Docker registries. These signatures allow client-side verification of the integrity and publisher of specific image tags.
 
@@ -28,7 +27,8 @@ Image publishers can sign their images. Image consumers can ensure that the imag
 
 Content trust is currently only available for users of the public Docker Hub. It is currently not available for the Docker Trusted Registry or for private registries.
 
-### Create a new Docker Hub repository
+
+## Task 1: Create a new Docker Hub repository
 
 Before we enable Docker Content Trust, let's create a new temporary repository on Docker Hub to use for the following examples.
 
@@ -56,7 +56,7 @@ Push this unsigned image to Docker Hub:
 
 At this point you should have a new unsigned image repository **dctrust** (with the 'latest' tag) under your Docker Hub account at: https://hub.docker.com/r/(username)/dctrust/
 
-### Working with Content Trust
+## Task 2: Enable Content Trust
 
 Currently, content trust is disabled by default. To enable it, the only thing you need to do is to set the `DOCKER_CONTENT_TRUST` environment variable.
 
@@ -74,6 +74,8 @@ Now that we've enabled content trust, lets try to pull the image we just pushed.
 docker pull <username>/dctrust:latest
 no trust data available
 ```
+
+## Task 3: Push a signed image
 
 In order to create the trust data for an image all we need to do is push an image with `DOCKER_CONTENT_TRUST` enabled.
 
@@ -109,12 +111,16 @@ Repeat passphrase for new repository key with id docker.io/kizbitz/dctrust (ab6b
 Finished initializing "docker.io/kizbitz/dctrust"
 ```
 
+## Task 4: Pulling images
+
 At this point in our Docker hub repository we have two different images/tags:
 
 - dctrust:latest - This image is still unsigned and cannot be pulled as long as content trust is enabled.
 - dctrust:signed - This image has been signed and can be pulled if content trust is enabled or disabled.
 
-Example Pulls (With content trust enabled):
+Try to pull both of your images using `docker pull`
+
+Example output (with content trust enabled):
 
 ```
 ubuntu@node-0:~$ docker pull kizbitz/dctrust:latest
@@ -138,7 +144,7 @@ Digest: sha256:f3fefef65b040546adab73e2e6a624376373b0f12e83a5e5a921d9cd9059953c
 Status: Image is up to date for kizbitz/dctrust:latest
 ```
 
-### Summary and Cleanup
+## Task 5: Cleanup
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
 
@@ -147,7 +153,7 @@ To clean-up your environment, remember to:
 - Delete the test repository created on your Hub account: https://hub.docker.com/r/(username)/dctrust/
 - Unset the `DOCKER_CONTENT_TRUST` environment variable: `unset DOCKER_CONTENT_TRUST`
 
-### Further Reading
+## Further Reading
 
 For more in-depth examples and advanced concepts refer to the official documentation:
 
