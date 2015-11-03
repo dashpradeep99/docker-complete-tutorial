@@ -1,16 +1,18 @@
-Tutum Hands-on Lab
+#Tutum Hands-on Lab
+> **Difficutly**: Beginner
 
-Objective: The goal of this lab is help you gain an understanding of Docker’s SaaS-based management platform, Tutum. 
+> **Time**: 30 Minutes
 
-By the end of the lab you should:
-- Understand what Tutum is, and the basic capabilities it provides
-- Know how to create a Docker host in AWS using Tutum
-- Instantiate and scale Docker containers using Tutum
-- Be able to deploy a multi-container application with Tutum
+> **Prerequisites**: Docker Hub account (Instructions to signup for a free account below), Web Browser
+> 
+> **Tasks** 
 
-Time: It’s estimated that this lab will take 30 minutes to complete
+> * Link a Docker host to Tutum
+* Instantiate and scale Docker containers using Tutum
+* Be able to deploy a multi-container application with Tutum
 
-**What is Tutum?**
+
+#What is Tutum?
 
 Tutum is a cloud-based system for managing Docker infrastructure that allows users to easily:
 
@@ -20,11 +22,11 @@ Tutum is a cloud-based system for managing Docker infrastructure that allows use
 
 - Manage updates and scaling of Dockerized apps and infrastructure through a GUI Dashboard, CLI, and RESTful APIs.
 
-**Before You Begin**
+#Before You Begin
 
 In order to complete this lab you will need a Docker Hub account. 
 
-If you have an existing Docker Hub account, please proceed to “Logging in to Tutum” below
+If you have an existing Docker Hub account, please proceed to “Attaching a new node” below
 
 **Creating a Docker Hub Account**
 
@@ -32,11 +34,14 @@ Docker hub accounts are completely free, and easy to create.
 
 1. Navigate to http://hub.docker.com
 
-2. On the right hand side of the screen supply a unique username, email address and password
+2. On the right hand side of the screen supply a unique username, email address 	and password
 
-Note: Make sure you remember these credentials as you will need them later
+	**Note***: Make sure you remember these credentials as you will need them 	later*
 
 3. Log into the email account you provided, open the account confirmation email from Docker, and click the link provided in the email. 
+
+#Task 1: Attaching a New Node
+In Tutum Docker Hosts are referred to Nodes. In this task we will curl the Tutum  agent on to one of our AWS-based docker hosts. 
 
 **Logging in to Tutum**
 
@@ -52,57 +57,68 @@ Note: Make sure you remember these credentials as you will need them later
 
 **Tutum Welcome Tour**
 
-For this lab we are going to work through the Tutum welcome tour. When you log in for the first time you should be taken to the Welcome Tour screen. 
+Tutum has a welcome tour, but we won't be using that for this lab. So, if you see the welcome tour pop up, simply click "skip the tour" towards the bottom right of the screen. 
 
-If you are not seeing the Welcome Tour screen: Click on your account name in the upper right, and choose Welcome Tour from the drop down. 
+**Connecting your Docker Host to Tutum**
 
-**Linking an AWS Account**
+Tutum can manage Docker applications on a wide variety of cloud platforms, however fo this lab, we're going to use the bring your own node option. This is not the same thing as linking an AWS account, but it works better for our lab. 
 
-Tutum can manage Docker applications on a wide variety of cloud platforms (and even has a bring your own node option in case you want to use a platform that’s not explicitly provided). 
+1. Click the `Nodes` tab
 
-For this lab we’re going to be using Amazon Web Service as our cloud provider. 
+2. Click `+ Bring Your Own Node` near the top right
 
-1. On the Welcome Tour screen click “Add Your First Cloud Provider”
+3. Select the curl command in the middle of the window and copy it to the clipboard
 
-2. Read the first two message balloons, clicking “Next” on each of them
+4. Using the terminal of your choice SSH into node 2
 
-3. Click “+Add Credentials” on the Amazon Web Services line
+		ssh -i <username>.key ubuntu@<username-node-2 IP Address>
+		
+	**Note***: If you get a warning that your private key is unprotected issue the following command* `chmod 700 <username.key>`
+	
+	**Note***: If you get a warning about an RSA fingerprint enter `yes`
+		
+5. In terminal window to your SSH session, paste the curl command
 
-4. Enter your supplied credentials and click “Save Credentials”
+		ubuntu@node-2:~$ curl -Ls https://get.tutum.co/ | sudo -H sh -s 26d1d6a99c8d4c2494c3b01cec2eb687
+	
+	You will see a lot of text scroll buy, but it should end with: 
+	
+		tutum-agent start/running, process 5602
+		-> Done!
 
-5. Click “Next” on the third message balloon
+		*******************************************************************************
+		Tutum Agent installed successfully
+		*******************************************************************************
 
-6. Click “Done” on the final message balloon
+		You can now deploy containers to this node using Tutum
 
-**Deploying Your First Node**
+6. Exit out of the SSH session
 
-Tutum allows you to deploy new nodes easily via a web-based graphical user interface. In the case of our lab, a node cluster is one or more new EC2 instances of the same region and type acting as Docker hosts in AWS. 
+		ubuntu@node-2:~$ exit
+		logout
+		Connection to 52.29.14.250 closed.
+		
+	**Note***: Your IP Address will be different*
+	
+7. In your browser, click the `X` in the top right corner of the Bring Your Own Node window
 
-1. From the Welcome Screen click on “Deploying your first node”
+8. Click the Nodes tab
 
-2. Follow the instructions on the three Message Balloons and supply a Node Cluster Name (test-node) and a Deploy Tag (test)
+9. Click on the name of your newly deployed node
 
-Note: There are several other options available for your node cluster including Region, VPC, Subnet, etc. You can also specify the number of nodes to create, and the size of the disk. 
+10. On the left hand of the screen click `Click to add deploy tags`
 
-For this lab, we’ll only create one node, and we’ll leave the rest of the settings at their defaults. 
-
-3. Click “Launch Node Cluster”
-
-4. Your node will begin deploying (it can take up to 10 minutes for a node to deploy).
-
-5. Click “Done” on the message balloon to return to the Welcome Screen. 
+11. Type `HOL` and click `Save`
 
 
-Note: Once your node is deployed, click “Create Your First Service” on the welcome screen to continue the tour. 
-
-**Deploying a Service**
+#Task 2: Deploying a Service**
 
 A service in Tutum is a collection of containers performing the same role. Using services makes it easier to scale out your applications. 
 
-Note: Tutum Services provides a graphical front end to Docker Swarm.
+In the steps below we’ll deploy the “hello world” service in a single container to the node we imported previously. 
 
-In the steps below we’ll deploy the “hello world” service in a single container to the node cluster we created previously. 
-
+1. Click the Services tab
+2. 
 1. Click “Create your first service” 
 
 2. Click “Public Repositories”
@@ -117,104 +133,87 @@ For this lab, we’ll use a Jumpstart. Jumpstarts are repos the Tutum team have 
 
 5. Click “Select” next to tutum/hello-world repo
 
-6. Read and click “Next” on the first four message balloons
+6. In Deploy tags type `HOL`
 
-7. Enter “test” for the the Deploy Tag, and click Next in the message balloon.
+	Note: This is the same deploy tag we just specified for our newly imported 	container 
 
-Note: This is the same deploy tag we used when we created our node cluster.
+8. Click the grey rectangle over the "Ports" section
 
-8. Read and click “Next” on the subsequent message balloons to expose port 80
+9. Click `Publish`
 
-Note: Like we saw when we deployed our node cluster, there are several options we could set when deploying a new service. Feel freeto hover over some of the names to understand what the different options do, but for this lab we won’t be changing any of the defaults. 
+10. Click `dynamic` and enter `80` as the port number
 
-9. Click “Create and Deploy”
+11. Click the green check mark next to the port number
 
-10. You will see your Hello World service being deployed
+12. Click `Create and Deploy`
 
-11. Click “Next” on the message balloon
+13. A screen will pop up for your new service, click `Timeline` and then 	`Service 	Start`. 
 
-12. Click “Endpoints” to access your newly created service
+	From here you can see the progress of your service being created
+	
+14. After you see the service has successfully started, click `endpoints`
 
-13. Click “Next” two times
-
-14. Click the arrow next to the service URL and your Hello World website will launch in a new browser tab
+14. Click the arrow next to the service endpoint URL, and your Hello World 	website will launch in a new browser tab
 
 15. Click the appropriate tab to return to Tutum
 
-16. Click “Done” in the message balloon. 
-
-**Creating a Stack**
+#Task 3: Deploying a Stack
 
 A stack is a collection of services that make up an application. Just like services are based on Docker Swarm, stacks are based on Docker Compose. 
 
-1. Click “Create your first stack”
+1. Click stacks
 
-2. Click “Next” and the welcome tour will fill in a Stackfile for you. 
+2. Click “Create your first stack”
 
-Note: Stackfiles have similar syntax to Docker Compose files.
+3. Enter `Lab` for the Stack name 
 
-3. Click “Next”
+2. Underneath the empty Stackfile text box, click `try ours`
 
-4. The first line of the Stackfile specifies the name of our service, in this case “Web” 
+	Tutum will fill in the following Stackfile:
+	
+		web:
+  			image: tutum/quickstart-python
+  			links:
+   				 - "redis:redis"
+  			ports:
+    			- "5000:80"
+		redis:
+  			image: tutum/redis
+  			environment:
+    			- REDIS_PASS=password
 
-Click “Next”
-
-5. We’re going to build our web service based on the “tutum/quickstart-python” image.
+	**Note***: Stackfiles have similar syntax to Docker Compose files*
 
 
-Click “Next”
+	The first line of the Stackfile specifies the name of our service, in this 	case “Web” 
+	
+	We’re going to build our web service based on the “tutum/quickstart-python” 	image.
 
-6. We’re going to link the Web service to the Redis service (defined below), and alias the link with the name “Redis”
+	We’re going to link the Web service to the Redis service (defined below), 	and alias the link with the name “Redis”
 
-Click “Next”
+	We will map port 5000 on the host to port 80 in the container. Meaning 	people will access our service via port 5000, but Docker will redirect that 	request to port 80 on the container. 
 
-7. We will map port 5000 on the host to port 80 in the container. Meaning people will access our service via port 5000, but Docker will redirect that request to port 80 on the container. 
+	You can use the “environment:” section to define any environment variables 	you need 
 
-Click “Next”
-
-8. You can use the “environment:” section to define any environment variables you need 
-
-Click “Next”
 
 9. Click “Create and Deploy”
 
-Note: Your stack is now launching. This may take a minute or two.
+10. A screen will pop up for your new service, click `Timeline` and then 	`Stack Start`. 
 
-10. Read the next two message balloons, clicking “Next” after each one
+	From here you can see the progress of your Stack being created
 
-11. Click “Endpoints”
+11. When it's been successfully deployed, Click “Endpoints”
 
-Our app is a simple Python app that will increment a counter each time the page is loaded. The number of visits is stored in a Redis cache. 
+	**Note***: Our app is a simple Python app that will increment a counter each 	time the page is loaded. The number of visits is stored in a Redis cache*
 
-12. Click “Next” in the next two message balloons
-
-Note: It will take a minute or two for your service deployment to complete. You cannot move on to step 13 until it does
                
-13. Click the  Screen Shot 2015-10-27 at 11.05.07 AM.png next to the service endpoint. This will open a new browser tab pointing to your newly created service. Refresh the page a few times to see the counter increment. 
+13. Click the arrow next to the service endpoint. This will open a new browser tab pointing to your newly created service. Refresh the page a few times to see the counter increment. 
 
-Note: Service endpoints load balance requests across every container listed under the Container endpoints. They load balance using round robin DNS entries. This simple service only has a single web container, but it is possible to scale your app to have multiple web containers all listed under Container endpoints.
+	**Note***: Service endpoints load balance requests across every container 	listed under the Container endpoints. They load balance using round robin 	DNS entries. This simple service only has a single web container, but it is 	possible to scale your app to have multiple web containers all listed under 	Container endpoints*
 
 14. Click the appropriate browser tab to return to Tutum
 
-15. Click the “Welcome” tab in the upper left of the window to return to the Welcome Tour home screen
-
-**Repositories**
-
-Repositories are collections of Docker images (databases, web servers, etc). These images can serve as a starting point to building your application
-
-1. Click “Learn more about repositories”
-
-2. Read the first two message balloons and click “Next”
-
-3. Click the “Welcome” tab in the top left portion of the screen
-
-4. Read the next three message balloons and click “Next”
-
-5. Read the final message balloon and click “Done”
-
-Creating repositories is beyond the scope of this lab, but we wanted to make sure you were aware of the functionality. 
-
-**Conclusion** 
+#Conclusion 
 
 In this lab you learned how to create a new cluster of Docker Hosts on Amazon Web Services. You then deployed your first service, and then finally you deployed an application stack. 
 
