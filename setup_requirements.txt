@@ -31,6 +31,4 @@ Outbound:
 All Traffic
 
 
-Tutorial 4 requirements:
-Each user will need AWS credentials (Access Key and Secret Key) - we could share one set of credentials, or we could create individual ones. Ideally we could automatically age the credentials out after a period of time (1 hour?)
-
+Tutorial 4 requirements: Tutum agent for 'bring your own node'
