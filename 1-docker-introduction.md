@@ -39,21 +39,20 @@ containers on your system. The command-line client is used to instruct the
 daemon in this management.
 
 Docker is built using a client-server architecture. Behind the scenes, the CLI
-wraps a well-defined remote API. At the command line you can write or scrip to a
-command line and that gets translated to API calls that are made to the daemon.
-You can use this same API to communicate with the daemon using standard API
-calls over HTTP/HTTPS.
+wraps a well-defined remote API. Any commands executed by the client get translated
+to API calls that are made to the daemon. You can use this same API to communicate
+with the daemon using standard API calls over HTTP/HTTPS.
 
 ### Docker Hub
 
-Docker Hub is a graphical user interface that allows you to store your images
+Docker Hub is a cloud-based registry service for building, storing, and shipping application or service images.
+It provides a graphical user interface and allows you to store your images
 privately or make them publicly available to other Docker users. Underlying the
 Docker Hub is Docker's Registry technology. This registry is an image repository
 available to the public.
 
 To use Docker Hub, you simply create an account. Once you have an account, you
 can use the Engine CLI client to log into and push your images to the Hub.
-You'll learn how to do just this lab.
 
 You can build a private Docker Registry which gives you core image management
 without a graphical user interface or other features of the Hub. Or, you can
@@ -64,7 +63,7 @@ feature-rich graphical tools in addition to the Docker Registry technology.
 
 Docker Engine should be installed and running in your machine. To verify that Docker is running, do the following:
 
-1. Log in as 'ubuntu' into the AWS machine you were given at registration.
+1. Log in as 'ubuntu' into the AWS instance **node-0** you were given at registration.
 
 2. Check you are running the latest version of Docker.
 
@@ -163,7 +162,7 @@ also deleted. The image remains unchanged.
 You can run containers from images that you built or that you pulled from the
 Docker Hub. Docker Hub has millions of images that are created and shared by
 regular users. Additonally, Docker Hub hosts official images ( e.g
-Ubuntu,Redis, and Mongo) that are created and maintained by their respective
+Ubuntu, Redis, and Mongo) that are created and maintained by their respective
 companies.
 
 Issue the following commands and observe the output:
@@ -172,7 +171,7 @@ Issue the following commands and observe the output:
 
         $ docker search ubuntu
 
-  Throug this command you search Docker Hub for all images that contain the word 'ubuntu' in them. You can search Docker Hub from the web if you go to [www.hub.docker.com](https://hub.docker.com/explore/).
+  When you execute this command you search Docker Hub for all images that contain the word 'ubuntu' in them. You can search Docker Hub from the web if you go to [www.hub.docker.com](https://hub.docker.com/explore/).
 
   You'll notice that the search results include an `OFFICAL` column. Official images are certified by Docker to indicate that they are built using certain standards. You'll find a list of official images here : https://github.com/docker-library/official-images/tree/master/library.
 
@@ -188,7 +187,7 @@ Issue the following commands and observe the output:
         Digest: sha256:8b1bffa54d8a58395bae61ec32f1a70fc82a939e4a7179e6227eb79e4c3c56f6
         Status: Downloaded newer image for ubuntu:latest
 
-  You requested to pull the official ubuntu image. The word 'latest' is a tag used to identify the specific version of the image to pull. If the image name and tag are found in Hub, then each of the image layer is downloaded and cached locally.
+  You requested to pull the official ubuntu image. The word 'latest' is a tag used to identify the specific version of the image to pull. If the image name and tag are found in Hub, each layer of the image is downloaded and cached locally.
 
 3. Verify which images you have downloaded
 
@@ -199,19 +198,19 @@ Issue the following commands and observe the output:
 
 ## Task 3: Building Images from Dockerfile
 
-There are two ways to create a Docker image. You can use the CLI to  update a
+There are two ways to create Docker images. You can use the CLI to  update a
 container created from an image and commit the results to a new image.
 Alternatively, you can write a Dockerfile which contains instructions to create
 an image. Then, use the CLI to build an image from the Dockerfile.
 
 Using the command line to update an image makes it harder to track all changes that made to the new image once they're complete. The most common way used to create new images is through the Dockerfile.
 
-A Dockerfile is a text file that contains all the commands, in order, needed to build a given image. A primary advantage of Dockerfile is version control and documentation. A Dockefile details all the steps used to create a particular image. Dockerfiles adhere to a specific format and require a specific instruction syntax. Some common commands used in Dockerfile are `FROM`, `RUN`, `WORKDIR`, `EXPOSE`, and `CMD`. Docker maintains [a complete syntax guide to Dockerfiles](https://docs.docker.com/articles/dockerfile_best-practices/).
+A Dockerfile is a text file that contains all the commands, in order, needed to build a given image. A primary advantage of Dockerfile is version control and documentation. A Dockerfile details all the steps used to create a particular image. Dockerfiles adhere to a specific format and require a specific instruction syntax. Some common commands used in Dockerfile are `FROM`, `RUN`, `WORKDIR`, `EXPOSE`, and `CMD`. Docker maintains [a complete syntax guide to Dockerfiles](https://docs.docker.com/articles/dockerfile_best-practices/).
 
 
 In the following task, you will be building a new image from a Dockerfile. You'll start from \the `ubuntu:latest` image that you just pulled as a base image.
 
-1. Create an empty directory in your local file system.
+1. Create an empty directory on the local file system.
 
         $ mkdir task3
 
@@ -230,14 +229,14 @@ In the following task, you will be building a new image from a Dockerfile. You'l
 4. Add the following to the file:
 
         FROM ubuntu:latest
-        RUN apt-get install -y emacs  
+        RUN apt-get update && apt-get install -y tree
         RUN mkdir /mydir
         ENV HOSTNAME mycontainer
-        WORKDIR  /mydir  
-        CMD ["/bin/bash"]  
+        WORKDIR  /mydir
+        CMD ["/bin/bash"]
 
   * `FROM ubuntu:latest` This image is based on ubuntu:latest
-  * `RUN apt-get install -y emacs`   Installs Emacs text editor using `apt-get`
+  * `RUN apt-get update && apt-get install -y tree`   Updates the package lists and installs **tree**
   * `RUN mkdir /mydir` Creates a directory called `mydir` under root directory
   * `ENV HOSTNAME mycontainer` -> creates an environment variable called `HOSTNAME` with a value set to 'mycontainer'
   * `WORKDIR  /mydir` Sets the `/mydir` directory as the working directory for the image.
@@ -245,7 +244,7 @@ In the following task, you will be building a new image from a Dockerfile. You'l
 
 5. Save and close the file.
 
-6. Build your image from the `Dockerfile`.
+6. Build your image using the **Dockerfile**.
 
         $ docker build -t myimage:v1 .
 
@@ -258,8 +257,6 @@ In the following task, you will be building a new image from a Dockerfile. You'l
         myimage             v1                  3dc725993d1a        About a minute ago   289.8 MB
         ubuntu              latest              1d073211c498        10 days ago          187.9 MB
         hello-world         latest              0a6ba66e537a        2 weeks ago          960 B
-
-
 
 ## Task 4: Running Containers
 
@@ -276,10 +273,10 @@ In this task, you create and run a new container from the image built in the pre
   hostname of 'mycontainer' and the current working directory is set to
   '/mydir'.  
 
-3. Verify that 'emacs' is installed.
+3. Verify that 'tree' is installed.
 
-          root@mycontainer:/mydir# which emacs
-          /usr/bin/emacs
+          root@mycontainer:/mydir# which tree
+          /usr/bin/tree
 
 4. List the content of the root directory.
 
@@ -294,7 +291,7 @@ In this task, you create and run a new container from the image built in the pre
 
   The container is still running.
 
-6. Verify the containe ris still running.
+6. Verify the container is still running.
 
         $ docker ps
 
@@ -307,7 +304,7 @@ In this task, you create and run a new container from the image built in the pre
 
 ## Task 5: Maintaining Containers
 
-Docker provides events, stats, and logging APIs to help you maintain and strouble-shoot your containers. The Stats API provide CPU and memory stats for your container. The Logs API provides all the logs produced by the STDOUT of the PID 1 process inside your container. The Events API shows all Docker Engine events.
+Docker provides events, stats, and logging APIs to help you maintain and troubleshoot your containers. The Stats API provide CPU and memory stats for your container. The Logs API provides all the logs produced by the STDOUT of the PID 1 process inside your container. The Events API shows all Docker Engine events.
 
 1. Create an environment variable for the container ID.
 
@@ -331,7 +328,7 @@ Docker provides events, stats, and logging APIs to help you maintain and stroubl
 
 ## Task 6: Share your image with Docker Hub
 
-Docker Hub is an online registry to share and get images. It is the default
+Docker Hub is an online registry to store and share images. It is the default
 registry that Docker Engine uses to look for images when you try to pull them.
 If you haven't done so already, please create a free account with
 [www.hub.docker.com](https://hub.docker.com/).
@@ -366,7 +363,7 @@ Once you  have an account, you can login. Login is required to push images to Hu
         ubuntu              latest              1d073211c498        10 days ago         187.9 MB
         hello-world         latest              0a6ba66e537a        2 weeks ago         960 B
 
-  Tagging an image doesn't duplicate it, it simply adds additional metadata and points at same image. You can confirm that by looking at the Image ID. Notice that the Image ID is the same for 2 out of the 3 images listed. N
+  Tagging an image doesn't duplicate it, it simply adds additional metadata and points at same image. You can confirm that by looking at the Image ID. Notice that the Image ID is the same for 2 out of the 3 images listed.
 
 4. Push your image to Docker Hub.
 
