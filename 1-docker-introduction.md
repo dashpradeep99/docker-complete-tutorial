@@ -64,7 +64,7 @@ feature-rich graphical tools in addition to the Docker Registry technology.
 
 Docker Engine should be installed and running in your machine. To verify that Docker is running, do the following:
 
-1. Log in as 'ubuntu' into the AWS machine you were given at registration.
+1. Log in as 'ubuntu' into the AWS instance **node-0** you were given at registration.
 
 2. Check you are running the latest version of Docker.
 
@@ -211,7 +211,7 @@ A Dockerfile is a text file that contains all the commands, in order, needed to 
 
 In the following task, you will be building a new image from a Dockerfile. You'll start from \the `ubuntu:latest` image that you just pulled as a base image.
 
-1. Create an empty directory in your local file system.
+1. Create an empty directory on the local file system.
 
         $ mkdir task3
 
