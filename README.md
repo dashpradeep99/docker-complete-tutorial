@@ -1,39 +1,50 @@
-Background
-We are planning a series of hands-on labs where conference attendees can gain experience with various docker features and use cases. Labs should run 15-30 minutes each, and will range form intro to advanced levels. 
-The idea is for attendees to be able to use their own laptops, and (potentially) access cloud-based environments to complete the work. 
+# DockerCon EU 2015 Hands-On Labs (HOL)
 
-These are the currently planned labs (in rough priority order)
+**Background**
 
-Tutorial 1: Intro to Docker (Owner: Nicola Kabar)
+Welcome to DockerCon! In this repo, you will find a series of hands-on labs to help you gain experience in various Docker features, products, and solutions. Each lab should run between 15-30 minutes each and range form introductory to advanced in difficulty.
+
+**Setup**
+
+You should have received an email with cloud-based setup and access info. The setup is composed of (4) VMs each running Docker Engine. 
+
+**Labs**
+
+**Tutorial 1**: **Intro to Docker**
+
 Description: This lab goes over basic intro-level Docker operations. We will go over Docker engine installation, image search, pulling and pushing images, creating new images from Dockerfiles, and running and troubleshooting containers.
-Status:
-Link to Lab Guide: 
+
 Difficulty: Easy
 Time: 20 mins
 Goal: Introduce Docker basic operations, run basic containers, and interact with Docker Hub
 Setup Requirements: engine, git
-Tasks:
-Environment (Version/Info)
-Images( Search/Pull)
-Building Images from Dockerfile
-Running Containers ( Run  / PS)
-Maintaining Containers ( logs/events)
-Docker Hub (Tag/Push)
-Setup Requirements: 
 
-Tutorial 2 : Docker Orchestration Tools (Owner: Nicola Kabar)
-Description: In this lab we will explore Docker Orchestration Tools ( mainly Swarm and Compose). We will go through how to set up a Swarm cluster using multiple discovery options , how Compose works ( including Compose files best practices), and how to deploy and troubleshoot multi-service, multi-container application across the Swarm cluster. 
-Status:
-Link to Lab Guide: 
+Tasks:
+
+* Environment (Version/Info)
+* Images( Search/Pull)
+* Building Images from Dockerfile
+* Running Containers ( Run  / PS)
+* Maintaining Containers ( logs/events)
+* Docker Hub (Tag/Push)
+
+
+**Tutorial 2 : Docker Orchestration Tools**
+
+Description: In this lab we will explore Docker Orchestration Tools ( mainly Swarm and Compose). We will go through how to set up a Swarm cluster using the token discovery option, how Compose works ( including Compose files best practices), and how to deploy and troubleshoot multi-service, multi-container application across the Swarm cluster. 
+
 Difficulty: Intermediate
 Time: 30 mins
 Goal: Create a Swarm cluster and deploy a multi-service application on it using Docker Compose.
+
+
 Tasks: 
-Setup Requirements: engine, git, compose
-Running a multi-service app with Compose on a single engine
-Creating a Swarm cluster
-Running a multi-service app with Compose on a Swarm cluster
-Scaling the app with Interlock
+
+* Setup Requirements: engine, git, compose
+* Running a multi-service app with Compose on a single engine
+* Creating a Swarm cluster
+* Running a multi-service app with Compose on a Swarm cluster
+* Scaling the app with Interlock
 
 Tutorial 3: Docker Trusted Registry - DTR (Owner: Nicola Kabar)
 Description: In this lab we will examine Docker Trusted Registry (DTR). We will go through DTR installation, authentication setup, storage backend configuration, monitoring, security, and other various enterprise-level supported features.

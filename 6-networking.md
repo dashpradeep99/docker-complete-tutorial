@@ -1,14 +1,27 @@
-<!--[metadata]>
 
-If you get a mismatch API client/remote api error you probably need to use the correct iso for the RC.  This won't happen after the 1.9 release.  I don't include it in the regular lab directions:
+# Tutorial 6 : Docker Networking
 
---virtualbox-boot2docker-url https://github.com/tianon/boot2docker-legacy/releases/download/v1.9.0-rc3/boot2docker.iso
+> **Difficulty**: Advanced
 
-Specify the Swarm image as swarm:1.0.0-rc2 if you are still un the RC period
+> **Time**: 30-40 mins
 
-<![end-metadata]-->   
+> **Prequisites**: 3 Nodes with Engine Installed
+
+> **Tasks**:
+> 
+> * Set up a key-value store 
+> * Configure the engines with the key-value store
+> * Create an overlay network
+> * Run containers on different hosts and connect them to the overlay network
+> * Create another overlay network
+> * Reconnect one of the container to the new network
+> * Expose host ports in an overlay network.
 
 # Get started with multi-host networking
+
+Background:
+
+Before Docker 1.9, containers running on different hosts had to use the underlying host's TCP/IP stack to communicate between themsleves by mapping a host TCP/UDP port to a container TCP/UDP port. This architecture was limiting and unscalable. In version 1.9, Docker networking was revamped and a new native networking driver was introduced to enable multi-host networking. Mult-host networking enables containers residing on distinct hosts to communicate without relying on the host's TCP/IP stack.
 
 This lab uses an example to explain the basics of creating a mult-host
 network. Docker Engine supports this out-of-the-box through the `overlay`
@@ -19,228 +32,177 @@ conditions before you can create one. These conditions are:
 * A cluster of hosts with connectivity to the key-value store.
 * A properly configured Engine `daemon` on each host in the cluster.
 
-You'll use Docker Machine to create both the the key-value store server and the host cluster. This example creates a Swarm cluster.
 
 ## Prerequisites
 
-Before you begin, make sure you have a system on your network with the latest version of Docker Engine and Docker Machine installed. The example also relies on VirtualBox. If you installed on a Mac or Windows with Docker Toolbox, you have all of these installed already.
-
-If you have not already done so, make sure you upgrade Docker Engine and Docker Machine to the latests versions.
+* You will use all four nodes : node-0 ,node-1 ,node-2 ,and node-3
+* Ensure that no containers are running on these containers.
+* Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
+* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 
 ## Step 1: Set up a key-value store
+![](images/tut6-step1.png)
+
 
 An overlay network requires a key-value store. The key-value store information about the network state which includes discovery, networks, endpoints, ip-addresses, and more. Engine supports Consul, Etcd, and Zookeeper (Distributed store) key-value stores. This example uses Consul.
 
-1. Log into a system prepared with the prerequisite Docker Engine, Docker Machine, and VirtualBox software.
+Log into **node-0** and run the Consul container as follows:
 
-2. Provision a VirtualBox machine called `mh-keystore`.  
+`docker run -d -p 8500:8500 -h consul --name consul progrium/consul -server -bootstrap`
 
-				$ docker-machine create -d VirtualBox mh-keystore
+Ensure that the container is Up and listening to port 8500
 
-		When you provision a new machine, the process adds Docker Engine to the
-		host. This means rather than installing Consul manually, you can create an
-		instance using the [consul image from Docker
-		Hub](https://hub.docker.com/r/progrium/consul/). You'll do this in the next step.
-
-3. Start a `progrium/consul` container running on the `mh-keystore` machine.
-
-			docker $(docker-machine config mh-keystore) run -d \
-				-p "8500:8500" \
-				-h "consul" \
-				progrium/consul -server -bootstrap
-
-	 You passed the `docker run` command the connection configuration using a bash
-	 expansion `$(docker-machine config mh-keystore)`.  The client started a
-	 `progrium/consul` image running in the `mh-keystore` machine. The server is called `consul`and is listening port `8500`.
-
-4. Set your local environment to the `mh-keystore` machine.
-
-			$  eval "$(docker-machine env mh-keystore)"
-
-5. Run the `docker ps` command to see the `consul` container.
-
-			$ docker ps
-			CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                            NAMES
-			4d51392253b3        progrium/consul     "/bin/start -server -"   25 minutes ago      Up 25 minutes       53/tcp, 53/udp, 8300-8302/tcp, 0.0.0.0:8500->8500/tcp, 8400/tcp, 8301-8302/udp   admiring_panini
-
-Keep your terminal open and move onto the next step.
+```
+# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                            NAMES
+3092b9afa96c        progrium/consul     "/bin/start -server -"   35 seconds ago      Up 34 seconds       53/tcp, 53/udp, 8300-8302/tcp, 8301-8302/udp, 8400/tcp, 0.0.0.0:8500->8500/tcp   consul
+```
 
 
-## Step 2: Create a Swarm cluster
+## Step 2: Configure the engines to use key-value store
 
-In this step, you use `docker-machine` to provision the hosts for your network. At this point, you won't actually created the network. You'll create several virtual hosts in VirtualBox. One of the host will act as th Swarm master, you'll create that first. As you create each host, you'll pass the Engine on that host options which are needed to create the `overlay` network.
+On **node-1,node-2,and node-3**, reconfigure the Docker daemon options listen on TCP port 2375 and to use the Consul k/v store created in Step 1.
 
-1. Create a swarm master.
+To do so, edit `/etc/default/docker` file and ensure to add the following:
 
-			docker-machine create \
-			-d VirtualBox \
-			--swarm --swarm-image="swarm" --swarm-master \
-			--swarm-discovery="consul://$(docker-machine ip mh-keystore):8500" \
-			--engine-opt="cluster-store=consul://$(docker-machine ip mh-keystore):8500"
-			--engine-opt="cluster-advertise=eth1:2376" \
-			mhs-demo0
+`DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://<NODE-0-PRIVATE-IP>:8500/network --cluster-advertise=eth0:2375"`
 
-	At creation time, you supply the Engine `daemon` with the ` --cluster-store` option. This option tells the Engine the location of the key-value store for the `overlay` network. The bash expansion `$(docker-machine ip mh-keystore)` resolves to the IP address of the Consul server you created in "STEP 1". The `--cluster-advertise` option
+Then you need to restart the engine for these settings to take effect:
 
-2. Create another host and add it to the Swarm cluster.
+`sudo service docker restart`
 
-		docker-machine create -d VirtualBox \
-			--swarm --swarm-image="swarm:1.0.0-rc2" \
-			--swarm-discovery="consul://$(docker-machine ip mh-keystore):8500" \
-			--engine-opt="cluster-store=consul://$(docker-machine ip mh-keystore):8500" \
-			--engine-opt="cluster-advertise=eth1:2376" \
-		  mhs-demo1
+Ensure that the engine restarts successfully:
 
-3. List your machines to confirm they are all up and running.
-
-		$ docker-machine ls
-		NAME         ACTIVE   DRIVER       STATE     URL                         SWARM
-		default               VirtualBox   Running   tcp://192.168.99.100:2376   
-		mh-keystore            VirtualBox   Running   tcp://192.168.99.103:2376   
-		mhs-demo0             VirtualBox   Running   tcp://192.168.99.104:2376   mhs-demo0 (master)
-		mhs-demo1             VirtualBox   Running   tcp://192.168.99.105:2376   mhs-demo0
-
-At this point you have a set of hosts running on your network. You are ready to create a multi-host network for containers using these hosts.
-
-
-Leave your terminal open and go onto the next step.
+```
+# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
 
 ## Step 3: Create the overlay Network
 
-To create an overlay network
+Now that the three nodes are configured to use the k/v store, you can create an overlay network on any node and it will be distributed to all the nodes.
 
-1. Set your docker environment to the Swarm master.
+Before we create an overlay network, let's look at the default networks created by Docker:
 
-			$ eval $(docker-machine --swarm env mhs-demo0)
+```
+node-1#docker network ls
+NETWORK ID          NAME                DRIVER
+38ffb13fa56d        none                null
+34c7921e8cb7        host                host
+25b439c6c8ca        bridge              bridge   
+```
 
-		Using the `--swarm` flag with `docker-machine` restricts the `docker` commands to Swarm information alone.
+Historically, these three networks are part of Docker's implementation. When you run a container you can use the `--net` flag to specify which network you want to run a container on. These three networks are still available to you.
 
-2. Use the `docker info` command to view the Swarm.
+The `bridge` network represents the docker0 network present in all Docker installations. Unless you specify otherwise with the docker run --net=<NETWORK> option, the Docker daemon connects containers to this network by default.
 
-			$ docker info
-			Containers: 3
-			Images: 2
-			Role: primary
-			Strategy: spread
-			Filters: affinity, health, constraint, port, dependency
-			Nodes: 2
-			mhs-demo0: 192.168.99.104:2376
-			└ Containers: 2
-			└ Reserved CPUs: 0 / 1
-			└ Reserved Memory: 0 B / 1.021 GiB
-			└ Labels: executiondriver=native-0.2, kernelversion=4.1.10-boot2docker, operatingsystem=Boot2Docker 1.9.0-rc1 (TCL 6.4); master : 4187d2c - Wed Oct 14 14:00:28 UTC 2015, provider=VirtualBox, storagedriver=aufs
-			mhs-demo1: 192.168.99.105:2376
-			└ Containers: 1
-			└ Reserved CPUs: 0 / 1
-			└ Reserved Memory: 0 B / 1.021 GiB
-			└ Labels: executiondriver=native-0.2, kernelversion=4.1.10-boot2docker, operatingsystem=Boot2Docker 1.9.0-rc1 (TCL 6.4); master : 4187d2c - Wed Oct 14 14:00:28 UTC 2015, provider=VirtualBox, storagedriver=aufs
-			CPUs: 2
-			Total Memory: 2.043 GiB
-			Name: 30438ece0915
+The `none` network adds a container to a container-specific network stack. That container lacks a network interface. 
 
-	From this information, you can see that you are running three containers and 2 images on the Master.
+The `host` network adds a container on the hosts network stack. You'll find the network configuration inside the container is identical to the host.
 
-3. Create your `overlay` network.
+The new native `overlay` network driver supports multi-host networking natively out-of-the-box. This support is accomplished with the help of `libnetwork`, a built-in VXLAN-based overlay network driver, and Docker's `libkv` library.
 
-			$ docker network create -d overlay my-net
 
-		You only need to create the network on a single host in the cluster. In this case, you used the Swarm master but you could easily have run it on any host in the cluster.
+Create your `overlay` network called "RED" with the 10.10.10.0/24 subnet.
+```
+$ docker network create -d overlay --subnet=10.10.10.0/24 RED
+```
 
-4. Check that the network is running:
+Check that the network is running:
 
-			$ docker network ls
-			NETWORK ID          NAME                DRIVER
-			412c2496d0eb        mhs-demo1/host      host                
-			dd51763e6dd2        mhs-demo0/bridge    bridge              
-			6b07d0be843f        my-net              overlay             
-			b4234109bd9b        mhs-demo0/none      null                
-			1aeead6dd890        mhs-demo0/host      host                
-			d0bb78cbe7bd        mhs-demo1/bridge    bridge              
-			1c0eb8f69ebb        mhs-demo1/none      null     
+```bash
+node-1#docker network ls
+NETWORK ID          NAME                DRIVER
+7b1cda01f47f        RED                 overlay
+38ffb13fa56d        none                null
+34c7921e8cb7        host                host
+25b439c6c8ca        bridge              bridge   
+```
+You can also check that the network was distributed to the other nodes:
 
-	Because you are in the Swarm master environment, you see all the networks on all Swarm agents. Notice that each `NETWORK ID` is unique.  The default networks on each engine and the single overlay network.  
+```
+node-3:~# docker network ls
+NETWORK ID          NAME                DRIVER
+7b1cda01f47f        RED                 overlay
+1ae83a006465        host                host
+501f891883cf        bridge              bridge
+a141cc346b6c        none                null
+```
 
-5. Switch to each Swarm agent in turn and list the network.
 
-			$ eval $(docker-machine env mhs-demo0)
-
-			$ docker network ls
-			NETWORK ID          NAME                DRIVER
-			6b07d0be843f        my-net              overlay             
-			dd51763e6dd2        bridge              bridge              
-			b4234109bd9b        none                null                
-			1aeead6dd890        host                host                
-
-			$ eval $(docker-machine env mhs-demo1)
-
-			$ docker network ls
-			NETWORK ID          NAME                DRIVER
-			d0bb78cbe7bd        bridge              bridge              
-			1c0eb8f69ebb        none                null                
-			412c2496d0eb        host                host                
-			6b07d0be843f        my-net              overlay        
-
-  Both agents reports it has the `my-net `network with the `6b07d0be843f` id.  You have a multi-host container network running!
-
-##  Run an application on your Network
+## Run Containers on the RED network
 
 Once your network is created, you can start a container on any of the hosts and it automatically is part of the network.
 
-1. Point your environment to your `mhs-demo0` instance.
 
-			$ eval $(docker-machine env mhs-demo0)
+On **node-1**, run a simple **ubuntu** container named `container1`. 
 
-2. Start an Nginx server on `mhs-demo0`.
+`docker run -itd --name container1 --net RED ubuntu`
 
-		$ docker run -itd --name=web --net=my-net --env="constraint:node==mhs-demo0" nginx
+On **node-2**, run a simple **ubuntu** container named `container2`. 
 
-	This command starts a web server on the Swarm master.
+`docker run -itd --name container2 --net RED ubuntu`
 
-3. Point your Machin environment to `mhs-demo1`
 
-		$ eval $(docker-machine env mhs-demo1)
+Let's take a look at the network config of container1:
 
-2. Run a Busybox instanceand get the contents of the Ngnix server's home page.
+```
+node1#docker exec container1 ifconfig
+eth0      Link encap:Ethernet  HWaddr 02:42:0A:0A:0A:02
+          inet addr:10.10.10.2  Bcast:0.0.0.0  Mask:255.255.255.0
+          inet6 addr: fe80::42:aff:fe0a:a02/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1450  Metric:1
+          RX packets:13 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1038 (1.0 KiB)  TX bytes:648 (648.0 B)
 
-		$ docker run -it --rm --net=my-net --env="constraint:node==mhs-demo1" busybox wget -O- http://web
-		Unable to find image 'busybox:latest' locally
-		latest: Pulling from library/busybox
-		ab2b8a86ca6c: Pull complete
-		2c5ac3f849df: Pull complete
-		Digest: sha256:5551dbdfc48d66734d0f01cafee0952cb6e8eeecd1e2492240bf2fd9640c2279
-		Status: Downloaded newer image for busybox:latest
-		Connecting to web (10.0.0.2:80)
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title>Welcome to nginx!</title>
-		<style>
-		body {
-				width: 35em;
-				margin: 0 auto;
-				font-family: Tahoma, Verdana, Arial, sans-serif;
-		}
-		</style>
-		</head>
-		<body>
-		<h1>Welcome to nginx!</h1>
-		<p>If you see this page, the nginx web server is successfully installed and
-		working. Further configuration is required.</p>
+eth1      Link encap:Ethernet  HWaddr 02:42:AC:12:00:02
+          inet addr:172.18.0.2  Bcast:0.0.0.0  Mask:255.255.0.0
+          inet6 addr: fe80::42:acff:fe12:2/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:14 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1128 (1.1 KiB)  TX bytes:648 (648.0 B)
 
-		<p>For online documentation and support please refer to
-		<a href="http://nginx.org/">nginx.org</a>.<br/>
-		Commercial support is available at
-		<a href="http://nginx.com/">nginx.com</a>.</p>
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+```
 
-		<p><em>Thank you for using nginx.</em></p>
-		</body>
-		</html>
-		-                    100% |*******************************|   612   0:00:00 ETA
+You can see that `eth0` was assigned an IP from RED's `10.10.10.0/24` subnet. You will also notice `eth1` with a `172.18.0.0` address. When you create your first overlay network on any host, Docker also creates another network on each host called `docker_gwbridge`. This network is used to provide external access for containers. Every container that is part of an overlay network also gets an `eth` interface in the `docker_gwbridge` to allow it to access the external world. The `docker_gwbridge` is similar to the default `bridge` network, but unlike the `bridge` it restricts inter-container communciation. Docker will create only one
+`docker_gwbridge` bridge network per host regardless of the number of overlay networks present. 
+
+Let's take a look at another cool feature of the overlay networks, which is service discovery.
+
+```
+node-1:~# docker exec container1 cat /etc/hosts
+10.10.10.2	42b58f7ea6dd
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+10.10.10.3	container2
+10.10.10.3	container2.RED
+```
+
+You can see that Docker took care of adding an entry for each container that is part of the same overlay network. Therefore, to reach container2 from container1, you can simply use its name.
+
+
 
 
 
 ## Related information
 
 * [Docker Swarm overview](https://docs.docker.com/swarm)
-* [Docker Machine overview](https://docs.docker.com/machine)
+
