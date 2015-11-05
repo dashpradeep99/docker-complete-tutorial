@@ -13,7 +13,7 @@
 > * Step2: Configure the engines to use key-value store
 > * Step3: Create the "RED" overlay network
 > * Step4: Run containers on the RED network
-> * Step5: Create the "RED" overlay network 
+> * Step5: Create the "BLUE" overlay network 
 > * Step6: Cross-Network Communication
 > * Step7: Reconnecting Containers
 
@@ -241,7 +241,7 @@ If the output is `0`, then you have successfully established a TCP connection on
  
 
 
-## Step 5: Create Another Overlay Nework
+## Step 5: Create the "BLUE" Overlay Network
 
 ![](images/tut6-step5.png)
 
