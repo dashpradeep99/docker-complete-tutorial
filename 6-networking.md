@@ -316,9 +316,10 @@ node-2:~# docker exec container2 ifconfig
 
 ## Conclusion
 
-Congrats! You have completed tutorial! 
+Congrats! You have completed the tutorial! 
 
-In this tutorial we went over the new Docker Networking features introduced in 1.9. We created a two multi-host overlay network that spanned multiple Docker hosts. We also observed how inter-container networking works with the new networking architecture.s
+In this tutorial we went over the new Docker Networking features introduced in 1.9. We created a two multi-host overlay network that spanned multiple Docker hosts. We also observed how inter-container networking works in different scenarios.
+
 
 ## Cleanup
 
