@@ -8,12 +8,13 @@
 > **Prequisites**: A machine with Docker Engine installed.
 
 > **Tasks**:
-* Environment (Version/Info)
-* Images( Search/Pull)
-* Building Images from Dockerfile
-* Running Containers ( Run  / PS)
-* Maintaining Containers ( logs/events)
-* Docker Hub (Tag/Push)
+- [Task 1: Verify your environment](#task-1-verify-your-environment)
+- [Task 2: Learn about images](#task-2-learn-about-images)
+- [Task 3: Building Images from Dockerfile](#task-3-building-images-from-dockerfile)
+- [Task 4: Running Containers](#task-4-running-containers)
+- [Task 5: Maintaining Containers](#task-5-maintaining-containers)
+- [Task 6: Share your image with Docker Hub](#task-6-share-your-image-with-docker-hub)
+
 
 ## What is Docker?
 
