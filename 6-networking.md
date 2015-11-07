@@ -9,13 +9,13 @@
 
 > **Tasks**:
 > 
-> * Step1: Set up a key-value store 
-> * Step2: Configure the engines to use key-value store
-> * Step3: Create the "RED" overlay network
-> * Step4: Run containers on the RED network
-> * Step5: Create the "BLUE" overlay network 
-> * Step6: Cross-Network Communication
-> * Step7: Reconnecting Containers
+> * Task 1: Set up a key-value store 
+> * Task 2: Configure the engines to use key-value store
+> * Task 3: Create the "RED" overlay network
+> * Task 4: Run containers on the RED network
+> * Task 5: Create the "BLUE" overlay network 
+> * Task 6: Cross-Network Communication
+> * Task 7: Reconnecting Containers
 
 # Get started with multi-host networking
 
@@ -50,15 +50,16 @@ Key-value store ( e.g for Consul TCP 8500)
 * Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 
-## Step 1: Set up a key-value store
+## Task 1: Set up a key-value store
 
 An overlay network requires a key-value store. The key-value stores information about the network state which includes discovery, networks, endpoints, ip-addresses, and more. Engine supports Consul, Etcd, and Zookeeper (Distributed store) key-value stores. This example uses Consul.
 
-Log into **node-0** and run the Consul container as follows:
+
+**Step 1:** Log into **node-0** and run the Consul container as follows:
 
 `docker run -d -p 8500:8500 -h consul --name consul progrium/consul -server -bootstrap`
 
-Ensure that the container is Up and listening to port 8500
+**Step 2:**  Ensure that the container is Up and listening to port 8500
 
 ```
 # docker ps
@@ -67,26 +68,26 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 ```
 ![](images/tut6-step1.png)
 
-## Step 2: Configure the engines to use key-value store
+## Task 2: Configure the engines to use key-value store
 
-On **node-1,node-2,and node-3**, reconfigure the Docker daemon options listen on TCP port 2375 and to use the Consul k/v store created in Step 1.
+On **node-1,node-2,and node-3**, reconfigure the Docker daemon options listen on TCP port 2375 and to use the Consul k/v store created in Task 1.
 
-To do so, edit `/etc/default/docker` file and ensure to add the following:
+**Step 1:**  edit `/etc/default/docker` file and ensure to add the following:
 
 `DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://<NODE-0-PRIVATE-IP>:8500/network --cluster-advertise=eth0:2375"`
 
-Then you need to restart the engine for these settings to take effect:
+**Step 2:**  Restart the engine for these settings to take effect:
 
 `sudo service docker restart`
 
-Ensure that the engine restarts successfully:
+**Step 3:**  Ensure that the engine restarts successfully:
 
 ```
 # docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
-## Step 3: Create the "RED" overlay Network
+## Task 3: Create the "RED" overlay Network
 
 Now that the three nodes are configured to use the k/v store, you can create an overlay network on any node and it will be distributed to all the nodes.
 
@@ -102,21 +103,21 @@ NETWORK ID          NAME                DRIVER
 
 Historically, these three networks are part of Docker's implementation. When you run a container you can use the `--net` flag to specify which network you want to run a container on. These three networks are still available to you.
 
-The `bridge` network represents the docker0 network present in all Docker installations. Unless you specify otherwise with the docker run --net=<NETWORK> option, the Docker daemon connects containers to this network by default.
+* The `bridge` network represents the docker0 network present in all Docker installations. Unless you specify otherwise with the docker run --net=<NETWORK> option, the Docker daemon connects containers to this network by default.
 
-The `none` network adds a container to a container-specific network stack. That container lacks a network interface. 
+* The `none` network adds a container to a container-specific network stack. That container lacks a network interface. 
 
-The `host` network adds a container on the hosts network stack. You'll find the network configuration inside the container is identical to the host.
+* The `host` network adds a container on the hosts network stack. You'll find the network configuration inside the container is identical to the host.
 
 The new native `overlay` network driver supports multi-host networking natively out-of-the-box. This support is accomplished with the help of `libnetwork`, a built-in VXLAN-based overlay network driver, and Docker's `libkv` library.
 
-Create your `overlay` network called "RED" with the 10.10.10.0/24 subnet.
+**Step 1:** Create your `overlay` network called "RED" with the 10.10.10.0/24 subnet.
 
 ```
 $ docker network create -d overlay --subnet=10.10.10.0/24 RED
 ```
 
-Check that the network is running:
+**Step 2:** Check that the network is running:
 
 ```bash
 node-1#docker network ls
@@ -126,7 +127,7 @@ NETWORK ID          NAME                DRIVER
 34c7921e8cb7        host                host
 25b439c6c8ca        bridge              bridge   
 ```
-You can also check that the network was distributed to the other nodes:
+**Step 3:** You can also check that the network was distributed to the other nodes:
 
 ```
 node-3:~# docker network ls
@@ -138,21 +139,22 @@ a141cc346b6c        none                null
 ```
 
 
-## Step 4: Run Containers on the RED network
+## Task 4: Run Containers on the RED network
 
 Once your network is created, you can start a container on any of the hosts and it automatically is part of the network.
 
+**Step 1:** Start two containers:
 
 On **node-1**, run a simple **busybox** container named `container1`: 
 
-`docker run -itd --name container1 --net RED busybox`
+`node-1# docker run -itd --name container1 --net RED busybox`
 
 On **node-2**, run a simple **busybox** container named `container2`:
 
-`docker run -itd --name container2 --net RED busybox`
+`node-2# docker run -itd --name container2 --net RED busybox`
 
 
-Let's take a look at the network config of container1:
+**Step 2:** Let's take a look at the network config of container1:
 
 ```
 node1#docker exec container1 ifconfig
@@ -187,7 +189,7 @@ lo        Link encap:Local Loopback
 You can see that `eth0` was assigned an IP from RED's `10.10.10.0/24` subnet. You will also notice `eth1` with a `172.18.0.0/16` address. When you create your first overlay network on any host, Docker also creates another network on each host called `docker_gwbridge`. This network is used to provide external access for containers. Every container that is part of an overlay network also gets an `eth` interface in the `docker_gwbridge` to allow it to access the external world. The `docker_gwbridge` is similar to the default `bridge` network, but unlike the `bridge` it restricts Inter-Container Communciation(ICC). Docker will create only one
 `docker_gwbridge` bridge network per host regardless of the number of overlay networks present. 
 
-Let's take a look at another cool feature of the overlay networks, which is container discovery.
+**Step 3:** Let's take a look at another cool feature of the overlay networks, which is container discovery.
 
 ```
 node-1:~# docker exec container1 cat /etc/hosts
@@ -211,8 +213,9 @@ PING container2 (10.10.10.3): 56 data bytes
 64 bytes from 10.10.10.3: seq=1 ttl=64 time=1.106 ms
 64 bytes from 10.10.10.3: seq=2 ttl=64 time=1.042 ms
 ```
+**Step 4 :** All TCP/UDP ports are open on an overlay network. There is no need to do any host-port mapping to expose these ports to the other containers on the same network.
 
-All TCP/UDP ports are open on an overlay network. There is no need to do any host-port mapping to expose these ports to the other containers on the same network. Let's test a TCP connection between container1 and container2.
+Let's test a TCP connection between container1 and container2.
 
 On **node-2**, grab the `10.10.10.X` IP addresss:
 
@@ -238,21 +241,19 @@ node-1:~# docker exec -it container1 nc container2 9000 &> /dev/null; echo $?
 If the output is `0`, then you have successfully established a TCP connection on port 9000.
 
 
- 
-
-
-## Step 5: Create the "BLUE" Overlay Network
+## Task 5: Create the "BLUE" Overlay Network
 
 ![](images/tut6-step5.png)
 
-Now, let's create another `overlay` network called "BLUE" with the 10.10.20.0/24 subnet instead.
+**Step 1:** let's create another `overlay` network called "BLUE" with the 10.10.20.0/24 subnet instead.
 
 ```
 node1$ docker network create -d overlay --subnet=10.10.20.0/24 BLUE
 ```
 
-Let's also create two other containers: container3 and container4.  Container3 will be on node-2 but will connect to both networks ( `RED` and `BLUE`). Container4 will be on node-3 and will connect to the `BLUE` network. This way, container3 is able to communicate to container4 over the `BLUE` network, and  to container1 and container2 over the `RED` network. 
+**Step 2:** Let's also create two other containers: **container3** and **container4**.  Container3 will be on **node-2** but will connect to both networks ( `RED` and `BLUE`). **container4** will be on **node-3:** and will connect to the `BLUE` network. This way, container3 is able to communicate to container4 over the `BLUE` network, and  to **container1** and **container2** over the `RED` network. 
  
+
 On **node-2**, run a simple **busybox** container named `container3`. 
 
 ```
@@ -271,7 +272,7 @@ Observe that container3 now has interfaces in both networks.
 node-2:~# docker exec container3 ifconfig
 ```
 
-## Step 6: Cross-Network Communication
+## Task 6: Cross-Network Communication
 
 Container2 and container3 can communicate over the `RED` overlay network. Although they are both on the same `docker_gwbridge` , they cannot communicate using that bridge network without host-port mapping. The `docker_gwbridge` is used for all other traffic.
 
@@ -299,7 +300,7 @@ node-1:~# docker exec -it container1 nc <NODE_3_PRIVATE_IP> 9000 &> /dev/null; e
 If the output is `0`, then you have successfully established a TCP connection on port 9000 using host-port mapping.
 
 
-## Step 7: Reconnecting Containers
+## Task 7: Reconnecting Containers
 
 Containers can easily be disconnected from any network and reconnected to another. 
 Let's disconnect container2 from `RED` network and attach it to `BLUE` network:
