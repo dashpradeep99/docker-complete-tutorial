@@ -14,7 +14,16 @@
 > * Step3: Creating Ogranizations, Teams, and Members
 > * Step4: Pushing and Pulling DTR Images
 > * Step5: Storage and Logs
-> * Step6: Authentication,Security and Notary Integration
+> * Step6: Authentication and Security 
+
+
+## Prerequisites
+
+* You will use all two nodes: node-0 and node-1
+* Ensure that no containers are running on these containers.
+* Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
+* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 
 # Getting Started with Docker Trusted Registry(DTR)
@@ -34,13 +43,6 @@ With DTR 1.4 you have new awesome features like:
 * New Drivers Support (Openstack Swift)
 
 
-## Prerequisites
-
-* You will use all two nodes: node-0 and node-1
-* Ensure that no containers are running on these containers.
-* Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
-* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
-* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 
 ## Step 1: Install DTR
@@ -71,7 +73,7 @@ I. **Authentication Settings**:
 
 ![](images/dtr-step2-auth.png)
 
-II. **Upload License and Add DNS Name**
+II. **Upload License**
 
 If you already have a DTR license you can use here. If not, please go [here](https://hub.docker.com/enterprise/trial/) to get a Free 30-day DTR license.
 
@@ -82,6 +84,10 @@ If you already have a DTR license you can use here. If not, please go [here](htt
 
 * Go back to your DTR site, and upload the downloaded license in **Settings** >> **Licenses**.
 * **Save** and **Reload**.
+
+III. **Configure Domain Name**
+
+Navigate to '**General**' tab and provide the node's pulic DNS name as "**Domain name**". Then click **"Save and Restart"**.
 
 
 ## Step 3: Creating Organizations, Teams, Members,and Repositories
