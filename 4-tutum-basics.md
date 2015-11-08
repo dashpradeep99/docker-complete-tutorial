@@ -1,4 +1,4 @@
-# Tutum Hands-on Lab
+# Lab 4: Tutum: Provision, Deploy, Manage
 
 > **Difficutly**: Beginner
 
@@ -27,19 +27,6 @@ Tutum is a cloud-based system for managing Docker infrastructure that allows use
 
 To complete this lab you will need a Docker Hub account. If you have an existing Docker Hub account, please proceed to “Attaching a new node” below
 
-Docker Hub accounts are completely free. To create one.
-
-1. Navigate to http://hub.docker.com
-
-2. On the right hand side of the screen supply a unique username, email address and password
-
-	>**Note**: Remember these credentials, you'll need them later.
-
-3. Log into the email account you provided.
-
-4. Open the account confirmation email from Docker.
-
-5. Click the link provided in the email to confirm your account.
 
 ## Task 1: Attaching a New Node
 

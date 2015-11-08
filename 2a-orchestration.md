@@ -1,4 +1,4 @@
-# Tutorial 2 : Docker Orchestration
+# Lab 2 : Docker Orchestration
 
 > **Description**: In this lab you explore Docker Swarm and Docker Compose which are Docker's orchestration tools.
 

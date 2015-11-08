@@ -1,4 +1,4 @@
-# Tutorial 7 : Understanding Docker Volumes
+# Lab 7 : Understanding Docker Volumes
 > **Difficulty**: Intermediate
 
 > **Time**: 30 mins
@@ -58,14 +58,14 @@ In this task we're going to create a new container, and then add a file to it.
 		file.txt
 
 9. Exit the container but leave it running by hitting `Ctrl+P` (at the same time) and then hitting `Ctrl+Q` (at the same time)	**_Note_***: You are now working within the shell of your Docker host*10. Ensure your container is still running:		$ docker ps	The output should be similar to:
-	
+
 		CONTAINER ID   IMAGE   COMMAND         CREATED             STATUS                           		0124480582a2   nginx   "/bin/bash"     6 minutes ago       Up 6 minutes                           The important detail is that `STATUS` lists `Up` instead of `Exited`
 
 ## Task 2: Understand how Docker represents volume data in the file system
 
 As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
 
-1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume		$ docker volume inspect barcelona	Your output should be similar to:		
+1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume		$ docker volume inspect barcelona	Your output should be similar to:
 		[   			{        		"Name": "barcelona",        		"Driver": "local",        		"Mountpoint": "/var/lib/docker/volumes/barcelona/_data"    		}		]	**Note***: The volume mount point above is*: `/var/lib/docker/volumes/barcelona/_data`
 
 2. In order to examine the contents of the directory, you’ll need to elevate your user privileges:		$ sudo su
@@ -87,12 +87,12 @@ As mentioned above, Docker manages volumes outside of the storage driver that it
 
 ## Task 3: Deleting a volume
 
-By default, when you destroy a container Docker does not remove any volumes associated with the container. You can, however, delete a given volume with `docker volume rm` 
+By default, when you destroy a container Docker does not remove any volumes associated with the container. You can, however, delete a given volume with `docker volume rm`
 
 1. Stop the container we have been working with previously		$ docker stop volumeslab
 
 2. Remove the container.		$ docker rm volumeslab
-		**Note***: This will not remove the volume the container was using*
+	**Note***: This will not remove the volume the container was using*
 
 3. Ensure the volume we were working with still exists		$ docker volume ls		DRIVER              VOLUME NAME		local               barcelona	**Note***: You may see other volumes listed in addition to*`barcelona`
 
@@ -150,7 +150,7 @@ In our example we’ll simply create a new file from one container in a director
 8. Verify the content of your newly created file		$ cat /bar/file.txt		Tu dices "hola"		Y yo digo "adios"	**Note**: *The text you created in the first container (Tu dices "hola") is still accessible in this container 	as well as the text you just added  (Y yo digo “adios”)*
 
 9. Exit this container		$ exit
-		
+
 10. Log back into the shell of the original container using the docker exec command		$ docker exec -it foo /bin/bash	**Note***: You are now working in the shell of your docker container*
 
 11. Check to see if the changes you made in the bar container are reflected in this container		$ cat /foo/file.txt		Tu dices "hola"		Y yo digo "adios"

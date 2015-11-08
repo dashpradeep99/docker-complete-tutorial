@@ -1,17 +1,17 @@
-# Tutorial 5 : Docker Content Trust
+# Lab 5 : Docker Content Trust
 
 > **Difficulty**: Easy
 
 > **Time**: 15 mins
 
-> **Prequisites**: 
-> 
+> **Prequisites**:
+>
 * An existing Docker Hub account
-* SSH onto the provided `<username>-node-0` instance in AWS 
+* SSH onto the provided `<username>-node-0` instance in AWS
 * Logged into Docker Hub with the Docker client
 
 > **Tasks**:
-> 
+>
 - Introductory Overview
 - Create a test repository on Docker Hub
 - Enable Content Trust on our client
@@ -21,16 +21,25 @@
 
 ## What is Docker Content Trust?
 
-Content trust allows operations with a remote Docker registry to enforce client-side signing and verification of image tags. Content trust provides the ability to use digital signatures for data sent to and received from remote Docker registries. These signatures allow client-side verification of the integrity and publisher of specific image tags.
+Content trust allows image operations with a remote Docker registry to enforce
+client-side signing and verification of image tags. Content trust enables
+digital signatures for data sent to and received from remote Docker registries.
+These signatures allow Docker client-side interfaces to verify the integrity and
+publisher of specific image tags.
 
-Image publishers can sign their images. Image consumers can ensure that the images they use are signed. publishers and consumers can be individuals alone or in organizations. Docker’s content trust supports users and automated processes pipelines.
+Image publishers can sign their images. Image consumers can ensure that the
+images they use are signed. Both publishers and consumers can be either
+individuals or organizations. Docker’s content trust supports users and
+automated processes pipelines.
 
-Content trust is currently only available for users of the public Docker Hub. It is currently not available for the Docker Trusted Registry or for private registries.
+Content trust is currently only available for users of the public Docker Hub. It
+is currently not available for the Docker Trusted Registry or for private
+registries.
 
 
 ## Task 1: Create a new Docker Hub repository
 
-Before we enable Docker Content Trust, let's create a new temporary repository on Docker Hub to use for the following examples.
+Before you enable Docker Content Trust, you must create a new temporary repository on Docker Hub. You'll use this temporary repository for the lab.
 
 On your AWS instance `<username>-node-0`, ensure you're logged into Docker hub:
 

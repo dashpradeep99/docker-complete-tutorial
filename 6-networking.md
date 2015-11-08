@@ -1,5 +1,5 @@
 
-# Tutorial 6 : Docker Networking
+# Lab 6: Docker Networking
 
 > **Difficulty**: Advanced
 
@@ -8,18 +8,18 @@
 > **Prequisites**: 3 Nodes with Engine Installed
 
 > **Tasks**:
-> 
-> * Task 1: Set up a key-value store 
+>
+> * Task 1: Set up a key-value store
 > * Task 2: Configure the engines to use key-value store
 > * Task 3: Create the "RED" overlay network
 > * Task 4: Run containers on the RED network
-> * Task 5: Create the "BLUE" overlay network 
+> * Task 5: Create the "BLUE" overlay network
 > * Task 6: Cross-Network Communication
 > * Task 7: Reconnecting Containers
 
 # Get started with multi-host networking
 
-**Background**: 
+**Background**:
 
 Before Docker 1.9, containers running on different hosts had to use the underlying host's TCP/IP stack to communicate between themsleves by mapping a host TCP/UDP port to a container TCP/UDP port. This architecture was limiting and unscalable. In version 1.9, Docker networking was revamped and a new native networking driver was introduced to enable multi-host networking. Multi-host networking enables containers residing on distinct hosts to communicate without relying on the host's TCP/IP stack.
 
@@ -105,7 +105,7 @@ Historically, these three networks are part of Docker's implementation. When you
 
 * The `bridge` network represents the docker0 network present in all Docker installations. Unless you specify otherwise with the docker run --net=<NETWORK> option, the Docker daemon connects containers to this network by default.
 
-* The `none` network adds a container to a container-specific network stack. That container lacks a network interface. 
+* The `none` network adds a container to a container-specific network stack. That container lacks a network interface.
 
 * The `host` network adds a container on the hosts network stack. You'll find the network configuration inside the container is identical to the host.
 
@@ -145,7 +145,7 @@ Once your network is created, you can start a container on any of the hosts and 
 
 **Step 1:** Start two containers:
 
-On **node-1**, run a simple **busybox** container named `container1`: 
+On **node-1**, run a simple **busybox** container named `container1`:
 
 `node-1# docker run -itd --name container1 --net RED busybox`
 
@@ -187,7 +187,7 @@ lo        Link encap:Local Loopback
 ```
 
 You can see that `eth0` was assigned an IP from RED's `10.10.10.0/24` subnet. You will also notice `eth1` with a `172.18.0.0/16` address. When you create your first overlay network on any host, Docker also creates another network on each host called `docker_gwbridge`. This network is used to provide external access for containers. Every container that is part of an overlay network also gets an `eth` interface in the `docker_gwbridge` to allow it to access the external world. The `docker_gwbridge` is similar to the default `bridge` network, but unlike the `bridge` it restricts Inter-Container Communciation(ICC). Docker will create only one
-`docker_gwbridge` bridge network per host regardless of the number of overlay networks present. 
+`docker_gwbridge` bridge network per host regardless of the number of overlay networks present.
 
 **Step 3:** Let's take a look at another cool feature of the overlay networks, which is container discovery.
 
@@ -251,10 +251,10 @@ If the output is `0`, then you have successfully established a TCP connection on
 node1$ docker network create -d overlay --subnet=10.10.20.0/24 BLUE
 ```
 
-**Step 2:** Let's also create two other containers: **container3** and **container4**.  Container3 will be on **node-2** but will connect to both networks ( `RED` and `BLUE`). **container4** will be on **node-3:** and will connect to the `BLUE` network. This way, container3 is able to communicate to container4 over the `BLUE` network, and  to **container1** and **container2** over the `RED` network. 
- 
+**Step 2:** Let's also create two other containers: **container3** and **container4**.  Container3 will be on **node-2** but will connect to both networks ( `RED` and `BLUE`). **container4** will be on **node-3:** and will connect to the `BLUE` network. This way, container3 is able to communicate to container4 over the `BLUE` network, and  to **container1** and **container2** over the `RED` network.
 
-On **node-2**, run a simple **busybox** container named `container3`. 
+
+On **node-2**, run a simple **busybox** container named `container3`.
 
 ```
 node-2:~# docker run -itd --name container3 --net RED busybox
@@ -262,7 +262,7 @@ node-2:~# docker run -itd --name container3 --net RED busybox
 node-2:~# docker network connect BLUE container3
 ```
 
-On **node-3**, run a simple **busybox** container named `container4`. 
+On **node-3**, run a simple **busybox** container named `container4`.
 
 `docker run -itd --name container4 --net BLUE busybox`
 
@@ -302,7 +302,7 @@ If the output is `0`, then you have successfully established a TCP connection on
 
 ## Task 7: Reconnecting Containers
 
-Containers can easily be disconnected from any network and reconnected to another. 
+Containers can easily be disconnected from any network and reconnected to another.
 Let's disconnect container2 from `RED` network and attach it to `BLUE` network:
 
 ```
@@ -317,7 +317,7 @@ node-2:~# docker exec container2 ifconfig
 
 ## Conclusion
 
-Congrats! You have completed the tutorial! 
+Congrats! You have completed the tutorial!
 
 In this tutorial we went over the new Docker Networking features introduced in 1.9. We created a two multi-host overlay network that spanned multiple Docker hosts. We also observed how inter-container networking works in different scenarios.
 
@@ -337,4 +337,3 @@ Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
 ## Related information
 
 * [Docker Multi-Host Networking overview](http://blog.docker.com/2015/11/docker-multi-host-networking-ga/)
-
