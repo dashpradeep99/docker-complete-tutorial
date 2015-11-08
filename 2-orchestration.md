@@ -8,7 +8,7 @@
 > **Prequisites**: 3 Nodes with Docker CS 1.9 Engine
 
 > **Tasks**:
-> 
+>
 > * Task 1: Deploy a Multiservice Application (`DockChat`) with Compose
 > * Task 2: Set Up a Docker Swarm cluster
 > * Task 3: Re-deploy DockChat on the Swarm Cluster
@@ -24,7 +24,7 @@
 
 # Getting Started with Docker Compose and Swarm
 
-**Background**: 
+**Background**:
 
 Docker Compose and Docker Swarm are key elements of the Docker Ecosystem. Docker Compose is an open-source tool to orchestrate building and deploying multi-service,multi-container applications. Compose relies on a configuration YAML file (default name is **docker-compose.yml**) to build, create, and run containers against a single Docker Engine or Docker Swagrm cluster. The YAML configuration file has standard reference commands ( full list [here](https://docs.docker.com/compose/yml/) ) that  define how the container is created at runtime. Some of the most common commands used are: **build, image, command, ports, and links**. Compose should be already installed on your machine. To verify, issue the following command on all-nodes and ensure you see the currently installed version.
 
@@ -41,11 +41,11 @@ In this tutorial, you will go through deploying **DockChat**, the new awesome ch
 In this step, you will deploy a multiservice app, **DockChat**, that is composed of two services : **web** and **db**. DockChat is a simple Python+Mongo chat server.
 
 
-**Step 1:** First step is to clone the DockChat repo from GitHub on **node-0** 
+**Step 1:** First step is to clone the DockChat repo from GitHub on **node-0**
 
 ` node-0# git clone https://github.com/nicolaka/dockchat.git `
 
-**Step 2:** Change directory to dockchat, and examine the list of files in the repo. 
+**Step 2:** Change directory to dockchat, and examine the list of files in the repo.
 
 ```
 node-0:~# cd dockchat/
@@ -56,9 +56,9 @@ node-0:~/dockchat# tree
 ├── README.md
 ├── requirements.txt
 ├── static
-│   └── style.css
+│   └── style.css
 ├── templates
-│   └── form_action.html
+│   └── form_action.html
 └── webapp.py
 
 2 directories, 7 files
@@ -92,7 +92,7 @@ You can see that there are two service descriptions: db and web. Each of them de
 
 > * **command:{CMD}** will specify the command to run in the container when it's created.
 
-> * **ports:{HOST:CONTAINER}** will specify any network host-port mapping 
+> * **ports:{HOST:CONTAINER}** will specify any network host-port mapping
 
 > * **links:{SERVICE:ALIAS}** will specify container linking parameters. Container linking is a mechanism to automatically provide access, network, and environment paramters for one container to discover and communicate with another contianer. In this example, we are linking the database container '**db**' TO the '**web**' container and giving it the alieas '**db**'.
 
@@ -106,7 +106,7 @@ Name   Command   State   Ports
 ------------------------------
 ```
 
-**Step 4:** You now can build and run the app. It is recommended to ensure that all the images that need to be built, be built first before you run them. That is why **docker-compose** has the following two options :`build` and `up`. 
+**Step 4:** You now can build and run the app. It is recommended to ensure that all the images that need to be built, be built first before you run them. That is why **docker-compose** has the following two options :`build` and `up`.
 
 The `build` option builds an image for every service that has a `build:` paramter in the `docker-compose.yml` file but doesn't actually create any container from that image. The `up` option runs the services described in the `docker-compose.yml` file. The `up` option WILL build the services' images before it runs them. It is recommended to ensure that you successfully build all the requried images before running the containers from them as follows:
 
@@ -173,11 +173,11 @@ DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --label=enviro
 
 Note: if Docker Engine TLS verification is enabled, it is recommended to use TCP port 2376 instead. For the remainder of these exercises, we will not use Docker TLS verifications.
 
-**Step 3:** Create a unique cluster token on from node-0.  When you run the contianer, it will output a unique cluster token. You will use this token for the remainder of the tutorial. 
+**Step 3:** Create a unique cluster token on from node-0.  When you run the contianer, it will output a unique cluster token. You will use this token for the remainder of the tutorial.
 
 `node-0:~#export TOKEN=$(docker run --rm swarm create)`
 
-**Step 4:** Configure the Swarm Manager on node-0. The manager runs in a container and is configured to use a different TCP port (3375) than engine (2375). 
+**Step 4:** Configure the Swarm Manager on node-0. The manager runs in a container and is configured to use a different TCP port (3375) than engine (2375).
 
 ```node-0:~#docker run -d -p 3375:2375 swarm manage token://$TOKEN```
 
@@ -241,7 +241,7 @@ Server:
 
 ## Task 3: Re-deploy DockChat on the Swarm Cluster
 
-Now that we have a Swarm cluster, you can now re-deploy DockChat on the Swarm Cluster. 
+Now that we have a Swarm cluster, you can now re-deploy DockChat on the Swarm Cluster.
 
 **Step 1 :** The first step is to point all Docker client commands at the Swarm manager instead of a single local engine. To do so, you need to set `DOCKER_HOST` to point at the Swarm Master's IP and TCP port. Remember that Swarm Master is just a container running and listening on port 3375.
 
@@ -304,7 +304,7 @@ web:
    - "constraint:environment==staging"
 ```
 
-**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CICD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests success deploy to the **production** nodes. 
+**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CICD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests success deploy to the **production** nodes.
 
 `mv docker-compose.yml staging.docker-compose.yml`
 
@@ -385,7 +385,7 @@ You can check out the app by going to http://{node-1-PUBLIC IP}:5000 for the **s
 
 ## Task 4: Scale DockChat with Interlock (Optional)
 
-**DockChat** is becoming very popular and it's getting a lot of traffic! You need to scale it to accomodate the surge in the traffic. Good news is that you can use Compose to scale the **web** service to handle more traffic in the **production** deployment. Scaling a service that does host-port mapping ( **web**'s TCP Port 5000) will not work because you can only have a single service listen on the host's port 5000. Thereofre, you will need to remove host-port mapping to avoid this problem. But then how will you direct traffic to the contaier? Here comes **Interlock** which is an event-driven plugin that can register new containers to a service. 
+**DockChat** is becoming very popular and it's getting a lot of traffic! You need to scale it to accomodate the surge in the traffic. Good news is that you can use Compose to scale the **web** service to handle more traffic in the **production** deployment. Scaling a service that does host-port mapping ( **web**'s TCP Port 5000) will not work because you can only have a single service listen on the host's port 5000. Thereofre, you will need to remove host-port mapping to avoid this problem. But then how will you direct traffic to the contaier? Here comes **Interlock** which is an event-driven plugin that can register new containers to a service.
 
 In this example, you'll use Interlock to dynamically register your **web** service containers to an HAProxy load-balancing service. This way any container that is part of the **web** service can receive traffic directed at that service. Interlock can be easily deployed as a service in Compose!
 
@@ -399,9 +399,9 @@ Stopping dockchatproduction_db_1 ... done
 **Step 2:** Edit the production.docker-compoe.yml to:
 
  * Add Interlock service using the `ehazlett/interlock:latest` image.
- 
+
  * Add an JSON-formatted hostname environment variable inside the **web** service containers. This is needed for Interlock to discover these services (`- INTERLOCK_DATA={"hostname":"dockchat.com","domain":"dockchat.com"} `).
- 
+
  * Remove host-port mapping for the **web** service ( add `"5000"` instead of `"5000:5000"`).
 
 
@@ -473,7 +473,7 @@ mylaptop# vim /etc/hosts
 
 Then go to `dockchat.com` from your browser and test if it works.
 
-**staging** Finally, we need to scale the app, and that can be done easily with the `docker-compose scale` funcationality. 
+**staging** Finally, we need to scale the app, and that can be done easily with the `docker-compose scale` funcationality.
 
 ```
 node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production scale web=10
@@ -510,13 +510,13 @@ dockchatproduction_web_9         python webapp.py                 Up      10.0.1
 
 Now if you go back to your browser, you'll see that with every refresh you're being served from a different **web** container.
 
-Note: you can visit **dockchat.com/haproxy?stats** and log in with `stats/interlock` to view the HAProxy stats for each container. 
+Note: you can visit **dockchat.com/haproxy?stats** and log in with `stats/interlock` to view the HAProxy stats for each container.
 
 ## Conclusion
 
-Congrats! You have completed the tutorial! 
+Congrats! You have completed the tutorial!
 
-In this tutorial you used Docker Compose and Docker Swarm to deploy and scale a multi-service app. 
+In this tutorial you used Docker Compose and Docker Swarm to deploy and scale a multi-service app.
 
 Interested in scaling **DockChat** horizontally across multiple nodes ? You can do that with the new multi-host networking introduced with Docker 1.9. Check out this [this repo](https://github.com/nicolaka/dockchat-multihost).
 
@@ -537,17 +537,3 @@ Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
 * [Docker Swarm ](https://www.docker.com/docker-swarm)
 * [Docker Compose ](https://www.docker.com/docker-compose)
 * [Dockchat Repo](https://github.com/nicolaka/dockchat)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
