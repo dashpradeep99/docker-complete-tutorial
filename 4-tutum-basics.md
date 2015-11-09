@@ -1,6 +1,6 @@
 # Lab 4: Tutum: Provision, Deploy, Manage
 
-> **Difficutly**: Beginner
+> **Difficulty**: Beginner
 
 > **Time**: 30 Minutes
 
