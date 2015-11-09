@@ -1,144 +1,202 @@
-# Lab 8: Automated Builds with Docker Hub and GitHub
+# Lab 8: Automated Image Builds with Docker Hub
 
 > **Difficulty**: Beginner
 >
 > **Time**: 30 minutes
 >
-> **Prerequisites**
-> You will need a GitHub account and a Docker Hub account to complete this lab.
-
-> If you do not have the required accounts, please visit the websites below to create new accounts (both services allow you to create free acounts).
-
-> http://hub.docker.com
->
-> http://www.github.com
-
-> Note: Make sure you confirm your email address for each account you create
+> **Prerequisites**: A GitHub account and a Docker Hub account to complete this lab.
 
 > **Tasks**:
+* [Task 1: Link your Docker Hub account to GitHub](#task-1-link-your-docker-hub-account-to-github)
+* [Task 2: Fork and clone the tutorial repo](#task-2-fork-and-clone-the-tutorial-repo)
+* [Task 3: Create a new automated build](#task-3-create-a-new-automated-build)
+* [Task 4: Manually Trigger a Build](#task-4-manually-trigger-a-build)
+* [Task 5: Review the build results](#task-5-review-the-build-results)
+* [Task 6: Trigger an Automated build](#task-6-trigger-an-automated-build)
 
-> * Link your Docker Hub account to GitHub
-* Fork the tutorial repo
-* Clone the tutorial repo
-* Create a new automated build
-* Manually trigger a build
-* Trigger an automated build
+## What is an Automated Build?
+An automated build is a Docker image build that is trigged by a code change in a GitHub or Bitbucket repository. By linking a remote code repository to a Docker Hub automated build repository, you can build a new Docker image ever time a code change is pushed to your code repository.
 
-#What is an Automated Build?
-An automated build is a Docker build that is kicked off by a change to a linked GitHub respository. By linking your GitHub repo to Docker Hub a new Docker image can be automatically built any time a changed is pushed to that repository.
+## Prerequisites
 
-#Task 1: Link your Docker Hub account to GitHub
-In order for Docker Hub to kick off automated builds, it needs to be linked to your GitHub account.
+While Docker Hub supports linking both GitHub and Bitbucket repositories, this lab uses a GitHub repository. If you don't already have one, make <a href="https://github.com/join" target="_blank">sure you have a GitHub account</a>. A basic account is free.
 
-1. In your web broweser, navigate to http://hub.docker.com and log into Docker Hub with your personal credentials
+This lab clones and later pushes a GitHub repository using the HTTPS protocol. If you do have a GitHub account and that account is using two-factor authentication, you need to <a href="https://github.com/blog/1614-two-factor-authentication#how-does-it-work-for-command-line-git" target="_blank">create a token</a> before attempting the `docker push`. Without the token you cannot authenticate over HTTPS. 
 
-2. Click the down arrow next to your account name in the top right corner and select “Settings”
+## Task 1: Link your Docker Hub account to GitHub
 
-3. From the menu bar at the top click on “Linked Accounts & Services”
+1. Log into Docker Hub.
 
-4. Click “Link GitHub”
+2. Navigate to <a href="https://hub.docker.com/account/authorized-services/" target=_blank>Profile &gt; Settings  &gt; Linked Accounts & Services</a>.
 
-5. Click “Select” under Public & Private (Recommended)"
+3. Click the GitHub service.
 
-6. Enter your personal GitHub credentials when prompted
+    The system prompts you to choose between Public and Private and Limited Access. The Public and Private connection type is required if you want to use the Automated Builds.
 
-	**Note***: If you are already logged into GitHub, you will not need to enter credentials*
+4. Press Select under Public and Private connection type.
 
-#Task 2: Fork the tutorial repo
-The first thing we're going to do is fork a copy of our demo repo into your GitHub account. This allows you make changes to the repo without affecting other users.
+    If you are not logged into GitHub, the system prompts you to enter GitHub credentials before prompting you to grant access. After you grant access to your code repository, the system returns you to Docker Hub and the link is complete.
 
-This repo builds an Nginx web server with a very simple index.html file
+    ![Linked account](images/linked-acct.png)
 
-1. In a new browser tab navigate to http://www.github.com/mikegcoleman/dceu_tutorial8
+## Task 2: Fork and clone the tutorial repo
 
-2. Click the fork button in the upper right hand corner
+Automated builds rely on you having a code repository that contains a Dockerfile and build context. In this step, you fork a copy of a demo repo into your GitHub account. A fork allows you make changes to the repo without affecting other users.  
 
-	You should be redirected into your own version of the tutorial repository. The URL 	should be `https://github.com/<your githhub user name>/dceu_tutorial8`
+After forking the demo repo, you'll clone the code to one of your nodes. The demo repository defines a container for an Nginx web server with a very simple `index.html` file
 
-#Task 3: Clone the tutorial repo
-Now we're going to clone the repo from GitHub onto your local machine so you can easily modify the files later in the lab.
+1. In a browser window navigate to http://www.github.com/mikegcoleman/dceu_tutorial8
 
-1. Open a terminal window and SSH into your Node-3 host with the supplied credentials (the 	username is ubuntu, you should have been provided an SSH key and docker host address)
+2. Click the Fork button in the upper right hand corner of the page.
 
-		$ ssh -i <identity file> <user>@<Node-3 IP Addresst>
+  GitHub redirects you into your own version of the tutorial repository. When it
+  is done, your browser URL should be `https://github.com/<your githhub user
+  name>/dceu_tutorial8`.
+
+3. Open a terminal window and SSH into your `node-3` host.
+
+  		ssh -i <identity file> <user>@<Node-3 IP Addresst>
 
 	For example:
 
-		$ ssh -i user23.pem ubuntu@10.0.0.100
+  		$ ssh -i user23.pem ubuntu@10.0.0.100
 
+4. Inside the terminal window, clone your GitHub repo.
 
-2. Inside the terminal window, clone your GitHub repo
+  ![Clone](images/auto-clone.png)
 
-		$ git clone https://github.com/<github username>/dceu_tutorial8.git
+  If you want to copy and paste the URL, click the clipboard under “HTTPS clone	url” on your GitHub repo web page.
 
-		Cloning into 'dceu_tutorial8'...
-		remote: Counting objects: 7, done.
-		remote: Compressing objects: 100% (5/5), done.
-		remote: Total 7 (delta 0), reused 7 (delta 0), pack-reused 0
-		Unpacking objects: 100% (7/7), done.
-		Checking connectivity... done.
+  	  git clone https://github.com/<github username>/dceu_tutorial8.git
 
-	**Note***: If you want to copy and paste the URL, click the clipboard under “HTTPS clone 	url” on your GitHub repo web page*
+  For example:
 
-#Task 4: Create a new automated build
-Now that we  have our GitHub repos setup, let's create an automated build that fires off any time a change is pushed to our GitHub repository.
+      $ git clone http://www.github.com/moxiegirl/dceu_tutorial8.git
+  		Cloning into 'dceu_tutorial8'...
+  		remote: Counting objects: 7, done.
+  		remote: Compressing objects: 100% (5/5), done.
+  		remote: Total 7 (delta 0), reused 7 (delta 0), pack-reused 0
+  		Unpacking objects: 100% (7/7), done.
+  		Checking connectivity... done.
 
-1. In your web browser, navigate back to http://hub.docker.com and log in if necessary
+5. Take a moment to investigate your new repository.
 
-2. Click “Create” in the upper right hand corner of the window (next to your account name) 	and select “Create Automated Build”
+        $ cd dceu_tutorial8/
+        $ ls
+        Dockerfile  index.html  README.md
 
-3. Make sure your user account is selected under “Users/Organizations”. If it isn’t, just 	click on your user account
+  You'll find a `Dockerfile` and the `index.html` at the root.
 
-4. From the list of repositories on the right, click on “dceu_tutorial8”
+# Task 3: Create a new automated build
 
-	**Note***: If you have a long list of repos, you can use the box above the repo list to 	filter the results*
+Now that you have a repository , let's create an automated build that fires off any time a change is pushed to our GitHub repository.
 
-5.	Type in “DockerCon EU tutorial” for the “Short Description”
+1. In your web browser, navigate back to http://hub.docker.com and log in if you aren't already.
 
-6. Make sure "When Active, new pushes trigger automatic builds" is checked
+2. Select Create > Create Automated Build from Docker Hub.
 
-	**Note***: We’ll leave the rest of the values at their default*
+  The system prompts you with a list of User/Organizations and code repositories.
 
-7. Click “Create”
+2. Select your GitHub account from the User/Organizations list on the left.
 
-	**Note***: It can take a few minutes for your automated build job to be created*
+  The list of repositories change.
 
-#Task 5: Manually Trigger a Build
-Before we try an automated build, we're going to trigger a manual build to make sure everything is working correctly.
+4. Pick the `dceu_tutorial8` project to build.
 
-1. After the autmoated build is created it should automatically load the page for your new 	repository. If it didn't navigate to the Docker Hub home page, and select yoru automated 	build from your list of repositories.
+  If you have a long list of repos, use the filter box above the list to restrict the list. After you select the project, the system displays the Create Automated Build dialog.
 
-2. Click "Build Settings"
+  ![Create dialog](images/create-dialog1.png)
 
-3. Click "Trigger a Build"
+5. Type in `DockerCon EU tutorial` for the Short Description.
 
-4. Click "Build Details"
+7. Click Create.
 
-5. After a bit the "Build Status" should be done
+	It can take a few minutes for your automated build job to be created. When the system is finished, it places you in the detail page for your image repository.
 
-6. Copy the "Docker Pull Command" from the right hand side of the screen
+## Task 4: Manually Trigger a Build
 
-7. Switch back to your terminal window and pull down your newly built image
+Before you trigger an automated build by pushing to your GitHub `dceu_tutorial8` fork, you'll trigger a manual build. Triggering a manual build ensures everything is working correctly.
 
-		$ docker pull <docker hub username>/dceu_tutorial8
+1. Navigate to your automated build page.
 
-		Using default tag: latest
-		latest: Pulling from <docker hub username>/dceu_tutorial8
+  ![Build settings](images/build-settings.png)
 
-		90d7a4de1ef5: Pull complete
-		60b05e04b5b6: Pull complete
-		95d79d93cde4: Pull complete
-		Digest: sha256:eab8584e5b08227637ff7ff77b933e062f3abb031b6e423bbf465d408632eae9
-		Status: Downloaded newer image for <docker hub username>/dceu_tutorial8:latest
+2. Choose Build Settings.
 
-8. Run the webserver to make sure it's executing correctly
+  At the top of the Build Settings dialog is a list of configured builds. You can build from a code branch or by build tag.
 
-		$ docker run -d -p 80:80 --name mywebserver <docker hub username>/dceu_tutorial8
+  ![Build or tag](images/top-build.png)
+
+  Docker builds everything listed whenever a push is made to the code
+  repository. If you specify a particular branch or tag, you can manually build
+  that image by pressing the Trigger. If you use a regular expression syntax
+  (regex) to define your build branch or tag, Docker does not give you the
+  option to manually build.
+
+3. Press the + (plus sign).
+
+4. Choose Type > Branch.
+
+    You can build by a code branch or by an image tag.     You can enter a
+    specific value or use a regex to select multiple values.  To see examples of
+    regex, press the Show More link on the right of the page.
+
+    ![Regexhelp](images/regex-help.png)
+
+5. Enter the `master` for the name of the branch.
+
+6. Leave the Dockerfile location as is.
+
+    Recall the file is in the root of your code repository.
+
+7. Specify `latest` for the Tag Name.
+
+8. Press Save Changes.
+
+  A Trigger button appears by your new build configuration.
+
+9. Press Trigger.
+
+  You can only trigger one build at a time and no more than one every five
+  minutes. If you already have a build pending, or if you recently submitted a
+  build request, Docker ignores new requests.
+
+## Task 5: Review the build results
+The Build Details page shows a log of your build systems:
+
+![Pending](images/build-details.png)
+
+1. Navigate to the Build Details page.
+
+2. Wait until your image build is done.
+
+3. Copy the Docker Pull Command from the right  side of the page.
+
+4. Switch back to your terminal window and pull down your newly built image
+
+		  docker pull <docker hub username>/dceu_tutorial8
+
+    For example
+
+      $ docker pull moxiegirl/dceu_tutorial8
+  		Using default tag: latest
+  		latest: Pulling from moxiegilr/dceu_tutorial8
+  		90d7a4de1ef5: Pull complete
+  		60b05e04b5b6: Pull complete
+  		95d79d93cde4: Pull complete
+  		Digest: sha256:eab8584e5b08227637ff7ff77b933e062f3abb031b6e423bbf465d408632eae9
+  		Status: Downloaded newer image for moxiegirl/dceu_tutorial8:latest
+
+5. Run the image to make sure it's executing correctly
+
+		$ docker run -d -p 80:80 --name mywebserver moxiegirl/dceu_tutorial8
 		b9d2496ba15ebd61d288028ae45f2479267ed4c183920b3080ebe2735eca133e
 
-9. In a new tab in your web browser, navigate to your node-3 IP address. You should see a 	web page with the text "Hola, Barcelona"
+6. In your web browser, navigate to your node-3 IP address.
 
-10. Switch back to your terminal window, stop and remove your running container
+    You should see a	web page with the text "Hola, Barcelona"
+
+7. Switch back to your terminal window, stop and remove your running container
 
 		$ docker stop mywebserver
 		mywebserver
@@ -146,30 +204,43 @@ Before we try an automated build, we're going to trigger a manual build to make 
 		$ docker rm mywebserver
 		mywebserver
 
-11. Remove the web server image
+8. Remove the web server image
 
-		$ docker rmi mywebserver
-		mywebserver
+        docker rm <docker hub username>/dceu_tutorial8
 
-#Task 6: Trigger an Automated build
-Now that we know our build is good, we'll push a change to the GitHub repo, which will trigger an automated build of our Docker image.
+  For example:
 
-1. In your terminal window, make sure you're in the directory for the tutorial repo
+    		$ docker rm moxiegirl/dceu_tutorial8
+        Untagged: moxiegirl/dceu_tutorial8:latest
+        Deleted: b10dfa917433ffa9d607e455f8ff6fb1eef3e05e8155114133a469bc286acf4f
+        Deleted: 30ed62e32a0400ca3eaf690994084145f5ddee6a43907330ba3a56f7f6e8026c
+        Deleted: c1c8f9501c437973ed0aa768a937e4e64143af6c02efb0b0793fa9e4d3005e33
+        Deleted: 914c82c5a678cf9fa73c25d91d30f5e174ac69f6b494890d262cc58f43b304ef
+        Deleted: a96311efcda8ee1e48c0f499d54ad1c2a5387376d43c379837f38562e85a03f2
+        Deleted: edeba58b4ca77142435dfa2b190c0b3922e7bb4bcfb55c786d091baec7a5dbcd
+
+## Task 6: Trigger an Automated build
+
+Now that you've confirmed your image builds manually, you'll push a change to
+the GitHub repo. This change will trigger an automated build of your
+`dceu_tutorial8` Docker image.
+
+1. In your terminal window, change to the `dceu_tutorial8` directory.
 
 		$ cd ~/dceu_tutorial8
 
-2. Change the index.html file for our webserver
+2. Change the `index.html` file for the webserver.
 
 		$ echo 'Docker es el mejor' > index.html
 
-	**Note***: Make sure to use single quotes (')
+	Make sure to use single quotes (').
 
-3. List the content of index.html to make sure it was updated
+3. List the `index.html` file's contents to make sure they were updated.
 
-		$ cat index.html
-	Docker es el mejor
+    		$ cat index.html
+        Docker es el mejor
 
-4. Add the updated file to our GitHub repo
+4. Add the updated file to your GitHub repo
 
 		$ git add .
 
@@ -179,9 +250,12 @@ Now that we know our build is good, we'll push a change to the GitHub repo, whic
 		[master 72e748d] updated index.html
 	 	1 file changed, 1 insertion(+), 1 deletion(-)
 
-6. Push our changes to the GitHub repo. This will trigger the automated build.
+6. Push you changes to the GitHub repo.
 
 		$ git push origin master
+
+  The system prompts you for your GitHub username and password.
+
 		Counting objects: 3, done.
 		Delta compression using up to 8 threads.
 		Compressing objects: 100% (2/2), done.
@@ -189,19 +263,18 @@ Now that we know our build is good, we'll push a change to the GitHub repo, whic
 		Total 3 (delta 1), reused 0 (delta 0)
 		To https://github.com/<github username>/dceu_tutorial8.git
 
-7. In your web browser navigate back to your demo repo on Docker Hub
+7. In your web browser, navigate back to Docker Hub.
 
-8. Click "Build details" and confirm that there is a new build
+8. Go to your `dceu_tutorial8` Build Details page and confirm that there is a new build.
 
-9. Copy the "Docker Pull Command" from the right hand side of the screen
+9. Copy the "Docker Pull Command" from the page's right hand side.
 
-10. Switch back to your terminal window and pull down your newly built image
+10. Switch back to your terminal window and pull down your newly built image.
 
 		$ docker pull <docker hub username>/dceu_tutorial8
 
 		Using default tag: latest
 		latest: Pulling from <docker hub username>/dceu_tutorial8
-
 		90d7a4de1ef5: Pull complete
 		60b05e04b5b6: Pull complete
 		95d79d93cde4: Pull complete
@@ -213,11 +286,12 @@ Now that we know our build is good, we'll push a change to the GitHub repo, whic
 		$ docker run -d -p 80:80 --name mywebserver <docker hub username>/dceu_tutorial8
 		b9d2496ba15ebd61d288028ae45f2479267ed4c183920b3080ebe2735eca133e
 
-12. In a new tab in your web browser, navigate to your node-3 IP address. You should see a 	 web page with the text "Docker es el mejor"
+12. Now, in your web browser navigate to your node-3 IP address.
 
-#Cleaning Up
+    You should see a  web page with the text "Docker es el mejor"
 
-### Remove the webserver container
+## Cleaning Up
+
 1. Switch back to your terminal window, stop and remove your running container
 
 		$ docker stop mywebserver
@@ -226,32 +300,36 @@ Now that we know our build is good, we'll push a change to the GitHub repo, whic
 		$ docker rm mywebserver
 		mywebserver
 
-### Remove the webserver images
 2. In your terminal window, remove the web server image
 
 		$ docker rmi mywebserver
 		mywebserver
 
-### Remove the automated build (Optional)
-1. In your webserver navigate to your tutorial repo on Docker Hub
+3. In your web browser, navigate to your `dceu_tutorial8` repository on Docker Hub
 
-2. Click "Settings" (NOT "Build Settings")
+4. Click Settings (**not** Build Settings).
 
-3. Click "Delete"
+5. Press Delete.
 
-4. Enter the repository name `dceu_tutorial8`
+4. Enter the repository name `dceu_tutorial8` when prompted.
 
-5. Click "Delete"
+6. Press Delete.
 
-### Remove the repo from GitHub (Optional)
-1. In your webserver navigate to the demo GitHub repo
+7. In your browser, navigate \GitHub `dceu_tutorial8` repo.
 
 		https://github.com/<github username>/dceu_tutorial8
 
-2. On the right hand side of the web page click "Settings"
+8. On the right hand side of the web page click Settings.
 
-3. Scroll down to the "Danger Zone" and click "Delete this Repository"
+9. Scroll down to the Danger Zone and click Delete this Repository.
 
-4. Enter the name of the respository
+10. Enter the repository name.
 
 		<githug username>/dceu_tutorial8
+
+11. Press I understand the consequences, delete this repository.
+
+
+## Related information
+
+[Docker Hub](http://docs.docker.com/docker-hub/) documentation.
