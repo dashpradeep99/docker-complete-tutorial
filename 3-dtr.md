@@ -1,5 +1,5 @@
 
-# Tutorial 3 : Docker Trusted Registry
+# Lab 3 : Docker Trusted Registry
 
 > **Difficulty**: Intermediate
 
@@ -8,13 +8,13 @@
 > **Prequisites**: 2 Nodes with Docker CS 1.9 Engine
 
 > **Tasks**:
-> 
+>
 > * Step1: Install DTR
-> * Step2: Setting up DTR 
+> * Step2: Setting up DTR
 > * Step3: Creating Ogranizations, Teams, and Members
 > * Step4: Pushing and Pulling DTR Images
 > * Step5: Storage and Logs
-> * Step6: Authentication and Security 
+> * Step6: Authentication and Security
 
 
 ## Prerequisites
@@ -28,12 +28,12 @@
 
 # Getting Started with Docker Trusted Registry(DTR)
 
-**Background**: 
+**Background**:
 
 Docker Trusted Registry allows you to store and manage your Docker images on-premise or in your virtual private or public cloud to support security or regulatory compliance requirements in keeping data and applications in your infrastructure. Simply install and configure Docker Trusted Registry through the web admin console, integrate to your preferred storage, authenticate to your Active Directory / LDAP services and integrate into key software development workflows like Continuous Integration (CI) and Continuous Delivery (CD).
 
 With DTR 1.4 you have new awesome features like:
-	
+
 * Repository Search
 * Image Provenance (Integration with Docker Content Trust)
 * Organization, Teams, and Members
@@ -65,7 +65,7 @@ Now that DTR is up and running, you may start configuring it. We will follow two
 I. **Authentication Settings**:
 
 
-* Using your favorite web browser, go to your Node 0 domain name using HTTPS. e.g `https://ec2-xxxxxxxx.<region>.compute.amazonaws.com` 
+* Using your favorite web browser, go to your Node 0 domain name using HTTPS. e.g `https://ec2-xxxxxxxx.<region>.compute.amazonaws.com`
 * Proceed insecurely.
 * On DTR landing page, go to **Settings** >> **Auth**, and ensure you enable **Managed Authentication**.
 * Create a username and password with **admin** rights(by selecting the ‘admin’ option on the right) and click **Save**
@@ -94,7 +94,7 @@ Navigate to '**General**' tab and provide the node's pulic DNS name as "**Domain
 
 One of the newly added features of Docker Trusted Registry is the ability to create Organizations,Teams, and Members for easier management, increased security, better isolation, and enhanced auditing. You have the ability now to group multiple members with different priveledges into a team and associate that team to an organization.
 
-I. **Members and Roles** 
+I. **Members and Roles**
 
 Let's start by creating three users : **Gordon, Orca, and Moby**. All three members have global roles that would provide read (**Moby**), read-write (**Orca**), or admin(**Gordon**) access to **ALL** repos in DTR regardless of which team or organizations they belong to. If you need to give certain users access to pull (read), pull+push(read+write), or pull+push+create(admin) specific repos, then you need to make sure that these users do not have global roles ( **No Global Role** option when selecting their role).
 
@@ -105,12 +105,12 @@ Navigate to **Settings** >> **Auth** and add the three users as follows:
 
 II. **Organizations and Teams**
 
-Go to **Organizations** tab and click **New Organization**. Name the organization '**engineering**', and click **Save**. 
+Go to **Organizations** tab and click **New Organization**. Name the organization '**engineering**', and click **Save**.
 
 ![](images/dtr-step3-1.png)
 
 
-Click on the newly created '**engineering**' organization, and click on the **Teams** tab and click **New Team**. Name the team '**core**' and click **Create Team**. Repeat the process again to create the **frontend** team. 
+Click on the newly created '**engineering**' organization, and click on the **Teams** tab and click **New Team**. Name the team '**core**' and click **Create Team**. Repeat the process again to create the **frontend** team.
 
 ![](images/dtr-step3-3.png)
 
@@ -125,11 +125,11 @@ Try to logout from the UI and log back in as Moby or Orca and observe what infor
 
 III. **Repositories**
 
-Repositories belong to the organization's namespace e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}**. You can create a new repository only if you have '**admin**' rights. You can create a new repository by either going to the **Repository**  tab or **Ogranizations >> {Organization Name}**. You can associate a repo to multiple teams as long as the teams are part of that organization. 
+Repositories belong to the organization's namespace e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}**. You can create a new repository only if you have '**admin**' rights. You can create a new repository by either going to the **Repository**  tab or **Ogranizations >> {Organization Name}**. You can associate a repo to multiple teams as long as the teams are part of that organization.
 
 Go back to teams, and click on **core** team, and click **Add Repository**. Go through creating the repo and call it '**barca**'. Make sure it's listed as **Private**. All members of an organization can see and perform pull/push (depending on their role) on any private repo that belongs to that organization even if it belongs to a different team within that organization. **Public** repos are exactly what they sound like; they can be pulled by anyone without any authentication. The drop-down permission options indicate what non-global users are authorized to do with this repo. Select '**Read-Only**', this way all members that do not have global roles but are part of the '**core**' team only can pull this repo.
 
-Create another private repo **madrid** for the **core** team. 
+Create another private repo **madrid** for the **core** team.
 
 ![](images/dtr-step3-6.png)
 
@@ -163,11 +163,11 @@ latest: Pulling from library/busybox
 Digest: sha256:87fcdf79b696560b61905297f3be7759e01130a4befdfe2cc9ece9234bbbab6f
 Status: Image is up to date for busybox:latest
  ```
- 
+
  In order to push an image to DTR, we need to name and tag it approprately following this format : **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}**
- 
+
  `docker tag busybox:latest $DTR/engineering/barca:lona`
- 
+
 Now, we can push to DTR:
 
 ```
@@ -217,9 +217,9 @@ DTR provides a streaming log for all containers that make up DTR ( auth , load-b
 
 ## Conclusion
 
-Congrats! You have completed the tutorial! 
+Congrats! You have completed the tutorial!
 
-In this tutorial we went over the new Docker Trusted Registry features introduced in 1.4. We created a organizations with teams and members. We then created repos and assigned them to teams. We tested logging in and pulling/pushing to DTR. 
+In this tutorial we went over the new Docker Trusted Registry features introduced in 1.4. We created a organizations with teams and members. We then created repos and assigned them to teams. We tested logging in and pulling/pushing to DTR.
 
 
 ## Cleanup
@@ -237,4 +237,3 @@ Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
 ## Related information
 
 * [Docker Multi-Host Networking overview](http://blog.docker.com/2015/11/docker-multi-host-networking-ga/)
-
