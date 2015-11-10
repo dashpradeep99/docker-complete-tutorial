@@ -153,16 +153,18 @@ Digest: sha256:f3fefef65b040546adab73e2e6a624376373b0f12e83a5e5a921d9cd9059953c
 Status: Image is up to date for kizbitz/dctrust:latest
 ```
 
-## Task 5: Cleanup
+## Conclusion
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
+
+## Cleanup
 
 To clean-up your environment, remember to:
 
 - Delete the test repository created on your Hub account: https://hub.docker.com/r/(username)/dctrust/
-- Unset the `DOCKER_CONTENT_TRUST` environment variable: `unset DOCKER_CONTENT_TRUST`
+- Execute: `source /home/ubuntu/cleanup.sh`
 
-## Further Reading
+## Related information
 
 For more in-depth examples and advanced concepts refer to the official documentation:
 
