@@ -1,6 +1,6 @@
 # Set up your system for the labs
 
-The Docker hands0n labs require that you connect to four AWS EC2 instances on their own subnetwork. Docker has networked and launched the instances for you.  All you need to do is set up your system to connect to them during the course.
+The Docker Hands-on labs require that you connect to four AWS EC2 instances on their own subnetwork. Docker has networked and launched the instances for you. This page explains how to set up your system to connect to these instances for the labs.
 
 When you registered for class, you received an email. Attached to the email you'll an `instances.txt` file and a `.key` PEM file. The `instances.txt` file provides connection information for 4 EC2 instances. The `.key` file gives you the credentials you need to connect them.
 
