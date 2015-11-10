@@ -33,7 +33,7 @@ Before starting the lab, you need to set up your connection key.
 
 ## (Optional) Get a Docker Hub account
 
-A few labs require a Docker Hub account to complete them. Docker Hub accounts are completely free. To create one:
+Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them. Docker Hub accounts are completely free. To create one:
 
 1. <a href="http://hub.docker.com" targe="_blank">Open your browser to Docker Hub</a>.
 
