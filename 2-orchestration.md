@@ -8,7 +8,7 @@
 > **Prequisites**: 3 Nodes with Docker CS 1.9 Engine
 
 > **Tasks**:
->
+>* [Prerequisites](#prerequisites)
 > * Task 1: Deploy a Multiservice Application (`DockChat`) with Compose
 > * Task 2: Set Up a Docker Swarm cluster
 > * Task 3: Re-deploy DockChat on the Swarm Cluster

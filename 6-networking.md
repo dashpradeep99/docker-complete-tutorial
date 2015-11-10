@@ -6,14 +6,14 @@
 > **Time**: 30-40 mins
 
 > **Tasks**:
->
-> * Task 1: Set up a key-value store
-> * Task 2: Configure the engines to use key-value store
-> * Task 3: Create the "RED" overlay network
-> * Task 4: Run containers on the RED network
-> * Task 5: Create the "BLUE" overlay network
-> * Task 6: Cross-Network Communication
-> * Task 7: Reconnecting Containers
+- [Prerequisites](#prerequisites)
+- [Task 1: Set up a key-value store](#task-1-set-up-a-key-value-store)
+- [Task 2: Configure the engines to use key-value store](#task-2-configure-the-engines-to-use-key-value-store)
+- [Task 3: Create the "RED" overlay Network](#task-3-create-the-red-overlay-network)
+- [Task 4: Run Containers on the RED network](#task-4-run-containers-on-the-red-network)
+- [Task 5: Create the "BLUE" Overlay Network](#task-5-create-the-blue-overlay-network)
+- [Task 6: Cross-Network Communication](#task-6-cross-network-communication)
+- [Task 7: Reconnecting Containers](#task-7-reconnecting-containers)
 
 # Get started with multi-host networking
 
@@ -325,6 +325,15 @@ In this tutorial we went over the new Docker Networking features introduced in 1
 <a href="http://ctt.ec/44gMe" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
+
+
+## Cleanup
+
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up,
+
+1. Log into each EC2 instance you used and run the following:
+
+      $ source /home/ubuntu/cleanup.sh
 
 
 ## Related information

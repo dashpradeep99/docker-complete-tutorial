@@ -168,7 +168,6 @@ At this point, you have trust enabled.
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
 
-
 ### Share on Twitter!
 
 <p>
@@ -183,7 +182,6 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 ```bash
 $ source /home/ubuntu/cleanup.sh
 ```
-
 
 ## Related information
 

@@ -6,7 +6,7 @@
 > **Time**: 20 mins
 
 > **Tasks**:
-> 
+>- [Prerequisites](#prerequisites)
 - [Task 1: Verify your environment](#task-1-verify-your-environment)
 - [Task 2: Learn about images](#task-2-learn-about-images)
 - [Task 3: Building Images from Dockerfile](#task-3-building-images-from-dockerfile)
@@ -375,7 +375,7 @@ Once you  have an account, you can login. Login is required to push images to Hu
 5. Go to [hub.docker.com](https://hub.docker.com) after a successful push to see your new image.
 
   You can simply now pull that image from any other Docker Engine using: `docker pull <YOUR_DOCKER_HUB_USERNAME>/myimage:v1`
- 
+
 ## Conclusion
 
 Congratulations, You have successfully completed this lab! You learned how to work with Docker, build images, and use Docker Hub to share them!
@@ -387,9 +387,14 @@ Congratulations, You have successfully completed this lab! You learned how to wo
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
+## Cleanup
+
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up,
+
+1. Log into each EC2 instance you used and run the following:
+
+      $ source /home/ubuntu/cleanup.sh
 
 ## Related information
 
-* [Docker Docs ](https://docs.docker.com/engine/userguide/)
-
-
+[Docker Docs ](https://docs.docker.com/engine/userguide/)
