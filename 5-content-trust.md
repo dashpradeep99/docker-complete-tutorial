@@ -4,13 +4,6 @@
 
 > **Time**: 15 mins
 
-> **Prequisites**:
->
-* You will be using **node-0**
-* An existing Docker Hub account
-* SSH onto the provided `<username>-node-0` instance in AWS
-* Logged into Docker Hub with the Docker client
-
 > **Tasks**:
 >
 - Introductory Overview
@@ -37,6 +30,12 @@ Content trust is currently only available for users of the public Docker Hub. It
 is currently not available for the Docker Trusted Registry or for private
 registries.
 
+## Prequisites
+
+* You will be using **node-0**
+* An existing Docker Hub account
+* SSH onto the provided `<username>-node-0` instance in AWS
+* Logged into Docker Hub with the Docker client
 
 ## Task 1: Create a new Docker Hub repository
 
