@@ -4,10 +4,10 @@
 >
 > **Time**: 30 minutes
 >
-> **Prerequisites**: A GitHub account and a Docker Hub account to complete this lab.
-
 > **Tasks**:
-* [Task 1: Link your Docker Hub account to GitHub](#task-1-link-your-docker-hub-account-to-github)
+> 
+> 
+>* [Task 1: Link your Docker Hub account to GitHub](#task-1-link-your-docker-hub-account-to-github)
 * [Task 2: Fork and clone the tutorial repo](#task-2-fork-and-clone-the-tutorial-repo)
 * [Task 3: Create a new automated build](#task-3-create-a-new-automated-build)
 * [Task 4: Manually Trigger a Build](#task-4-manually-trigger-a-build)
