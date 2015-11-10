@@ -10,6 +10,9 @@ When you registered for labs, you received an email. Attached to the email you'l
 
 The `instances.txt` file provides connection information for 4 EC2 instances. The `.key` file gives you the credentials you need to connect them.
 
+**WARNING**: Your EC2 instances are good for an entire conference day. At the end of the conference day, everyone's instances EC2 are deleted. If you want to continue your lab experience on another day, you'll need to register again on the next conference day.
+
+
 ## Check your connection to your instances
 
 Before starting the lab, you need to set up your connection key.
