@@ -60,6 +60,10 @@ without a graphical user interface or other features of the Hub. Or, you can
 purchase our enterprise-grade Docker Trusted Registry which provides
 feature-rich graphical tools in addition to the Docker Registry technology.
 
+## Prerequisite
+
+Make sure you have already [created a Docker Hub account](0-setup.md) before beginning this lab.
+
 ## Task 1: Verify your environment
 
 Docker Engine should be installed and running in your machine. To verify that Docker is running, do the following:
