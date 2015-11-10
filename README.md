@@ -4,7 +4,7 @@ Welcome to DockerCon! This repo contains a series of hands-on labs to help you g
 
 If you are at DockerCon EU 2015, you must register before beginning the labs. When you register, Docker Labs provisions the Amazon EC2 instances with the software you need for each lab. You'll receive an email with connection information. Begin by following this procedure here:
 
-** [Set up your system for the labs](0-setup.md)**
+**[Set up your system for the labs](0-setup.md)**
 
 Then, go onto to complete the labs.
 
