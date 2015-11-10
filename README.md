@@ -49,7 +49,7 @@ In this lab, you'll examine how Docker Notary feature works. You'll be creating 
 In this lab, you'll examine how the new Docker multi-host networking works. You'll create networks that spread across multiple Docker engines. You'll also learn how to create key/value stores to distribute network data across the hosts, and how to allow multi-host containers to communicate without host port binding.
 
 
-* [Understanding Docker Volumes](7-volumes.md)
+## [Understanding Docker Volumes](7-volumes.md)
 **Difficulty**: Intermediate
 
 In this lab, you'll learn the fundamentals of using Docker data volumes. You'll look at the various methods for attaching data volumes, and how they are represented in the host file system. You'll also look at how to use host-based data volumes to hot mount content into a container, and how to use host-only data containers to allow for sharing of common data between multiple containers.
