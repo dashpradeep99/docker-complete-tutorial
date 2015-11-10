@@ -5,16 +5,14 @@
 
 > **Time**: 20 mins
 
-> **Prequisites**: A machine with Docker Engine installed. Already done on each instance.
-
 > **Tasks**:
+> 
 - [Task 1: Verify your environment](#task-1-verify-your-environment)
 - [Task 2: Learn about images](#task-2-learn-about-images)
 - [Task 3: Building Images from Dockerfile](#task-3-building-images-from-dockerfile)
 - [Task 4: Running Containers](#task-4-running-containers)
 - [Task 5: Maintaining Containers](#task-5-maintaining-containers)
 - [Task 6: Share your image with Docker Hub](#task-6-share-your-image-with-docker-hub)
-
 
 ## What is Docker?
 
@@ -62,7 +60,7 @@ feature-rich graphical tools in addition to the Docker Registry technology.
 
 ## Prerequisite
 
-Make sure you have already [created a Docker Hub account](0-setup.md) before beginning this lab.
+Make sure you have already [created a Docker Hub account](0-setup.md) before beginning this lab. You will be using `node-0` for this lab.
 
 ## Task 1: Verify your environment
 
@@ -377,3 +375,13 @@ Once you  have an account, you can login. Login is required to push images to Hu
 5. Go to [hub.docker.com](https://hub.docker.com) after a successful push to see your new image.
 
   You can simply now pull that image from any other Docker Engine using: `docker pull <YOUR_DOCKER_HUB_USERNAME>/myimage:v1`
+ 
+## Conclusion
+
+Congratulations, You have successfully completed this lab! 
+
+## Related information
+
+* [Docker Docs ](https://docs.docker.com/engine/userguide/)
+
+

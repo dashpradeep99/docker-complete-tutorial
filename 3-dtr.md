@@ -5,8 +5,6 @@
 
 > **Time**: 20-30 mins
 
-> **Prequisites**: 2 Nodes with Docker CS 1.9 Engine
-
 > **Tasks**:
 >
 > * Step1: Install DTR
@@ -15,15 +13,6 @@
 > * Step4: Pushing and Pulling DTR Images
 > * Step5: Storage and Logs
 > * Step6: Authentication and Security
-
-
-## Prerequisites
-
-* You will use all two nodes: node-0 and node-1
-* Ensure that no containers are running on these containers.
-* Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
-* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
-* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 
 # Getting Started with Docker Trusted Registry(DTR)
@@ -43,7 +32,13 @@ With DTR 1.4 you have new awesome features like:
 * New Drivers Support (Openstack Swift)
 
 
+## Prerequisites
 
+* You will use all two nodes: node-0 and node-1
+* Ensure that no containers are running on these containers.
+* Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
+* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 ## Step 1: Install DTR
 
@@ -53,7 +48,6 @@ node-0#sudo bash -c "$(sudo docker run docker/trusted-registry install)"
 ```
 
 Check if all DTR containers are up using `docker ps`.
-
 
 ## Step 2: Setting up DTR
 
@@ -233,7 +227,6 @@ docker rm -f $(docker ps -aq)
 Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
 
 
+## Related Information
 
-## Related information
-
-* [Docker Multi-Host Networking overview](http://blog.docker.com/2015/11/docker-multi-host-networking-ga/)
+* [Docker Trusted Registry](https://docs.docker.com/docker-trusted-registry/)

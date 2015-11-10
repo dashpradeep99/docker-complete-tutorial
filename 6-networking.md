@@ -5,8 +5,6 @@
 
 > **Time**: 30-40 mins
 
-> **Prequisites**: 3 Nodes with Engine Installed
-
 > **Tasks**:
 >
 > * Task 1: Set up a key-value store
@@ -320,19 +318,6 @@ node-2:~# docker exec container2 ifconfig
 Congrats! You have completed the tutorial!
 
 In this tutorial we went over the new Docker Networking features introduced in 1.9. We created a two multi-host overlay network that spanned multiple Docker hosts. We also observed how inter-container networking works in different scenarios.
-
-
-## Cleanup
-
-If you are doing additional labs, please make sure to cleanup the current lab's containers on all nodes as follows:
-
-```
-docker rm -f $(docker ps -aq)
-```
-
-Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
-
-
 
 ## Related information
 
