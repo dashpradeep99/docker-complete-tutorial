@@ -4,7 +4,7 @@ The Docker Hands-on labs require that you connect to four AWS EC2 instances on t
 
 When you registered for labs, you received an email. Attached to the email you'll find:
 
-* an `instances.txt` file 
+* an `instances.txt` file
 * a `.key` PEM file (Linux and Mac)
 * a `.ppk` file (Windows)
 
@@ -23,6 +23,8 @@ Before starting the lab, you need to set up your connection key.
 4. Follow the AWS instructions for your operating system to setup the key.
 
 	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Windows with PuTTy</a>
+		*NOTE*: You can skip the step "Converting Your Private Key Using PuTTYgen". The PPK file attached to your email is in the right format for PuTTy.
+	&nbsp;
 	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html" target="_blank">Connecting from Linux or Mac with SSH</a>
 
 5. Connect to each instance in turn to confirm your credentials.
@@ -30,7 +32,7 @@ Before starting the lab, you need to set up your connection key.
 
 ## (Optional) Get a Docker Hub account
 
-A few labs require a Docker Hub to complete them. Docker Hub accounts are completely free. To create one.
+A few labs require a Docker Hub account to complete them. Docker Hub accounts are completely free. To create one:
 
 1. <a href="http://hub.docker.com" targe="_blank">Open your browser to Docker Hub</a>.
 
