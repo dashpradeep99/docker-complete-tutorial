@@ -4,12 +4,6 @@
 
 > **Time**: 15 mins
 
-> **Prequisites**:
->
-* An existing Docker Hub account
-* SSH onto the provided `<username>-node-0` instance in AWS
-* Logged into Docker Hub with the Docker client
-
 > **Tasks**:
 >
 - Introductory Overview
@@ -36,6 +30,12 @@ Content trust is currently only available for users of the public Docker Hub. It
 is currently not available for the Docker Trusted Registry or for private
 registries.
 
+## Prequisites
+
+* You will be using **node-0**
+* An existing Docker Hub account
+* SSH onto the provided `<username>-node-0` instance in AWS
+* Logged into Docker Hub with the Docker client
 
 ## Task 1: Create a new Docker Hub repository
 
@@ -153,16 +153,18 @@ Digest: sha256:f3fefef65b040546adab73e2e6a624376373b0f12e83a5e5a921d9cd9059953c
 Status: Image is up to date for kizbitz/dctrust:latest
 ```
 
-## Task 5: Cleanup
+## Conclusion
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
+
+## Cleanup
 
 To clean-up your environment, remember to:
 
 - Delete the test repository created on your Hub account: https://hub.docker.com/r/(username)/dctrust/
-- Unset the `DOCKER_CONTENT_TRUST` environment variable: `unset DOCKER_CONTENT_TRUST`
+- Execute: `source /home/ubuntu/cleanup.sh`
 
-## Further Reading
+## Related information
 
 For more in-depth examples and advanced concepts refer to the official documentation:
 

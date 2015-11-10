@@ -3,8 +3,6 @@
 
 > **Time**: 30 mins
 
-> **Prerequisites**: A machine with Docker Engine installed
-
 > **Tasks**
 
 > * Implement a Docker volume via the Docker client
@@ -24,6 +22,9 @@ A data volume is a specially designated directory within one or more containers 
 * Data volumes persist even if the container itself is deleted.
 
 Data volumes are designed to persist data, independent of the container’s lifecycle. Docker therefore never automatically deletes volumes when you remove a container, nor will it "garbage collect" volumes that are no longer referenced by a container.
+
+## Prerequisites
+* For this lab you will be using **Node 0** ensure no containers are running on that node
 
 ## Task 1: Implementing a volume via the Docker client
 In this task we're going to create a new container, and then add a file to it.
@@ -162,3 +163,18 @@ In our example we’ll simply create a new file from one container in a director
 In this lab we learned the basics of Docker volumes. We created a new Docker volume using the Docker client, and then explored the host file system to understand the relationship between the local file system and the mounted volume in the container. We then deleted our volume, and mapped a new volume to a specific directory on the host file system. Finally we looked at how you can share a volume between multiple containers.
 
 Feel free to continue exploring Docker volumes.
+
+## Cleanup
+1. Remove any containers
+
+		$ docker rm -f $(docker ps -aq)
+		
+2. Remove any existing images
+
+		$ docker rmi -f $(docker images -q)
+		
+3. Remove any existing volumes
+
+		$ docker volume rm $(docker volume ls -q)
+
+	

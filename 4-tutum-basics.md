@@ -4,8 +4,6 @@
 
 > **Time**: 30 Minutes
 
-> **Prerequisites**: Docker Hub account (Instructions to signup for a free account below), Web Browser
->
 > **Tasks**
 
 >	- [Task 1: Attaching a New Node](#task-1-attaching-a-new-node)
@@ -25,7 +23,8 @@ Tutum is a cloud-based system for managing Docker infrastructure that allows use
 
 ## Prerequisites
 
-To complete this lab you will need a Docker Hub account. If you have an existing Docker Hub account, please proceed to “Attaching a new node” below
+* To complete this lab you will need a Docker Hub account. If you have an existing Docker Hub account, please proceed to “Attaching a new node” below
+* For this lab you'll be using **Node-2**, be sure there are not containers running on that node
 
 
 ## Task 1: Attaching a New Node
@@ -66,7 +65,7 @@ lab.
 	> **Note**: If you get a warning that your private key is unprotected issue
 	> the following command:
 
-	>  `chmod 700 <username.key>	`
+	>  `chmod 400 <username.key>	`
 
 	> You may also get a warning about an RSA fingerprint. If you do, enter `yes`.
 
@@ -211,3 +210,19 @@ A stack is a collection of services that make up an application. Just like servi
 In this lab you learned how to create a new cluster of Docker Hosts on Amazon Web Services. You then deployed your first service, and then finally you deployed an application stack. Feel free to continue to explore Tutum.
 
 Try pulling down an Nginx image down from Docker hub, and launching a website (Hint: You’ll need to be sure to map the ports correctly). If you get stuck, ask a moderator or one of your peers for assistance.
+
+##Cleaning Up
+1. Delete you stack: Click stacks in the top menu bar, and select "Lab". Click terminate and OK
+
+2. Delete your service: Click services in the top menu bar, and select the hello-world service. Click the trash can icon to the right and OK. 
+
+
+3. Select the node you deployed earlier and click `remove` to the right
+
+4. SSH into **node-2**
+
+5. Remove the tutum agent
+
+		$ sudo apt-get remove tutum-agent
+		
+		
