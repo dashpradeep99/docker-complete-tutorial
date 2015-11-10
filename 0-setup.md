@@ -23,8 +23,8 @@ Before starting the lab, you need to set up your connection key.
 4. Follow the AWS instructions for your operating system to setup the key.
 
 	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Windows with PuTTy</a>
-	
-		*NOTE*: You can skip the step "Converting Your Private Key Using PuTTYgen". The PPK file attached to your email is in the right format for PuTTy.
+
+		**NOTE**: You can skip the step *"Converting Your Private Key Using PuTTYgen*."" The PPK file attached to your email is in the right format for PuTTy.
 	&nbsp;
 	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html" target="_blank">Connecting from Linux or Mac with SSH</a>
 
