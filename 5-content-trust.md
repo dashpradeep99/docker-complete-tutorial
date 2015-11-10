@@ -6,6 +6,7 @@
 
 > **Prequisites**:
 >
+* You will be using **node-0**
 * An existing Docker Hub account
 * SSH onto the provided `<username>-node-0` instance in AWS
 * Logged into Docker Hub with the Docker client
