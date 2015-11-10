@@ -30,6 +30,8 @@ Before starting the lab, you need to set up your connection key.
 
 5. Connect to each instance in turn to confirm your credentials.
 
+		You can't log into Docker Hub until you first confirm your credentials.
+
 
 ## (Optional) Get a Docker Hub account
 
