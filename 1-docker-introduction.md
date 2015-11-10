@@ -5,7 +5,7 @@
 
 > **Time**: 20 mins
 
-> **Prequisites**: A machine with Docker Engine installed.
+> **Prequisites**: A machine with Docker Engine installed. Already done on each instance.
 
 > **Tasks**:
 - [Task 1: Verify your environment](#task-1-verify-your-environment)
