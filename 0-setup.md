@@ -2,7 +2,13 @@
 
 The Docker Hands-on labs require that you connect to four AWS EC2 instances on their own subnetwork. Docker has networked and launched the instances for you. This page explains how to set up your system to connect to these instances for the labs.
 
-When you registered for labs, you received an email. Attached to the email you'll an `instances.txt` file and a `.key` PEM file. The `instances.txt` file provides connection information for 4 EC2 instances. The `.key` file gives you the credentials you need to connect them.
+When you registered for labs, you received an email. Attached to the email you'll find:
+
+* an `instances.txt` file 
+* a `.key` PEM file (Linux and Mac)
+* a `.ppk` file (Windows)
+
+The `instances.txt` file provides connection information for 4 EC2 instances. The `.key` file gives you the credentials you need to connect them.
 
 ## Check your connection to your instances
 
