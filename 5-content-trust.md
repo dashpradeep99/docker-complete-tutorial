@@ -172,7 +172,7 @@ At this point you have successfully enabled content trust on your Docker client,
 ### Share on Twitter!
 
 <p>
-<a href="http://ctt.ec/hXba1" target=“_blank”>
+<a href="http://ctt.ec/R3e56" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
