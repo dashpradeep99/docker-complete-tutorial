@@ -170,7 +170,8 @@ At this point you have successfully enabled content trust on your Docker client,
 
 
 ### Share on Twitter!
-[![Tweet](http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png)](http://ctt.ec/hXba1)
+
+[<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" target="_blank">](http://ctt.ec/hXba1)
 
 ## Clean up
 
