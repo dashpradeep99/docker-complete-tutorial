@@ -211,6 +211,13 @@ In this lab you learned how to create a new cluster of Docker Hosts on Amazon We
 
 Try pulling down an Nginx image down from Docker hub, and launching a website (Hint: You’ll need to be sure to map the ports correctly). If you get stuck, ask a moderator or one of your peers for assistance.
 
+### Share on Twitter!
+
+<p>
+<a href="http://ctt.ec/ZW0wL" target=“_blank”>
+<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
+</p>
+
 ##Cleaning Up
 1. Delete you stack: Click stacks in the top menu bar, and select "Lab". Click terminate and OK
 
