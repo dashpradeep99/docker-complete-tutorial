@@ -292,7 +292,7 @@ the GitHub repo. This change will trigger an automated build of your
     
 ## Conclusion
 
-Congrats !! you have completed this lab and learned how to integrate Github and Dockerhub to automate your image builds!
+Congrats !! you have completed this lab and learned how to integrate Github and DockerHub to automate your image builds!
 
 ### Share on Twitter!
 
