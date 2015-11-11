@@ -215,16 +215,21 @@ Congrats! You have completed the tutorial!
 
 In this tutorial we went over the new Docker Trusted Registry features introduced in 1.4. We created a organizations with teams and members. We then created repos and assigned them to teams. We tested logging in and pulling/pushing to DTR.
 
+### Share on Twitter!
 
-## Cleanup
+<p>
+<a href="http://ctt.ec/hXba1" target=“_blank”>
+<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
+</p>
 
-If you are doing additional labs, please make sure to cleanup the current lab's containers on all nodes as follows:
 
+## Clean up
+
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
+
+```bash
+$ source /home/ubuntu/cleanup.sh
 ```
-docker rm -f $(docker ps -aq)
-```
-
-Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
 
 
 ## Related Information
