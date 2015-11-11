@@ -520,17 +520,14 @@ In this tutorial you used Docker Compose and Docker Swarm to deploy and scale a 
 
 Interested in scaling **DockChat** horizontally across multiple nodes ? You can do that with the new multi-host networking introduced with Docker 1.9. Check out this [this repo](https://github.com/nicolaka/dockchat-multihost).
 
-## Cleanup
 
-If you are doing additional labs, please make sure to cleanup the current lab's containers on all nodes as follows:
+## Clean up
 
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
+
+```bash
+$ source /home/ubuntu/cleanup.sh
 ```
-docker rm -f $(docker ps -aq)
-```
-
-Additonally, remove the `DOCKER_OPTS` settings from `/etc/default/docker`.
-
-
 
 ## Related information
 

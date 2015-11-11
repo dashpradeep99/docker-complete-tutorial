@@ -168,6 +168,10 @@ At this point, you have trust enabled.
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
 
+
+### Share on Twitter!
+[![Tweet](http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png)](http://ctt.ec/hXba1)
+
 ## Clean up
 
 If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
@@ -175,6 +179,7 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 ```bash
 $ source /home/ubuntu/cleanup.sh
 ```
+
 
 ## Related information
 
