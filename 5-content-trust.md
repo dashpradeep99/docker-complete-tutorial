@@ -3,14 +3,22 @@
 > **Difficulty**: Easy
 
 > **Time**: 15 mins
+>
+> **Prequisites**:
+>
+* An existing Docker Hub account
+* SSH onto the provided `<username>-node-0` instance in AWS
+* Logged into Docker Hub with the Docker client
 
 > **Tasks**:
 >
-- Introductory Overview
-- Create a test repository on Docker Hub
-- Enable Content Trust on our client
-- Sign an image and push an image to Docker Hub
-- Test the unsigned and signed images
+* [Prerequisites](#prerequisites)
+* [Task 1: Create a new Docker Hub repository](#task-1-create-a-new-docker-hub-repository)
+* [Task 2: Enable Content Trust](#task-2-enable-content-trust)
+* [Task 3: Push a signed image](#task-3-push-a-signed-image)
+* [Task 4: Pulling images](#task-4-pulling-images)
+* [Task 5: Cleanup](#task-5-cleanup)
+
 
 
 ## What is Docker Content Trust?
@@ -30,7 +38,7 @@ Content trust is currently only available for users of the public Docker Hub. It
 is currently not available for the Docker Trusted Registry or for private
 registries.
 
-## Prequisites
+## Prerequisites
 
 * You will be using **node-0**
 * An existing Docker Hub account
@@ -41,132 +49,136 @@ registries.
 
 Before you enable Docker Content Trust, you must create a new temporary repository on Docker Hub. You'll use this temporary repository for the lab.
 
-On your AWS instance `<username>-node-0`, ensure you're logged into Docker hub:
+1. Log into your `node-0` instance.
 
-```
-ubuntu@node-0:~$ docker login
-Username: <username>
-Password: <password>
-Email: <email>
-WARNING: login credentials saved in /home/ubuntu/.docker/config.json
-Login Succeeded
-```
-Pull the **busybox** image:
+2. Use the Docker command-line client to log into Docker Hub.
 
-`docker pull busybox`
+        $ docker login
+        Username: <username>
+        Password: <password>
+        Email: <email>
+        WARNING: login credentials saved in /home/ubuntu/.docker/config.json
+        Login Succeeded
 
-Create a new tag for the busybox image using your namespace:
+3. Pull the `busybox` image:
 
-`docker tag busybox <username>/dctrust:latest`
+        $ docker pull busybox
 
-Push this unsigned image to Docker Hub:
+4. Create a new tag for the busybox image using your namespace.
 
-`docker push <username>/dctrust:latest`
+  Your Docker Hub account is your namespace.
 
-At this point you should have a new unsigned image repository **dctrust** (with the 'latest' tag) under your Docker Hub account at: https://hub.docker.com/r/(username)/dctrust/
+        $ docker tag busybox <username>/dctrust:latest
+
+5. Push this unsigned image to Docker Hub:
+
+        $ docker push <username>/dctrust:latest
+
+6. Open <a href="https://hub.docker.com target="_blank">Docker Hub</a> in your browser and login.
+
+  At this point you should have a new unsigned image repository **dctrust** (with the 'latest' tag) under your Docker Hub account.
+
+  ![On Docker Hub](images/dctrust-pushed.png)
 
 ## Task 2: Enable Content Trust
 
-Currently, content trust is disabled by default. To enable it, the only thing you need to do is to set the `DOCKER_CONTENT_TRUST` environment variable.
-
-Enable content trust by running the command:
+Currently, content trust is disabled by default. To enable it, set the `DOCKER_CONTENT_TRUST` environment variable in your environment as follows:
 
 ```
-export DOCKER_CONTENT_TRUST=1
+$ export DOCKER_CONTENT_TRUST=1
 ```
 
-From this moment on, every Docker operation is secure. Any future Docker commands excecuted will be based on signatures.
+Once you set this environment variable, every Docker operation is secure. Any future Docker commands executed based on signatures.
 
-Now that we've enabled content trust, lets try to pull the image we just pushed. You'll notice that the Docker client will not execute the command because there isn't any trust data available.
+Now that you've enabled content trust, try to pull the image you just pushed.
 
 ```
-docker pull <username>/dctrust:latest
+$ docker pull <username>/dctrust:latest
 no trust data available
 ```
+You'll notice that the Docker client did not pull the image.  This is because the image was not signed.
 
 ## Task 3: Push a signed image
 
-In order to create the trust data for an image all we need to do is push an image with `DOCKER_CONTENT_TRUST` enabled.
+To create the trust data for an image, you need push an image with
+`DOCKER_CONTENT_TRUST` enabled. The first push of your new image, Docker prompts
+for two new passphrases for a **root key** and a **repository key**.
+1. Create a new tag for the `busybox` image:
 
-Create a new tag for our image:
+        $ docker tag busybox <username>/dctrust:signed
 
-`docker tag busybox <username>/dctrust:signed`
+2. Push the image making sure to enter two new passphrases when prompted.
 
-Note: On the next command, during the first push of our new image, Docker will prompt for two new passphrases for a **root key** and a **repository key**. More information is provided about these keys in the reference section below. For now, just enter two new passphrases when prompted.
+        $ docker push <username>/dctrust:signed
 
-Push our image:
+  Example output:
 
-`docker push <username>/dctrust:signed`
-
-Example output:
-
-```
-ubuntu@node-0:~$ docker push kizbitz/dctrust:signed
-The push refers to a repository [docker.io/kizbitz/dctrust] (len: 1)
-2c5ac3f849df: Image already exists
-ab2b8a86ca6c: Image already exists
-signed: digest: sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143 size: 3214
-Signing and pushing trust metadata
-You are about to create a new root signing key passphrase. This passphrase
-will be used to protect the most sensitive key in your signing system. Please
-choose a long, complex passphrase and be careful to keep the password and the
-key file itself secure and backed up. It is highly recommended that you use a
-password manager to generate the passphrase and keep it safe. There will be no
-way to recover this key. You can find the key in your config directory.
-Enter passphrase for new root key with id 020aa4f:
-Repeat passphrase for new root key with id 020aa4f:
-Enter passphrase for new repository key with id docker.io/kizbitz/dctrust (ab6b057):
-Repeat passphrase for new repository key with id docker.io/kizbitz/dctrust (ab6b057):
-Finished initializing "docker.io/kizbitz/dctrust"
-```
+        $ docker push kizbitz/dctrust:signed
+        The push refers to a repository [docker.io/kizbitz/dctrust] (len: 1)
+        2c5ac3f849df: Image already exists
+        ab2b8a86ca6c: Image already exists
+        signed: digest: sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143 size: 3214
+        Signing and pushing trust metadata
+        You are about to create a new root signing key passphrase. This passphrase
+        will be used to protect the most sensitive key in your signing system. Please
+        choose a long, complex passphrase and be careful to keep the password and the
+        key file itself secure and backed up. It is highly recommended that you use a
+        password manager to generate the passphrase and keep it safe. There will be no
+        way to recover this key. You can find the key in your config directory.
+        Enter passphrase for new root key with id 020aa4f:
+        Repeat passphrase for new root key with id 020aa4f:
+        Enter passphrase for new repository key with id docker.io/kizbitz/dctrust (ab6b057):
+        Repeat passphrase for new repository key with id docker.io/kizbitz/dctrust (ab6b057):
+        Finished initializing "docker.io/kizbitz/dctrust"
 
 ## Task 4: Pulling images
 
-At this point in our Docker hub repository we have two different images/tags:
+At this point in your Docker hub repository you have two different images/tags:
 
-- dctrust:latest - This image is still unsigned and cannot be pulled as long as content trust is enabled.
-- dctrust:signed - This image has been signed and can be pulled if content trust is enabled or disabled.
+| Image            | Description                                                                      |
+|------------------|----------------------------------------------------------------------------------|
+| `dctrust:latest` | This image is still unsigned and cannot be pulled when content trust is enabled. |
+| `dctrust:signed` | This image is signed and can be pulled if content trust is enabled or disabled.  |
 
-Try to pull both of your images using `docker pull`
+At this point, you have trust enabled.
 
-Example output (with content trust enabled):
+1. Pull the latest image and then the signed image.
 
-```
-ubuntu@node-0:~$ docker pull kizbitz/dctrust:latest
-No trust data for latest
-ubuntu@node-0:~$ docker pull kizbitz/dctrust:signed
-Pull (1 of 1): kizbitz/dctrust:signed@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
-sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143: Pulling from kizbitz/dctrust
-Digest: sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
-Status: Downloaded newer image for kizbitz/dctrust@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
-Tagging kizbitz/dctrust@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143 as kizbitz/dctrust:signed
-```
+        $ docker pull kizbitz/dctrust:latest
+        No trust data for latest
+        ubuntu@node-0:~$ docker pull kizbitz/dctrust:signed
+        Pull (1 of 1): kizbitz/dctrust:signed@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
+        sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143: Pulling from kizbitz/dctrust
+        Digest: sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
+        Status: Downloaded newer image for kizbitz/dctrust@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143
+        Tagging kizbitz/dctrust@sha256:b33669e38aef420ff10d4787c07afe11a679564f65c31bde39572c9196f3e143 as kizbitz/dctrust:signed
 
-To temporarily disable content trust an a single command you can use `--disable-content-trust`:
+2. Now pull images but temporarily disable content trust with the  `--disable-content-trust` flag.
 
-```
-ubuntu@node-0:~$ docker pull kizbitz/dctrust:latest
-No trust data for latest
-ubuntu@node-0:~$ docker pull --disable-content-trust kizbitz/dctrust:latest
-latest: Pulling from kizbitz/dctrust
-Digest: sha256:f3fefef65b040546adab73e2e6a624376373b0f12e83a5e5a921d9cd9059953c
-Status: Image is up to date for kizbitz/dctrust:latest
-```
+        $ docker pull --disable-content-trust kizbitz/dctrust:latest
+        latest: Pulling from kizbitz/latest
+        Digest: sha256:f3fefef65b040546adab73e2e6a624376373b0f12e83a5e5a921d9cd9059953c
+        Status: Image is up to date for kizbitz/dctrust:latest
+        $ docker pull --disable-content-trust kizbitz/dctrust:signed
+        signed: Pulling from kizbitz/dctrust
+        Digest: sha256:357cb702777f1bdf9a6241e8cf9d17b05d30fc203e7e4e51464a067e826c7906
+        Status: Downloaded newer image for kizbitz/dctrust:signed
 
 ## Conclusion
 
 At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
 
-## Cleanup
+## Clean up
 
-To clean-up your environment, remember to:
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
 
-- Delete the test repository created on your Hub account: https://hub.docker.com/r/(username)/dctrust/
-- Execute: `source /home/ubuntu/cleanup.sh`
+```bash
+$ source /home/ubuntu/cleanup.sh
+```
 
 ## Related information
 
-For more in-depth examples and advanced concepts refer to the official documentation:
+For more in-depth examples and advanced concepts refer to the Docker documentation:
 
 - [Content Trust Concepts](https://docs.docker.com/security/trust/content_trust/)
 - [Automation Systems](https://docs.docker.com/security/trust/trust_automation/)
