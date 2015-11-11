@@ -29,13 +29,17 @@ Data volumes are designed to persist data, independent of the container’s life
 ## Task 1: Implementing a volume via the Docker client
 In this task we're going to create a new container, and then add a file to it.
 
-1. SSH into your **node-0** AWS instance with your supplied credentials, for example:	`ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
+1. SSH into your **node-0** AWS instance with your supplied credentials, for example:
+
+	`ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
 
 2. Pull down the official Nginx image
 
 	`$ docker pull nginx`
 
-3. Create a new  volume named **barcelona**	`$ docker volume create --name barcelona`
+3. Create a new  volume named **barcelona**
+
+	`$ docker volume create --name barcelona`
 
 	**Note***: Your new volume will be created on the host in the* `/var/lib/docker/volumes`*directory*
 
@@ -43,88 +47,193 @@ In this task we're going to create a new container, and then add a file to it.
 
  		$ docker volume ls
 		DRIVER              VOLUME NAME
-		local               barcelona	**Note***: You may see other volumes listed in addition to the one you just created*
+		local               barcelona
+
+	**Note***: You may see other volumes listed in addition to the one you just created*
 
 5. Instantiate a Docker container with our barcelona volume mapped to /barcelona in 	the container, and log into the shell
 
-	 	$ docker run -it -v barcelona:/barcelona --name volumeslab nginx /bin/bash	This command will instantiate an Nginx container and mount our volume `barcelona` 	at the at the root of the file system `/barcelona`. It will also execute `/bin/bash` 	giving you an interactive shell inside the container.
+	 	$ docker run -it -v barcelona:/barcelona --name volumeslab nginx /bin/bash
 
-	 **_Note_***: You are now working within the shell of your running container*6. Change directory into /barcelona
+	This command will instantiate an Nginx container and mount our volume `barcelona` 	at the at the root of the file system `/barcelona`. It will also execute `/bin/bash` 	giving you an interactive shell inside the container.
+
+	 **_Note_***: You are now working within the shell of your running container*
+
+
+6. Change directory into /barcelona
 
 		$ cd /barcelona
 
-7. Create a file in that directory		$ touch file.txt
+7. Create a file in that directory
 
-8. List the directory contents to make sure the file exists		$ ls
+		$ touch file.txt
+
+8. List the directory contents to make sure the file exists
+
+		$ ls
 		file.txt
 
-9. Exit the container but leave it running by hitting `Ctrl+P` (at the same time) and then hitting `Ctrl+Q` (at the same time)	**_Note_***: You are now working within the shell of your Docker host*10. Ensure your container is still running:		$ docker ps	The output should be similar to:
+9. Exit the container but leave it running by hitting `Ctrl+P` (at the same time) and then hitting `Ctrl+Q` (at the same time)
 
-		CONTAINER ID   IMAGE   COMMAND         CREATED             STATUS                           		0124480582a2   nginx   "/bin/bash"     6 minutes ago       Up 6 minutes                           The important detail is that `STATUS` lists `Up` instead of `Exited`
+	**_Note_***: You are now working within the shell of your Docker host*
+
+10. Ensure your container is still running:
+
+		$ docker ps
+
+	The output should be similar to:
+
+		CONTAINER ID   IMAGE   COMMAND         CREATED             STATUS                           
+		0124480582a2   nginx   "/bin/bash"     6 minutes ago       Up 6 minutes                           
+
+The important detail is that `STATUS` lists `Up` instead of `Exited`
 
 ## Task 2: Understand how Docker represents volume data in the file system
 
-As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
+As mentioned above, Docker manages volumes outside of the storage driver that it uses to manage the layers of a given container. This allows for data persistence(the volume is not destroyed when the container is destroyed).
 
-1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume		$ docker volume inspect barcelona	Your output should be similar to:
-		[   			{        		"Name": "barcelona",        		"Driver": "local",        		"Mountpoint": "/var/lib/docker/volumes/barcelona/_data"    		}		]	**Note***: The volume mount point above is*: `/var/lib/docker/volumes/barcelona/_data`
+In this task we’re going to take a quick look at where Docker stores volume data, and how a change to the host filesystem is immediately reflected back in the container.
 
-2. In order to examine the contents of the directory, you’ll need to elevate your user privileges:		$ sudo su
+1. You can use  docker volume inspect to learn details about about a given volume. In this case our barcelona volume
 
-3. Change to the volumes data directory in the host filesystem		$ cd /var/lib/docker/volumes/barcelona/_data
+		$ docker volume inspect barcelona
 
-4. List the contents of the directory		$ ls
-		file.txt	Notice the file you previously created `file.txt` is listed in the host directory
+	Your output should be similar to:
+		[
+   			{
+        		"Name": "barcelona",
+        		"Driver": "local",
+        		"Mountpoint": "/var/lib/docker/volumes/barcelona/_data"
+    		}
+		]
 
-5. Create a new file		$ touch file2.txt
+	**Note***: The volume mount point above is*: `/var/lib/docker/volumes/barcelona/_data`
 
-6. Ensure both file.txt and file2.txt exist in the directory		$ ls		file2.txt file.txt
+2. In order to examine the contents of the directory, you’ll need to elevate your user privileges:
 
-7. Log back into the shell of the running container using `docker exec`		$ docker exec -it volumeslab /bin/bash
+		$ sudo su
 
-	**Note***: You are now working within the shell of your running container*8. List the contents of the `/barcelona` directory and note that the file you created from the Docker host shell 	`file2.txt` now exists inside your running container.		$ ls /barcelona		file.txt file2.txt
+3. Change to the volumes data directory in the host filesystem
 
-9. Exit the container, and return to your docker host		$ exit
+		$ cd /var/lib/docker/volumes/barcelona/_data
+
+4. List the contents of the directory
+
+		$ ls
+		file.txt
+
+	Notice the file you previously created `file.txt` is listed in the host directory
+
+5. Create a new file
+
+		$ touch file2.txt
+
+6. Ensure both file.txt and file2.txt exist in the directory
+
+		$ ls
+		file2.txt file.txt
+
+7. Log back into the shell of the running container using `docker exec`
+
+		$ docker exec -it volumeslab /bin/bash
+
+	**Note***: You are now working within the shell of your running container*
+
+8. List the contents of the `/barcelona` directory and note that the file you created from the Docker host shell 	`file2.txt` now exists inside your running container.
+
+		$ ls /barcelona
+		file.txt file2.txt
+
+9. Exit the container, and return to your docker host
+
+		$ exit
 
 ## Task 3: Deleting a volume
 
 By default, when you destroy a container Docker does not remove any volumes associated with the container. You can, however, delete a given volume with `docker volume rm`
 
-1. Stop the container we have been working with previously		$ docker stop volumeslab
+1. Stop the container we have been working with previously
 
-2. Remove the container.		$ docker rm volumeslab
-	**Note***: This will not remove the volume the container was using*
+		$ docker stop volumeslab
 
-3. Ensure the volume we were working with still exists		$ docker volume ls		DRIVER              VOLUME NAME		local               barcelona	**Note***: You may see other volumes listed in addition to*`barcelona`
+2. Remove the container.
 
-4. Elevate your privileges		$ sudo su
+		$ docker rm volumeslab
 
-5. List the contents of the volume directory to see that the two files are still there		$ ls /var/lib/docker/volumes/barcelona/_data		file.txt file2.txt
+	**Note***: This will not remove the volume the container was using*
 
-6. Exit superuser		$ exit
+3. Ensure the volume we were working with still exists
 
-7. Remove the volume		$ docker volume rm barcelona		barcelona
+		$ docker volume ls
+		DRIVER              VOLUME NAME
+		local               barcelona
 
-8. Ensure the volume was removed		$ docker volume ls		DRIVER              VOLUME NAME	**Note**:*The* `barcelona' *volume is no longer listed, although other volumes may still appear*
+	**Note***: You may see other volumes listed in addition to*`barcelona`
+
+4. Elevate your privileges
+
+		$ sudo su
+
+5. List the contents of the volume directory to see that the two files are still there
+
+		$ ls /var/lib/docker/volumes/barcelona/_data
+		file.txt file2.txt
+
+6. Exit superuser
+
+		$ exit
+
+7. Remove the volume
+
+		$ docker volume rm barcelona
+		barcelona
+
+8. Ensure the volume was removed
+
+		$ docker volume ls
+		DRIVER              VOLUME NAME
+
+	**Note**:*The* `barcelona' *volume is no longer listed, although other volumes may still appear*
 
 ## Task 4: Map a host directory to a Docker volume
 
-In the previous exercises we were able to manipulate data files in a Docker volume via the host file system,. However, it was a bit cumbersome: we had to learn the mount point via docker volume inspect, and elevate our privileges to create a new file. In practice, this is impractical.Thankfully there is an easier way to  make local files available inside a running container. Docker allows existing local files and directories to be mounted as volumes into a running container. This allows developers, for instance, to hot-mount code into their containers, and have changes made locally be reflected instantaneously in their container.In this example we’ll be modifying some HTML, and then showing how the changes are reflected immediately on the container-based website. Additionally, we’ll be creating our volume as part of the docker run command using the `-v` option.
+In the previous exercises we were able to manipulate data files in a Docker volume via the host file system,. However, it was a bit cumbersome: we had to learn the mount point via docker volume inspect, and elevate our privileges to create a new file. In practice, this is impractical.
 
-1. Create a www subdirectory on your Docker host		$ mkdir ~/www
+Thankfully there is an easier way to  make local files available inside a running container. Docker allows existing local files and directories to be mounted as volumes into a running container. This allows developers, for instance, to hot-mount code into their containers, and have changes made locally be reflected instantaneously in their container.
 
-2. Change into your www directory		$ cd ~/www
+In this example we’ll be modifying some HTML, and then showing how the changes are reflected immediately on the container-based website. Additionally, we’ll be creating our volume as part of the docker run command using the `-v` option.
 
-3. Use the following command to create an index.html file with some content.		$ echo '<h1>Hola Barcelona!</h1>' > index.html
+1. Create a www subdirectory on your Docker host
+
+		$ mkdir ~/www
+
+2. Change into your www directory
+
+		$ cd ~/www
+
+3. Use the following command to create an index.html file with some content.
+
+		$ echo '<h1>Hola Barcelona!</h1>' > index.html
 
 	**Note***: Be sure to use single quotes in the command above.*
 
-4. Instantiate an Nginx container that maps the `~/www` directory on the host to `/usr/share/nginx/html` in the running container	**Note***:* `usr/share/nginx/html` *is the default directory for serving web content on the Nginx server*		$ docker run -d -v ~/www:/usr/share/nginx/html --name mywebserver -p 80:80 nginx
+4. Instantiate an Nginx container that maps the `~/www` directory on the host to `/usr/share/nginx/html` in the running container
+
+	**Note***:* `usr/share/nginx/html` *is the default directory for serving web content on the Nginx server*
+
+		$ docker run -d -v ~/www:/usr/share/nginx/html --name mywebserver -p 80:80 nginx
 
 5. Use the browser on your laptop to navigate to navigate to the newly created website at `http://<docker host>`
-	**Note***: Your docker host name was provided to you when you signed up for this lab*	Your website should display your "Hello, Barcelona" message
 
-6. Return to your Docker host’s terminal window, and update the HTML of your website with the following command:		$ echo '<h1>Adios Barcelona!</h1>' > index.html	**Note***: Be sure to use single quotes in the command above.*
+	**Note***: Your docker host name was provided to you when you signed up for this lab*
+
+	Your website should display your "Hello, Barcelona" message
+
+6. Return to your Docker host’s terminal window, and update the HTML of your website with the following command:
+
+		$ echo '<h1>Adios Barcelona!</h1>' > index.html
+
+	**Note***: Be sure to use single quotes in the command above.*
 
 7. Reload the website in your browser, and notice how the change to the local filesystem is immediately reflected by the running Nginx container.
 
@@ -132,37 +241,89 @@ In the previous exercises we were able to manipulate data files in a Docker volu
 
 You can also use volumes to share data between containers. For instance, one container could be writing data to a log file, and a second container could be reading that data and providing a graphical interpretation.
 
-In our example we’ll simply create a new file from one container in a directory that is a mount point for a named container, and then list the directory from another container.**Note**: *This example is purely for academic purposes. In a real-world deployment, it’s extremely dangerous to have multiple containers writing to the same volume without adequate application awareness and protection against conflicts. *
+In our example we’ll simply create a new file from one container in a directory that is a mount point for a named container, and then list the directory from another container.
 
-1. Create a new named volume `shared-data`		$ docker volume create --name shared-data		shared-data
+**Note**: *This example is purely for academic purposes. In a real-world deployment, it’s extremely dangerous to have multiple containers writing to the same volume without adequate application awareness and protection against conflicts. *
 
-2. Create a new container `foo`, mount the previously created named volume `shared-data` to the `/foo` directory, and log into the shell		$ docker run -it -v shared-data:/foo --name foo nginx /bin/bash	**Note***: You are now working in the shell of your docker container*
+1. Create a new named volume `shared-data`
 
-3. Create a new file in the /foo directory (which is mapped to your shared-data volume)		$ echo 'Tu dices "hola"' > /foo/file.txt	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*
+		$ docker volume create --name shared-data
+		shared-data
 
-4. Verify the content of your newly created file		$ cat /foo/file.txt		Tu dices "hola"
+2. Create a new container `foo`, mount the previously created named volume `shared-data` to the `/foo` directory, and log into the shell
+
+		$ docker run -it -v shared-data:/foo --name foo nginx /bin/bash
+
+	**Note***: You are now working in the shell of your docker container*
+
+3. Create a new file in the /foo directory (which is mapped to your shared-data volume)
+
+		$ echo 'Tu dices "hola"' > /foo/file.txt
+
+	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*
+
+4. Verify the content of your newly created file
+
+		$ cat /foo/file.txt
+		Tu dices "hola"
 
 5. Exit the container, but leave it running by typing `Ctrl-P` and then `Ctrl-Q`
 
-6. Create a second container `bar`, mount the previously created named volume `shared-data` to the /bar directory, and log into the shell		$ docker run -it -v shared-data:/bar --name bar nginx /bin/bash	**Note***: You are now working in the shell of your docker container*
+6. Create a second container `bar`, mount the previously created named volume `shared-data` to the /bar directory, and log into the shell
 
-7. Create a new file in the /foo directory (which is mapped to your shared-data volume)		$ echo 'Y yo digo "adios"' >> /bar/file.txt	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*	**Note***: Be sure to use >> otherwise you will overwrite your orignal file*
+		$ docker run -it -v shared-data:/bar --name bar nginx /bin/bash
 
-8. Verify the content of your newly created file		$ cat /bar/file.txt		Tu dices "hola"		Y yo digo "adios"	**Note**: *The text you created in the first container (Tu dices "hola") is still accessible in this container 	as well as the text you just added  (Y yo digo “adios”)*
+	**Note***: You are now working in the shell of your docker container*
 
-9. Exit this container		$ exit
+7. Create a new file in the /foo directory (which is mapped to your shared-data volume)
 
-10. Log back into the shell of the original container using the docker exec command		$ docker exec -it foo /bin/bash	**Note***: You are now working in the shell of your docker container*
+		$ echo 'Y yo digo "adios"' >> /bar/file.txt
 
-11. Check to see if the changes you made in the bar container are reflected in this container		$ cat /foo/file.txt		Tu dices "hola"		Y yo digo "adios"
+	**_Note_***: Be careful to use the right single quote (‘) and double quotes (")*
 
-12. Exit this container		$ exit
+	**Note***: Be sure to use >> otherwise you will overwrite your orignal file*
+
+8. Verify the content of your newly created file
+
+		$ cat /bar/file.txt
+		Tu dices "hola"
+		Y yo digo "adios"
+
+	**Note**: *The text you created in the first container (Tu dices "hola") is still accessible in this container 	as well as the text you just added  (Y yo digo “adios”)*
+
+9. Exit this container
+
+		$ exit
+
+10. Log back into the shell of the original container using the docker exec command
+
+		$ docker exec -it foo /bin/bash
+
+	**Note***: You are now working in the shell of your docker container*
+
+11. Check to see if the changes you made in the bar container are reflected in this container
+
+		$ cat /foo/file.txt
+		Tu dices "hola"
+		Y yo digo "adios"
+
+12. Exit this container
+
+		$ exit
 
 ## Conclusion
 
 In this lab we learned the basics of Docker volumes. We created a new Docker volume using the Docker client, and then explored the host file system to understand the relationship between the local file system and the mounted volume in the container. We then deleted our volume, and mapped a new volume to a specific directory on the host file system. Finally we looked at how you can share a volume between multiple containers.
 
 Feel free to continue exploring Docker volumes.
+
+### Share on Twitter!
+
+<p>
+<a href="http://ctt.ec/fH5oh" target=“_blank”>
+<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
+</p>
+
 
 ## Cleanup
 1. Remove any containers
