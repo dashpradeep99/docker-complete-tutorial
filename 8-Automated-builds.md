@@ -1,6 +1,6 @@
 # Lab 8: Automated Image Builds with Docker Hub
 
-> **Difficulty**: Beginner
+> **Difficulty**: Easy
 >
 > **Time**: 30 minutes
 >
