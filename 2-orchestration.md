@@ -520,6 +520,12 @@ In this tutorial you used Docker Compose and Docker Swarm to deploy and scale a 
 
 Interested in scaling **DockChat** horizontally across multiple nodes ? You can do that with the new multi-host networking introduced with Docker 1.9. Check out this [this repo](https://github.com/nicolaka/dockchat-multihost).
 
+### Share on Twitter!
+
+<p>
+<a href="http://ctt.ec/IMUFf" target=“_blank”>
+<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
+</p>
 
 ## Clean up
 
