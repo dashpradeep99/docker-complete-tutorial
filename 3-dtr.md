@@ -63,7 +63,7 @@ Now that DTR is up and running, you may start configuring it. We will follow two
 * Using your favorite web browser, go to your **Node 0** domain name using HTTPS. e.g `https://ec2-xxxxxxxx.<region>.compute.amazonaws.com`
 * Proceed insecurely.
 * On DTR landing page, go to **Settings** >> **Auth**, and ensure you enable **Managed Authentication**.
-* Create a new user by clicking on the **Add user** buttong. Then fill in a username and password with **admin** rights(by selecting the ‘admin’ option on the right) and click **Save**
+* Create a new user by clicking on the **Add user** button. Then fill in a username and password with **admin** rights(by selecting the ‘admin’ option on the right) and click **Save**
 * The page will be reloaded and you will be prompted to login. Use the username/password that you just created.
 
 ![](images/dtr-step2-auth.png)
