@@ -15,7 +15,7 @@
 * [Task 6: Trigger an Automated build](#task-6-trigger-an-automated-build)
 
 ## What is an Automated Build?
-An automated build is a Docker image build that is trigged by a code change in a GitHub or Bitbucket repository. By linking a remote code repository to a Docker Hub automated build repository, you can build a new Docker image every time a code change is pushed to your code repository.
+An automated build is a Docker image build that is triggered by a code change in a GitHub or Bitbucket repository. By linking a remote code repository to a Docker Hub automated build repository, you can build a new Docker image every time a code change is pushed to your code repository.
 
 ## Prerequisites
 
