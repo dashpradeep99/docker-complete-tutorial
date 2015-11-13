@@ -5,7 +5,7 @@
 > **Time**: 30 Minutes
 
 > **Tasks**
-
+> - [Prerequisites](#prerequisites)
 >	- [Task 1: Attaching a New Node](#task-1-attaching-a-new-node)
 >	- [Task 2: Deploying a Service](#task-2-deploying-a-service)
 >	- [Task 3: Deploying a Stack](#task-3-deploying-a-stack)
@@ -221,7 +221,7 @@ Try pulling down an Nginx image down from Docker hub, and launching a website (H
 ##Cleaning Up
 1. Delete you stack: Click stacks in the top menu bar, and select "Lab". Click terminate and OK
 
-2. Delete your service: Click services in the top menu bar, and select the hello-world service. Click the trash can icon to the right and OK. 
+2. Delete your service: Click services in the top menu bar, and select the hello-world service. Click the trash can icon to the right and OK.
 
 
 3. Select the node you deployed earlier and click `remove` to the right
@@ -231,5 +231,3 @@ Try pulling down an Nginx image down from Docker hub, and launching a website (H
 5. Remove the tutum agent
 
 		$ sudo apt-get remove tutum-agent
-		
-		

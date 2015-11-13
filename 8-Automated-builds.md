@@ -5,8 +5,8 @@
 > **Time**: 30 minutes
 >
 > **Tasks**:
-> 
-> 
+>
+>* [Prerequisites](#prerequisites)
 >* [Task 1: Link your Docker Hub account to GitHub](#task-1-link-your-docker-hub-account-to-github)
 * [Task 2: Fork and clone the tutorial repo](#task-2-fork-and-clone-the-tutorial-repo)
 * [Task 3: Create a new automated build](#task-3-create-a-new-automated-build)
@@ -21,7 +21,7 @@ An automated build is a Docker image build that is triggered by a code change in
 
 While Docker Hub supports linking both GitHub and Bitbucket repositories, this lab uses a GitHub repository. If you don't already have one, make <a href="https://github.com/join" target="_blank">sure you have a GitHub account</a>. A basic account is free.
 
-This lab clones and later pushes a GitHub repository using the HTTPS protocol. If you do have a GitHub account and that account is using two-factor authentication, you need to <a href="https://github.com/blog/1614-two-factor-authentication#how-does-it-work-for-command-line-git" target="_blank">create a token</a> before attempting the `docker push`. Without the token you cannot authenticate over HTTPS. 
+This lab clones and later pushes a GitHub repository using the HTTPS protocol. If you do have a GitHub account and that account is using two-factor authentication, you need to <a href="https://github.com/blog/1614-two-factor-authentication#how-does-it-work-for-command-line-git" target="_blank">create a token</a> before attempting the `docker push`. Without the token you cannot authenticate over HTTPS.
 
 ## Task 1: Link your Docker Hub account to GitHub
 
@@ -302,20 +302,13 @@ Congrats !! you have completed this lab and learned how to integrate Github and 
 </p>
 
 
-## Cleaning Up
+## Clean up
 
-1. Switch back to your terminal window, stop and remove your running container
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up,
 
-		$ docker stop mywebserver
-		mywebserver
+1. Log into each EC2 instance you used and run the following:
 
-		$ docker rm mywebserver
-		mywebserver
-
-2. In your terminal window, remove the web server image
-
-		$ docker rmi mywebserver
-		mywebserver
+      $ source /home/ubuntu/cleanup.sh
 
 3. In your web browser, navigate to your `dceu_tutorial8` repository on Docker Hub
 

@@ -6,18 +6,14 @@
 > **Time**: 30 mins
 
 > **Tasks**:
->
-> * Task 1: Install DTR
-> * Task 2: Setting up DTR
-> * Task 3: Creating Ogranizations, Teams, and Members
-> * Task 4: Pushing and Pulling Images to DTR
-> * Task 5: Storage and Logs
-> * Task 6: DTR API Console and Documentation
+- [Prerequisites](#prerequisites)
+- [Task 1: Install DTR](#task-1-install-dtr)
+- [Task 2: Setting up DTR](#task-2-setting-up-dtr)
+- [Task 3: Creating Organizations, Teams, Members,and Repositories](#task-3-creating-organizations-teams-membersand-repositories)
+- [Task 4: Pushing and Pulling DTR Images](#task-4-pushing-and-pulling-dtr-images)
+- [Task 5: Storage and Logs](#task-5-storage-and-logs)
 
-
-# Getting Started with Docker Trusted Registry(DTR)
-
-**Background**:
+# Getting Started with Docker Trusted Registry (DTR)
 
 Docker Trusted Registry allows you to store and manage your Docker images on your private, hybrid, or public cloud infrastructure to support security or regulatory compliance requirements in keeping data and applications in your infrastructure. Simply install and configure Docker Trusted Registry through the web admin console, integrate to your preferred storage, authenticate to your Active Directory / LDAP services and integrate into key software development workflows like Continuous Integration (CI) and Continuous Delivery (CD).
 
@@ -31,14 +27,13 @@ With DTR 1.4 you have new awesome features like:
 * API Console + Documentations
 * New Storage Drivers Support (Openstack Swift)
 
-
 ## Prerequisites
 
 * You will use all two nodes: **node-0** and **node-1**
 * Ensure that no containers are running on these containers.
 * Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
 * Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
-* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you substitue the IP of the instance in certain commands/configuration files throughout this lab.
 
 ## Task 1: Install DTR
 
@@ -122,11 +117,11 @@ Try to logout from the UI and log back in as **moby** or **ahab** and observe wh
 **Step 3:** **Repositories**
 
 
-Repositories can belong to an organization e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}** or to a user **{DTR Hostname}/{User Name}/{Repo Name}:{Tag}**. Any user can create a personal repository by going to **Repositories**>>**New Repository**. But only users with '**admin**' rights can create an organization repository. You can create a new organization repository by going to **Oranizations >> {Organization Name}** or by going to **Repositories**>>**New Repository** and selecting the desired organization namespace from the dropdown menu. 
+Repositories can belong to an organization e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}** or to a user **{DTR Hostname}/{User Name}/{Repo Name}:{Tag}**. Any user can create a personal repository by going to **Repositories**>>**New Repository**. But only users with '**admin**' rights can create an organization repository. You can create a new organization repository by going to **Oranizations >> {Organization Name}** or by going to **Repositories**>>**New Repository** and selecting the desired organization namespace from the dropdown menu.
 
 Organization repos can be associated with one or more organization teams. Although global members have access to all repos ( even repos that belong to organizations they do not belong to), the value of assigning repos to teams comes when you need certain non-global users to have access to team-level repos ONLY. In our case, this helps us achieve restricting **ahab** to the Frontend's `madrid` repo.
 
-Go back to teams, and click on **core** team, and click **Add Repository**. Go through creating the repo and call it `barca`. Make sure it's listed as **Private**. All members of an organization can see and perform pull/push (depending on their role) on any private repo that belongs to that organization even if it belongs to a different team within that organization. **Public** repos are exactly what they sound like; they can be pulled by **anyone** without any authentication (similar to Docker Hub public repos). The drop-down permission options indicate what non-global users are authorized to do with this repo. Select '**Read-Only**', this way all members that do not have global roles but are part of the '**core**' team only can pull this repo. 
+Go back to teams, and click on **core** team, and click **Add Repository**. Go through creating the repo and call it `barca`. Make sure it's listed as **Private**. All members of an organization can see and perform pull/push (depending on their role) on any private repo that belongs to that organization even if it belongs to a different team within that organization. **Public** repos are exactly what they sound like; they can be pulled by **anyone** without any authentication (similar to Docker Hub public repos). The drop-down permission options indicate what non-global users are authorized to do with this repo. Select '**Read-Only**', this way all members that do not have global roles but are part of the '**core**' team only can pull this repo.
 
 
 Next, create another private repo called **madrid** for the **frontend** team. Select '**Read-Write**' permission option. This way **ahab** is able to both push and pull this repo only. Once you are done you should see the following:
@@ -143,7 +138,7 @@ Creating the repository from the UI is required before being able to push to tha
 ```
 node-1$ export DTR={DTR_DNS}
 node-1$ openssl s_client -connect $DTR:443 -showcerts </dev/null 2> /dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$DTR.crt
-node-1$ sudo update-ca-certificates 
+node-1$ sudo update-ca-certificates
 node-1$ sudo service docker restart
 node-1$ docker login https://$DTR
 Username : orca
@@ -270,7 +265,7 @@ DTR provides a streaming log for all containers that make up DTR ( auth , load-b
 
 ## Task 6: DTR API Console and Documentation
 
-DTR is built on top of a power API that provides exact (and slightly more) functionalities than the UI. DTR's API uses standard HTTP verbs: GET/PUT/POST/DELETE with JSON-formatted resutls. To make it easy for developers to work with DTR, DTR 1.4 provides an API Console couples with corresponding documentation. You can use the API console to post directly to the API and easily see the results. 
+DTR is built on top of a power API that provides exact (and slightly more) functionalities than the UI. DTR's API uses standard HTTP verbs: GET/PUT/POST/DELETE with JSON-formatted resutls. To make it easy for developers to work with DTR, DTR 1.4 provides an API Console couples with corresponding documentation. You can use the API console to post directly to the API and easily see the results.
 
 **Step 1:** Hover over **admin** ( or whichiver user you're loggin in with) on top right corner and click on the **API Docs** button. You can see full documentation and detailed API endpoint and action descriptions.
 
@@ -293,7 +288,7 @@ In this tutorial we went over the new Docker Trusted Registry features introduce
 </p>
 
 
-##Clean up
+## Clean up
 
 If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
 
@@ -301,7 +296,6 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 $ source /home/ubuntu/cleanup.sh
 ```
 
-
 ## Related Information
 
-* [Docker Trusted Registry](https://docs.docker.com/docker-trusted-registry/)
+[Docker Trusted Registry](https://docs.docker.com/docker-trusted-registry/)
