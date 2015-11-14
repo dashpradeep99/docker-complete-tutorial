@@ -21,7 +21,13 @@ An automated build is a Docker image build that is triggered by a code change in
 
 While Docker Hub supports linking both GitHub and Bitbucket repositories, this lab uses a GitHub repository. If you don't already have one, make <a href="https://github.com/join" target="_blank">sure you have a GitHub account</a>. A basic account is free.
 
-This lab clones and later pushes a GitHub repository using the HTTPS protocol. If you do have a GitHub account and that account is using two-factor authentication, you need to <a href="https://github.com/blog/1614-two-factor-authentication#how-does-it-work-for-command-line-git" target="_blank">create a token</a> before attempting the `docker push`. Without the token you cannot authenticate over HTTPS.
+This lab clones and later pushes a GitHub repository using the HTTPS protocol.
+The `git` commands you use in the lab require that you set your config. Finally,
+if you do have a GitHub account and that account is using two-factor
+authentication, you need to <a
+href="https://github.com/blog/1614-two-factor-authentication#how-does-it-work-for-command-line-git"
+target="_blank">create a token</a> before attempting the `docker push`. Without
+the token you cannot authenticate over HTTPS.
 
 ## Task 1: Link your Docker Hub account to GitHub
 
@@ -41,7 +47,7 @@ This lab clones and later pushes a GitHub repository using the HTTPS protocol. I
 
 ## Task 2: Fork and clone the tutorial repo
 
-Automated builds rely on you having a code repository that contains a Dockerfile and build context. In this step, you fork a copy of a demo repo into your GitHub account. A fork allows you make changes to the repo without affecting other users.  
+Automated builds rely on you having a code repository that contains a Dockerfile and build context. In this step, you fork a copy of a demo repo into your GitHub account. A fork allows you to make changes to the repo without affecting other users.  
 
 After forking the demo repo, you'll clone the code to one of your nodes. The demo repository defines a container for an Nginx web server with a very simple `index.html` file
 
@@ -61,25 +67,29 @@ After forking the demo repo, you'll clone the code to one of your nodes. The dem
 
   		$ ssh -i user23.pem ubuntu@10.0.0.100
 
-4. Inside the terminal window, clone your GitHub repo.
+4. Change to your ubuntu home directory.
+
+        $ cd
+
+5. Inside the terminal window, clone your GitHub repo.
 
   ![Clone](images/auto-clone.png)
 
   If you want to copy and paste the URL, click the clipboard under “HTTPS clone	url” on your GitHub repo web page.
 
-  	  git clone https://github.com/<github username>/dceu_tutorial8.git
+  	 git clone https://github.com/<github username>/dceu_tutorial8.git
 
   For example:
 
-      $ git clone http://www.github.com/moxiegirl/dceu_tutorial8.git
-  		Cloning into 'dceu_tutorial8'...
-  		remote: Counting objects: 7, done.
-  		remote: Compressing objects: 100% (5/5), done.
-  		remote: Total 7 (delta 0), reused 7 (delta 0), pack-reused 0
-  		Unpacking objects: 100% (7/7), done.
-  		Checking connectivity... done.
+        $ git clone http://www.github.com/moxiegirl/dceu_tutorial8.git
+    		Cloning into 'dceu_tutorial8'...
+    		remote: Counting objects: 7, done.
+    		remote: Compressing objects: 100% (5/5), done.
+    		remote: Total 7 (delta 0), reused 7 (delta 0), pack-reused 0
+    		Unpacking objects: 100% (7/7), done.
+    		Checking connectivity... done.
 
-5. Take a moment to investigate your new repository.
+6. Take a moment to investigate your new repository.
 
         $ cd dceu_tutorial8/
         $ ls
@@ -176,25 +186,24 @@ The Build Details page shows a log of your build systems:
 
 		  docker pull <docker hub username>/dceu_tutorial8
 
-    For example
+    For example:
 
-      $ docker pull moxiegirl/dceu_tutorial8
-  		Using default tag: latest
-  		latest: Pulling from moxiegilr/dceu_tutorial8
-  		90d7a4de1ef5: Pull complete
-  		60b05e04b5b6: Pull complete
-  		95d79d93cde4: Pull complete
-  		Digest: sha256:eab8584e5b08227637ff7ff77b933e062f3abb031b6e423bbf465d408632eae9
-  		Status: Downloaded newer image for moxiegirl/dceu_tutorial8:latest
+        $ docker pull moxiegirl/dceu_tutorial8
+    		Using default tag: latest
+    		latest: Pulling from moxiegilr/dceu_tutorial8
+    		90d7a4de1ef5: Pull complete
+    		60b05e04b5b6: Pull complete
+    		95d79d93cde4: Pull complete
+    		Digest: sha256:eab8584e5b08227637ff7ff77b933e062f3abb031b6e423bbf465d408632eae9
+    		Status: Downloaded newer image for moxiegirl/dceu_tutorial8:latest
 
 5. Run the image to make sure it's executing correctly
 
-		$ docker run -d -p 80:80 --name mywebserver moxiegirl/dceu_tutorial8
-		b9d2496ba15ebd61d288028ae45f2479267ed4c183920b3080ebe2735eca133e
+		docker run -d -p 80:80 --name mywebserver <docker hub username>/dceu_tutorial8
 
-6. In your web browser, navigate to your node-3 IP address.
+6. In your web browser, navigate to your `node-3` IP address.
 
-    You should see a	web page with the text "Hola, Barcelona"
+    You should see aweb page with the text `"Hola, Barcelona"`.
 
 7. Switch back to your terminal window, stop and remove your running container
 
@@ -206,11 +215,11 @@ The Build Details page shows a log of your build systems:
 
 8. Remove the web server image
 
-        docker rm <docker hub username>/dceu_tutorial8
+        docker rmi <docker hub username>/dceu_tutorial8
 
   For example:
 
-    		$ docker rm moxiegirl/dceu_tutorial8
+    		$ docker rmi moxiegirl/dceu_tutorial8
         Untagged: moxiegirl/dceu_tutorial8:latest
         Deleted: b10dfa917433ffa9d607e455f8ff6fb1eef3e05e8155114133a469bc286acf4f
         Deleted: 30ed62e32a0400ca3eaf690994084145f5ddee6a43907330ba3a56f7f6e8026c
@@ -240,17 +249,22 @@ the GitHub repo. This change will trigger an automated build of your
     		$ cat index.html
         Docker es el mejor
 
-4. Add the updated file to your GitHub repo
+4. Set your Git config if you haven't already.
+
+      git config --gobal user.email "you@youremail.com"
+      git config --gobal user.name "Firstname Lastname"
+
+5. Add the updated file to your GitHub repo
 
 		$ git add .
 
-5. Commit the change
+6. Commit the change
 
 		$ git commit -m "updated index.html"
 		[master 72e748d] updated index.html
 	 	1 file changed, 1 insertion(+), 1 deletion(-)
 
-6. Push you changes to the GitHub repo.
+7. Push you changes to the GitHub repo.
 
 		$ git push origin master
 
@@ -263,13 +277,15 @@ the GitHub repo. This change will trigger an automated build of your
 		Total 3 (delta 1), reused 0 (delta 0)
 		To https://github.com/<github username>/dceu_tutorial8.git
 
-7. In your web browser, navigate back to Docker Hub.
+8. In your web browser, navigate back to Docker Hub.
 
-8. Go to your `dceu_tutorial8` Build Details page and confirm that there is a new build.
+9. Go to your `dceu_tutorial8` Build Details page and confirm that there is a new build.
 
-9. Copy the "Docker Pull Command" from the page's right hand side.
+  Do not move to the next step until your build completes.
 
-10. Switch back to your terminal window and pull down your newly built image.
+10. Copy the "Docker Pull Command" from the page's right hand side.
+
+11. Switch back to your terminal window and pull down your newly built image.
 
 		$ docker pull <docker hub username>/dceu_tutorial8
 
@@ -281,15 +297,15 @@ the GitHub repo. This change will trigger an automated build of your
 		Digest: sha256:eab8584e5b08227637ff7ff77b933e062f3abb031b6e423bbf465d408632eae9
 		Status: Downloaded newer image for <docker hub username>/dceu_tutorial8:latest
 
-11. Run the webserver to make sure it's executing correctly
+12. Run the `webserver` to make sure it's executing correctly
 
 		$ docker run -d -p 80:80 --name mywebserver <docker hub username>/dceu_tutorial8
 		b9d2496ba15ebd61d288028ae45f2479267ed4c183920b3080ebe2735eca133e
 
-12. Now, in your web browser navigate to your node-3 IP address.
+13. Now, in your web browser navigate to your `node-3` IP address.
 
-    You should see a  web page with the text "Docker es el mejor"
-    
+    You should see a  web page with the text `"Docker es el mejor"`.
+
 ## Conclusion
 
 Congrats !! you have completed this lab and learned how to integrate Github and DockerHub to automate your image builds!
@@ -308,7 +324,7 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 
 1. Log into each EC2 instance you used and run the following:
 
-      $ source /home/ubuntu/cleanup.sh
+        $ source /home/ubuntu/cleanup.sh
 
 3. In your web browser, navigate to your `dceu_tutorial8` repository on Docker Hub
 
@@ -332,7 +348,7 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 
 		<githug username>/dceu_tutorial8
 
-11. Press I understand the consequences, delete this repository.
+11. Press I understand the consequences, to delete this repository.
 
 
 ## Related information
