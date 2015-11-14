@@ -144,7 +144,7 @@ The new native `overlay` network driver supports multi-host networking natively 
 
 Now that your three nodes are configured to use the key-value store, you can create an overlay network on any node. When you create the network, it is distributed to all the nodes.
 
-1. Pick one from among the node 1, 2 or 3` and log into that node.
+1. Pick one from among the node 1, 2 or 3 and log into that node.
 
 2. Create an `overlay` network.
 
@@ -170,7 +170,7 @@ Now that your three nodes are configured to use the key-value store, you can cre
 		501f891883cf        bridge              bridge
 		a141cc346b6c        none                null
 
-		You'll find that all three networks are running `RED` and that, unlike the default networks, `RED` has the same id on all three hosts even though you created it on only one of them.
+	You'll find that all three networks are running `RED` and that, unlike the default networks, `RED` has the same id on all three hosts even though you created it on only one of them.
 
 ## Task 5: Run Containers on the RED network
 
