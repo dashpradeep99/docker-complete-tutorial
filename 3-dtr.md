@@ -13,6 +13,8 @@
 - [Task 3: Creating Organizations, Teams, Members,and Repositories](#task-3-creating-organizations-teams-membersand-repositories)
 - [Task 4: Pushing and Pulling DTR Images](#task-4-pushing-and-pulling-dtr-images)
 - [Task 5: Storage and Logs](#task-5-storage-and-logs)
+- [Task 6: DTR API Console and Documentation](#)
+- [Task 6: Deleting Images]()
 
 # Getting Started with Docker Trusted Registry (DTR)
 
