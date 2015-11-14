@@ -24,14 +24,14 @@ Tutum is a cloud-based system for managing Docker infrastructure that allows use
 ## Prerequisites
 
 * To complete this lab you will need a Docker Hub account. If you have an existing Docker Hub account, please proceed to “Attaching a new node” below
-* For this lab you'll be using **Node-2**, be sure there are not containers running on that node
+* For this lab you'll be using `node-2`, be sure there are not containers running on that node
 
 
 ## Task 1: Attaching a New Node
 
 In Tutum, Docker hosts are referred to Nodes. In this task, you curl the Tutum  agent onto one of you AWS-based docker hosts.
 
-### Logging in to Tutum
+### Logging into Tutum
 
 1. Navigate to http://www.tutum.co (use `.co` and not `.com` in the address).
 
@@ -125,7 +125,7 @@ imported previously.
 
 4. In Deploy tags type `HOL`.
 
-	This is the same deploy tag you just specified for you newly imported 	container.
+	This is the same deploy tag you just specified for you newly imported node.
 
 5. Click the grey rectangle over the Ports section.
 
@@ -137,13 +137,15 @@ imported previously.
 
 9. Click Create and Deploy.
 
-   The system displays a dialgo for your new service.
+   The system displays a dialog for your new service.
 
 10. Click `Timeline` and then `Service Start`.
 
 	From here you can see the progress of the service creation.
 
 11. After you see the service has successfully started, click endpoints.
+
+		This lab only uses a subset of the available Tutum deploy options.
 
 12. Click the arrow next to the service endpoint URL.
 
@@ -158,11 +160,11 @@ A stack is a collection of services that make up an application. Just like servi
 
 2. Click stacks.
 
-2. Click Create your first stack.
+3. Click Create your first stack.
 
-3. Enter `Lab` for the Stack name.
+4. Enter `Lab` for the Stack name.
 
-2. Underneath the empty Stackfile text box, click try ours.
+5. Underneath the empty Stackfile text box, click try ours.
 
 	Tutum creates the following Stackfile:
 
@@ -181,7 +183,7 @@ A stack is a collection of services that make up an application. Just like servi
 
 	The first line of the Stackfile specifies the name of our service, in this 	case `web`. You’re going to build a web service based on the `tutum/quickstart-python` image. You'll link the `web` service to the `redis` service (defined below), and alias the link with the name “Redis."
 
-	You will map port `5000` on the host to port `80` in the container. This mapping allows users to access your service via port `5000`, but Docker  redirect that request to container's port `80`.
+	Map port `5000` on the host to port `80` in the container. This mapping allows users to access your service via port `5000`, but Docker  redirect that request to container's port `80`.
 
 	You can use the “environment:” section to define any environment variables you need.
 
