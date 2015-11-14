@@ -24,12 +24,12 @@ A data volume is a specially designated directory within one or more containers 
 Data volumes are designed to persist data, independent of the container’s lifecycle. Docker therefore never automatically deletes volumes when you remove a container, nor will it "garbage collect" volumes that are no longer referenced by a container.
 
 ## Prerequisites
-For this lab, please use **Node 0** and ensure no containers are running on that node. To check for running containers use the `docker ps` command.
+For this lab, please use `node-0` and ensure no containers are running on that node. To check for running containers use the `docker ps` command.
 
 ## Task 1: Implementing a volume via the Docker client
 In this task, you're going to create a new container and add a file to it.
 
-1. SSH into your **node-0** AWS instance with your supplied credentials, for example:
+1. SSH into your `node-0` AWS instance with your supplied credentials, for example:
 
 		ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
 
@@ -78,7 +78,7 @@ In this task, you're going to create a new container and add a file to it.
 
 9. Press `Ctrl+P` and `Ctrl+Q` to exit the container shell.
 
-		This key combination leaves the container running. You should return to your Docker host's shell.
+	This key combination leaves the container running. You should return to your Docker host's shell.
 
 10. Ensure your container is still running:
 
@@ -149,7 +149,7 @@ In this task, you're going to take a quick look at where Docker stores volume da
 	 The file you created from the Docker host shell `file2.txt` should also
 	 appear inside your running container.
 
-9. Exit the container and return to your docker host
+9. Exit the container and return to your Docker host.
 
 		$ exit
 
@@ -186,7 +186,7 @@ By default, when you destroy a container Docker does not remove any volumes asso
 
 	The volume and its data are still intact.
 
-6. Exit superuser
+6. Exit elevated privileges.
 
 		$ exit
 
@@ -208,9 +208,9 @@ In the previous exercises, you were able to manipulate data files in a Docker vo
 
 Thankfully there is an easier way to make local files available inside a running container. You can, instead, mount existing local files and directories  as volumes into a running container. This allows developers, for instance, to hot-mount code into their containers, and have changes made locally reflected instantaneously in their containers.
 
-In this example, you'll modify some HTML and then see how the changes are reflected immediately on the container-based website. Additionally, you'll create a volume using the `-v` option with the `docker run` command.
+In this example, you'll create two containers `foo` and `bar`. You'll modify some HTML in `bar` and then see how the changes are reflected immediately on the container-based website in `foo`. Additionally, you'll create a volume using the `-v` option with the `docker run` command.  The lab switches between the containers so stay sharp as you read!
 
-1. Create a `www` subdirectory on your Docker host
+1. Create a `www` subdirectory on your Docker host.
 
 		$ mkdir ~/www
 
@@ -220,7 +220,7 @@ In this example, you'll modify some HTML and then see how the changes are reflec
 
 3. Create an `index.html` file with some content.
 
-	Be sure to use single quotes in the command:
+	Be sure to use single quotes in the command/
 
 		$ echo '<h1>Hola Barcelona!</h1>' > index.html
 
@@ -346,14 +346,9 @@ Feel free to continue exploring Docker volumes.
 
 
 ## Cleanup
-1. Remove any containers
 
-		$ docker rm -f $(docker ps -aq)
+If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up,
 
-2. Remove any existing images
+1. Log into each EC2 instance you used and run the following:
 
-		$ docker rmi -f $(docker images -q)
-
-3. Remove any existing volumes
-
-		$ docker volume rm $(docker volume ls -q)
+		$ source /home/ubuntu/cleanup.sh
