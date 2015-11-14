@@ -17,6 +17,8 @@
 * [Task 2: Enable Content Trust](#task-2-enable-content-trust)
 * [Task 3: Push a signed image](#task-3-push-a-signed-image)
 * [Task 4: Pulling images](#task-4-pulling-images)
+* [Task 5: Docker Content Trust with Yubikey](#task-5-signing-an-image-with-yubikey)
+
 
 
 
@@ -164,9 +166,120 @@ At this point, you have trust enabled.
         Digest: sha256:357cb702777f1bdf9a6241e8cf9d17b05d30fc203e7e4e51464a067e826c7906
         Status: Downloaded newer image for kizbitz/dctrust:signed
 
+## Task 5: Docker Content Trust with Yubikey (Mac/Linux  ONLY)
+
+**This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
+
+In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub.
+This step requires installing an experimentel version of Docker Toolbox. 
+
+**Step 1:** **Installing Experimental Docker Toolbox**
+
+Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end. 
+
+Download and install the experimental Docker Toolbox [here](https://dl.dropboxusercontent.com/u/1047237/Docker%20Toolbox%20DockerCon%20EU%202015%20Demopack.pkg). Then open the downloaded package and follow the steps to complete the installation. 
+
+After the installation is complete, launch the **Docker Quickstart Terminal**.  
+
+**Step 2:** Plug in your Yubikey (touch sensor facing up)
+
+**Step 3:** Check the available keys. You should see no keys as shown below:
+
+```
+My-Macbook-Pro:~ user$ notary key list
+
+# Root keys:
+
+# Signing keys:
+```
+
+**Step 4:** Generate a new Root Key
+
+##WARNING: The root key is really important. You should be careful not lose it or delete it. Make sure to use a dummy repo in this step in the case you delete it accidentanly.
+
+To generate a new root key, simply do the following:
+
+```
+My-Macbook-Pro:~ user$ notary key generate
+You are about to create a new root signing key passphrase. This passphrase
+will be used to protect the most sensitive key in your signing system. Please
+choose a long, complex passphrase and be careful to keep the password and the
+key file itself secure and backed up. It is highly recommended that you use a
+password manager to generate the passphrase and keep it safe. There will be no
+way to recover this key. You can find the key in your config directory.
+Enter passphrase for new root key with ID 37e0ee8: <ENTER A PASSWORD>
+Repeat passphrase for new root key with ID 37e0ee8:<ENTER SAME PASSWORD>
+Generated new ecdsa root key with keyID: 
+****************************
+```
+
+Check the new key:
+
+```
+My-Macbook-Pro:~ user$ notary key list
+
+# Root keys:
+******************************************************* - yubikey
+```
+**Step 5:** Sign an image with the new root key. First, pull a small image to use:
+
+```
+My-Macbook-Pro:~ user$ docker pull alpine
+Using default tag: latest
+Pull (1 of 1): alpine:latest@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec: Pulling from library/alpine
+3b4d28ce80e4: Pull complete
+Digest: sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+Status: Downloaded newer image for alpine@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+Tagging alpine@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec as alpine:latest
+```
+
+Tag an image with your Docker Hub username:
+
+```
+$ docker tag alpine <DOCKER_HUB_USERNAME>/alpine:signed
+```
+
+Ensure the **Docker Content Trust** is enabled
+
+```
+$ export DOCKER_CONTENT_TRUST=1
+```
+
+Ensure that you are logged in Docker Hub:
+
+```
+$ docker login
+Username: <DOCKER_HUB_USERNAME>
+Password:<YOUR_PASSWORD>
+Email:<YOUR_EMAIL>
+WARNING: login credentials saved in /Users/<YOUR_USERNAME>/.docker/config.json
+Login Succeeded
+
+```
+
+Push the new image using `docker-x`, the experimental Docker engine. During the push process, you will be prompted to touch the Yubikey sensor to perform signing. You will also be prompted to provide a new passphrase to be used to encrypt the repository key.
+
+
+```
+$ docker-x push DOCKER_HUB_USERNAME/alpine:signed
+The push refers to a repository [docker.io/DOCKER_HUB_USERNAME/alpine] (len: 1)
+3b4d28ce80e4: Image already exists
+signed: digest: sha256:0ec83084fcf6a8a96f80ccda270ccefa743601b33048bcc74e970e82d96efade size: 1608
+Signing and pushing trust metadata
+Please touch the attached Yubikey to perform signing.
+Enter passphrase for new repository key with ID 4ec62d9 (docker.io/DOCKER_HUB_USERNAME/alpine):
+Repeat passphrase for new repository key with ID 4ec62d9 (docker.io/DOCKER_HUB_USERNAME/alpine):
+Please touch the attached Yubikey to perform signing.
+Finished initializing "docker.io/DOCKER_HUB_USERNAME/alpine"
+```
+
+Congrats! you have signed and pushed a new image using the Yubikey. Docker users with enabled Docker Content Trust can pull the image that you just pushed.
+
+
 ## Conclusion
 
-At this point you have successfully enabled content trust on your Docker client, signed an image, and pushed the image to Docker Hub.
+At this point you have successfully enabled Docker Content Trust on your Docker client, signed an image, and pushed the image to Docker Hub.
 
 ### Share on Twitter!
 
