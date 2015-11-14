@@ -17,7 +17,6 @@
 * [Task 2: Enable Content Trust](#task-2-enable-content-trust)
 * [Task 3: Push a signed image](#task-3-push-a-signed-image)
 * [Task 4: Pulling images](#task-4-pulling-images)
-* [Task 5: Cleanup](#task-5-cleanup)
 
 
 
@@ -76,7 +75,7 @@ Before you enable Docker Content Trust, you must create a new temporary reposito
 
 6. Open <a href="https://hub.docker.com target="_blank">Docker Hub</a> in your browser and login.
 
-  At this point you should have a new unsigned image repository **dctrust** (with the 'latest' tag) under your Docker Hub account.
+  At this point you should have a new unsigned image repository **dctrust** (with the `latest` tag) under your Docker Hub account.
 
   ![On Docker Hub](images/dctrust-pushed.png)
 
@@ -103,6 +102,7 @@ You'll notice that the Docker client did not pull the image.  This is because th
 To create the trust data for an image, you need push an image with
 `DOCKER_CONTENT_TRUST` enabled. The first push of your new image, Docker prompts
 for two new passphrases for a **root key** and a **repository key**.
+
 1. Create a new tag for the `busybox` image:
 
         $ docker tag busybox <username>/dctrust:signed

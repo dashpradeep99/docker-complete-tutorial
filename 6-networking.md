@@ -381,7 +381,7 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 
 1. Log into each EC2 instance you used and run the following:
 
-	$ source /home/ubuntu/cleanup.sh
+		$ source /home/ubuntu/cleanup.sh
 
 
 ## Related information
