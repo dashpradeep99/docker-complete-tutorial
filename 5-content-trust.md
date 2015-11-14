@@ -2,13 +2,7 @@
 
 > **Difficulty**: Easy
 
-> **Time**: 15 mins
->
-> **Prequisites**:
->
-* An existing Docker Hub account
-* SSH onto the provided `<username>-node-0` instance in AWS
-* Logged into Docker Hub with the Docker client
+> **Time**: 20 mins
 
 > **Tasks**:
 >
