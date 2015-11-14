@@ -14,7 +14,7 @@
 - [Task 4: Pushing and Pulling DTR Images](#task-4-pushing-and-pulling-dtr-images)
 - [Task 5: Storage and Logs](#task-5-storage-and-logs)
 - [Task 6: DTR API Console and Documentation](#)
-- [Task 6: Deleting Images]()
+- [Task 7: Deleting Images](#)
 
 # Getting Started with Docker Trusted Registry (DTR)
 
