@@ -127,7 +127,7 @@ imported previously.
 
 	This is the same deploy tag you just specified for you newly imported node.
 
-5. Click the grey rectangle over the Ports section.
+5. Click the gray rectangle over the Ports section.
 
 6. Click Publish.
 

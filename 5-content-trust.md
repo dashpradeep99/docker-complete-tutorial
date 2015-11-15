@@ -2,7 +2,7 @@
 
 > **Difficulty**: Intermediate
 
-> **Time**: 20 mins
+> **Time**: 20 minutes
 
 > **Tasks**:
 >
@@ -164,7 +164,7 @@ At this point, you have trust enabled.
 
 **This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
 
-In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing an experimentel version of Docker Toolbox.
+In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing an experimental version of Docker Toolbox.
 
 **This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
 
@@ -193,7 +193,7 @@ My-Macbook-Pro:~ user$ notary key list
 
 **Step 4:** Generate a new Root Key
 
-##WARNING: The root key is really important. You should be careful not lose it or delete it. Make sure to use a dummy repo in this step in the case you delete it accidentanly.
+##WARNING: The root key is really important. You should be careful not lose it or delete it. Make sure to use a dummy repo in this step in the case you delete it accidentally.
 
 To generate a new root key, simply do the following:
 

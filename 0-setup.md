@@ -1,6 +1,6 @@
 # Set up your system for the labs
 
-The Docker Hands-on labs require that you connect to four AWS EC2 instances on their own subnetwork. Docker has networked and launched the instances for you. This page explains how to set up your system to connect to these instances for the labs.
+The Docker Hands-on labs require that you connect to four AWS EC2 instances on their own sub-network. Docker has networked and launched the instances for you. This page explains how to set up your system to connect to these instances for the labs.
 
 When you registered for labs, you received an email. Attached to the email you'll find:
 
@@ -38,7 +38,7 @@ Before starting the lab, you need to set up your connection key.
 
 Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them. Docker Hub accounts are completely free. To create one:
 
-1. <a href="http://hub.docker.com" targe="_blank">Open your browser to Docker Hub</a>.
+1. <a href="http://hub.docker.com" target="_blank">Open your browser to Docker Hub</a>.
 
 2. On the right hand side of the screen supply a unique username, email address, and password
 

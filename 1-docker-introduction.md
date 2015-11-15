@@ -3,7 +3,7 @@
 
 > **Difficulty**: Easy
 
-> **Time**: 20 mins
+> **Time**: 20 minutes
 
 > **Tasks**:
 >- [Prerequisites](#prerequisites)
@@ -159,12 +159,12 @@ diagram below shows a container running the Ubuntu 15.04 image.
 
 The major difference between a container and an image is this writable layer.
 All writes to the container that add new or modifying existing data are stored
-in this writable layer. When the container is deleted the writeable layer is
+in this writable layer. When the container is deleted the writable layer is
 also deleted. The image remains unchanged.
 
 You can run containers from images that you built or that you pulled from the
 Docker Hub. Docker Hub has millions of images that are created and shared by
-regular users. Additonally, Docker Hub hosts official images ( e.g
+regular users. Additionally, Docker Hub hosts official images ( e.g
 Ubuntu, Redis, and Mongo) that are created and maintained by their respective
 companies.
 
@@ -176,7 +176,7 @@ Issue the following commands and observe the output:
 
   When you execute this command you search Docker Hub for all images that contain the word 'ubuntu' in them. You can search Docker Hub from the web if you go to [www.hub.docker.com](https://hub.docker.com/explore/).
 
-  You'll notice that the search results include an `OFFICAL` column. Official images are certified by Docker to indicate that they are built using certain standards. You'll find a list of official images here : https://github.com/docker-library/official-images/tree/master/library.
+  You'll notice that the search results include an `OFFICIAL` column. Official images are certified by Docker to indicate that they are built using certain standards. You'll find a list of official images here : https://github.com/docker-library/official-images/tree/master/library.
 
 2. Pull the `ubuntu` image.
 
@@ -227,7 +227,7 @@ In the following task, you will be building a new image from a Dockerfile. You'l
 
 3. Edit the `Dockerfile` using your favorite text editor.
 
-  The `vim`, `vi`, and `nano` editors are all available on Unbuntu.
+  The `vim`, `vi`, and `nano` editors are all available on Ubuntu.
 
 4. Add the following to the file:
 
@@ -251,7 +251,7 @@ In the following task, you will be building a new image from a Dockerfile. You'l
 
         $ docker build -t myimage:v1 .
 
-    Docker goes through the Dockerfile instructions one line at a time. Each line in creates an **intermediate** image by creating a container from the previous line, running the current command, and commiting that container into a new image. The process is repeated until the last command is successfully committed into an image. The last image is the final product of the build process and, in this case is tagged as 'myimage:v1'.
+    Docker goes through the Dockerfile instructions one line at a time. Each line in creates an **intermediate** image by creating a container from the previous line, running the current command, and committing that container into a new image. The process is repeated until the last command is successfully committed into an image. The last image is the final product of the build process and, in this case is tagged as 'myimage:v1'.
 
 7.  List your new image.
 
