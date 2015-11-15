@@ -11,7 +11,7 @@
 > * [Task 1: Deploy a Multiservice Application (`DockChat`) with Compose](#task-1-deploy-a-multiservice-application-on-a-single-engine)
 > * [Task 2: Set Up a Docker Swarm cluster](#task-2-set-up-a-docker-swarm-cluster)
 > * [Task 3: Re-deploy DockChat on the Swarm Cluster](#task-3-re-deploy-dockchat-on-the-swarm-cluster)
-> * [Task 4: Scale DockChat with Compose and Interlock](#task-4-scale-dockchat-with-compose-and-interlock-optional)
+> * [Task 4: Scale DockChat with Compose and Interlock](#task-4-scale-dockchat-with-compose-and-interlock)
 
 ## Prerequisites
 
@@ -383,7 +383,7 @@ root@node-0:~/dockchat$
 ```
 You can check out the app by going to http://{node-1-PUBLIC IP}:5000 for the **staging** deployment and to http://{node-2-PUBLIC IP}:5000 for the **production** deployment.
 
-## Task 4: Scale DockChat with Interlock (Optional)
+## Task 4: Scale DockChat with Interlock
 
 **DockChat** is becoming very popular and it's getting a lot of traffic! You need to scale it to accomodate the surge in the traffic. Good news is that you can use Compose to scale the **web** service to handle more traffic in the **production** deployment. Scaling a service that does host-port mapping ( **web**'s TCP Port 5000) will not work because you can only have a single service listen on the host's port 5000. Thereofre, you will need to remove host-port mapping to avoid this problem. But then how will you direct traffic to the contaier? Here comes **Interlock** which is an event-driven plugin that can register new containers to a service.
 
