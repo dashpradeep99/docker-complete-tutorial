@@ -11,7 +11,7 @@
 * [Task 2: Enable Content Trust](#task-2-enable-content-trust)
 * [Task 3: Push a signed image](#task-3-push-a-signed-image)
 * [Task 4: Pulling images](#task-4-pulling-images)
-* [Task 5: Docker Content Trust with Yubikey](#task-5-signing-an-image-with-yubikey)
+* [Task 5: Docker Content Trust with Yubikey](#task-5-docker-content-trust-with-yubikey)
 
 
 
@@ -160,7 +160,7 @@ At this point, you have trust enabled.
         Digest: sha256:357cb702777f1bdf9a6241e8cf9d17b05d30fc203e7e4e51464a067e826c7906
         Status: Downloaded newer image for kizbitz/dctrust:signed
 
-## Task 5: Docker Content Trust with Yubikey (Mac/Linux  ONLY)
+## Task 5: Docker Content Trust with Yubikey
 
 **This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
 
