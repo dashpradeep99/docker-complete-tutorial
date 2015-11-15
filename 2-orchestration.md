@@ -11,7 +11,7 @@
 > * [Task 1: Deploy a Multiservice Application (`DockChat`) with Compose](#task-1-deploy-a-multiservice-application-on-a-single-engine)
 > * [Task 2: Set Up a Docker Swarm cluster](#task-2-set-up-a-docker-swarm-cluster)
 > * [Task 3: Re-deploy DockChat on the Swarm Cluster](#task-3-re-deploy-dockchat-on-the-swarm-cluster)
-> * [Task 4: Scale DockChat with Compose and Interlock](#task-4-scale-dockchat-with-compose-and-interlock)
+> * [Task 4: Scale DockChat with Compose and Interlock](#task-4-scale-dockchat-with-compose-and-interlock-optional)
 
 ## Prerequisites
 
