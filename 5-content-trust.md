@@ -164,14 +164,18 @@ At this point, you have trust enabled.
 
 **This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
 
-In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub.
-This step requires installing an experimentel version of Docker Toolbox. 
+In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing an experimentel version of Docker Toolbox.
+
+**This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
+
+    $ lsusb | grep Yubikey
+    Bus 020 Device 031: ID 1050:0406 1050 Yubikey 4 U2F+CCID
 
 **Step 1:** **Installing Experimental Docker Toolbox**
 
-Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end. 
+Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end.
 
-Download and install the experimental Docker Toolbox [here](https://dl.dropboxusercontent.com/u/1047237/Docker%20Toolbox%20DockerCon%20EU%202015%20Demopack.pkg). Then open the downloaded package and follow the steps to complete the installation. 
+Download and install the experimental Docker Toolbox [here](https://dl.dropboxusercontent.com/u/1047237/Docker%20Toolbox%20DockerCon%20EU%202015%20Demopack.pkg). Then open the downloaded package and follow the steps to complete the installation.
 
 After the installation is complete, launch the **Docker Quickstart Terminal**.  
 
@@ -203,7 +207,7 @@ password manager to generate the passphrase and keep it safe. There will be no
 way to recover this key. You can find the key in your config directory.
 Enter passphrase for new root key with ID 37e0ee8: <ENTER A PASSWORD>
 Repeat passphrase for new root key with ID 37e0ee8:<ENTER SAME PASSWORD>
-Generated new ecdsa root key with keyID: 
+Generated new ecdsa root key with keyID:
 ****************************
 ```
 
