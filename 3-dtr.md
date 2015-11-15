@@ -13,8 +13,8 @@
 - [Task 3: Creating Organizations, Teams, Members,and Repositories](#task-3-creating-organizations-teams-membersand-repositories)
 - [Task 4: Pushing and Pulling DTR Images](#task-4-pushing-and-pulling-dtr-images)
 - [Task 5: Storage and Logs](#task-5-storage-and-logs)
-- [Task 6: DTR API Console and Documentation](#)
-- [Task 7: Deleting Images](#)
+- [Task 6: DTR API Console](#task-6-dtr-api-console)
+- [Task 7: Deleting Images](#task-7-deleting-images)
 
 # Getting Started with Docker Trusted Registry (DTR)
 
@@ -280,7 +280,7 @@ DTR provides a streaming log for all containers that make up DTR ( auth , load-b
 
 ![](images/dtr-step5-1.png)
 
-## Task 6: DTR API Console and Documentation
+## Task 6: DTR API Console
 
 DTR is built on top of a powerful API that provides all of the functionality available in the UI, plus more. DTR's API uses standard HTTP verbs: GET/PUT/POST/DELETE with JSON-formatted resutls. To make it easy for developers to work with DTR, DTR 1.4 provides an API Console coupled with corresponding documentation. You can use the API console to post directly to the API and easily see the results.
 

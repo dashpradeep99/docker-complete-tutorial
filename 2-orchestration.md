@@ -3,24 +3,24 @@
 
 > **Difficulty**: Advanced
 
-> **Time**: 40 mins
-
-> **Prequisites**: 3 Nodes with Docker CS 1.9 Engine
+> **Time**: 30-40 mins
 
 > **Tasks**:
+> 
 >* [Prerequisites](#prerequisites)
-> * Task 1: Deploy a Multiservice Application (`DockChat`) with Compose
-> * Task 2: Set Up a Docker Swarm cluster
-> * Task 3: Re-deploy DockChat on the Swarm Cluster
-> * Task 4: Scale DockChat with Compose and Interlock
+> * [Task 1: Deploy a Multiservice Application (`DockChat`) with Compose](#task-1-deploy-a-multiservice-application-on-a-single-engine)
+> * [Task 2: Set Up a Docker Swarm cluster](task-2-set-up-a-docker-swarm-cluster)
+> * [Task 3: Re-deploy DockChat on the Swarm Cluster](task-3-redeploy-dockchat-on-the-swarm-cluster)
+> * [Task 4: Scale DockChat with Compose and Interlock](task-4-scale-dockchat-with-compose-and-interlock)
 
 ## Prerequisites
 
 * You will be using **node-0,node-1,and node-2**
-* Ensure that no containers are running on these nodes.
+* Ensure that no containers are running on these nodes(`$ docker rm -f $(docker ps -q)`)
 * Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
-* Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
+* Ensure that DOCKER_HOST is unset ( `$ unset DOCKER_HOST`)
 * Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
+* Note: Some commands may require `sudo`. 
 
 # Getting Started with Docker Compose and Swarm
 
@@ -28,7 +28,7 @@
 
 Docker Compose and Docker Swarm are key elements of the Docker Ecosystem. Docker Compose is an open-source tool to orchestrate building and deploying multi-service,multi-container applications. Compose relies on a configuration YAML file (default name is **docker-compose.yml**) to build, create, and run containers against a single Docker Engine or Docker Swagrm cluster. The YAML configuration file has standard reference commands ( full list [here](https://docs.docker.com/compose/yml/) ) that  define how the container is created at runtime. Some of the most common commands used are: **build, image, command, ports, and links**. Compose should be already installed on your machine. To verify, issue the following command on all-nodes and ensure you see the currently installed version.
 
-`node-0# docker-compose version`
+`node-0$ docker-compose version`
 
 In this tutorial, you will go through deploying **DockChat**, the new awesome chat app. First you'll use Docker Compose to deploy it on a single Docker engine. Then you will create a Swarm cluster with staging and production engines. You'll use the Swarm cluster to deploy DockChat. Finally, you'll scale the app using **Interlock**, the event-driven Docker plugin system.
 
@@ -43,13 +43,13 @@ In this step, you will deploy a multiservice app, **DockChat**, that is composed
 
 **Step 1:** First step is to clone the DockChat repo from GitHub on **node-0**
 
-` node-0# git clone https://github.com/nicolaka/dockchat.git `
+` node-0$ git clone https://github.com/nicolaka/dockchat.git `
 
 **Step 2:** Change directory to dockchat, and examine the list of files in the repo.
 
 ```
-node-0:~# cd dockchat/
-node-0:~/dockchat# tree
+node-0:~$ cd dockchat/
+node-0:~/dockchat$ tree
 .
 ├── docker-compose.yml
 ├── Dockerfile
@@ -67,7 +67,7 @@ node-0:~/dockchat# tree
 You'll notice a Dockerfile for the '**web**' service and a **docker-compose.yml** that describes the app's service configuration. Take a look at docker-compose.yml file using your favorite text editor:
 
 ```
-node-0:~/dockchat# cat docker-compose.yml
+node-0:~/dockchat$ cat docker-compose.yml
 # Mongo DB
 db:
   image: mongo
@@ -83,7 +83,7 @@ web:
    - db:db
 ```
 
-You can see that there are two service descriptions: db and web. Each of them define a service with certain build or runtime parameter:
+You can see that there are two service descriptions: db and web. Each of them define a service with certain build on runtime parameter:
 
 
 > * **image:{IMAGE_NAME}** will specify the name of the image to use. Note: this needs to be an image that has already been built and available either locally, on Docker Trusted Registry, or Docker Hub.
@@ -96,12 +96,12 @@ You can see that there are two service descriptions: db and web. Each of them de
 
 > * **links:{SERVICE:ALIAS}** will specify container linking parameters. Container linking is a mechanism to automatically provide access, network, and environment paramters for one container to discover and communicate with another contianer. In this example, we are linking the database container '**db**' TO the '**web**' container and giving it the alieas '**db**'.
 
-> * **expose:{PORT}** will specify which port the Docker Engine should map to inside in the container. This is optional if the expose paramter was already declared in the Dockerfile of that service.
+> * **expose:{PORT}** informs Docker that the container listens on the specified network ports at runtime.
 
 **Step 3:** Before, running the app, you need to ensure that Docker is running locally and the Docker Compose client can connect to it. To verify, issue the following command and you should expect a similar output:
 
 ```
-# docker-compose ps
+$ docker-compose ps
 Name   Command   State   Ports
 ------------------------------
 ```
@@ -111,7 +111,7 @@ Name   Command   State   Ports
 The `build` option builds an image for every service that has a `build:` paramter in the `docker-compose.yml` file but doesn't actually create any container from that image. The `up` option runs the services described in the `docker-compose.yml` file. The `up` option WILL build the services' images before it runs them. It is recommended to ensure that you successfully build all the requried images before running the containers from them as follows:
 
 ```
-node-0:~/dockchat# docker-compose build
+node-0:~/dockchat$ docker-compose build
 db uses an image, skipping
 Building web
 ....
@@ -119,7 +119,7 @@ Successfully built b858d650581e
 ```
 
 ```
-node-0:~/dockchat# docker-compose up  
+node-0:~/dockchat$ docker-compose up  
 <snippit>
 Creating dockchat_db_1
 Creating dockchat_web_1
@@ -131,13 +131,13 @@ web_1 |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 web_1 |  * Restarting with stat
 ```
 
-The output means that you have successfully created the two services. To access the app, go in your web browser to http://{your node-0 public IP address}:5000 . You should see somthing like this:
+The output means that you have successfully created the two containers. To access the app, go in your web browser to http://{your node-0 public IP address}:5000 . You should see somthing like this:
 
 ![](images/orchestration-step1-1.png)
 
-**Step 5:** Stop the app after you confirm it worked.
+**Step 5:** Stop the app after you confirm it worked by pressing **CTRL + C** . Then remove the two containers by typing:
 
-` node-0:~/dockchat# docker-compose stop && docker-compose rm -f `
+` node-0:~/dockchat$ docker-compose stop && docker-compose rm -f `
 
 
 ## Task 2: Set Up a Docker Swarm cluster
@@ -154,7 +154,7 @@ Follow the below steps to create a Swarm cluster:
 
 
 ```
-node-0:~#sudo nano /etc/default/docker
+$ sudo nano /etc/default/docker
 # Add the following for node-1:
 
 # Use DOCKER_OPTS to modify the daemon startup options
@@ -167,33 +167,33 @@ DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --label=enviro
 
 ```
 
-**Step 2:** Then restart Docker on node-0 and node-1.
+**Step 2:** Then restart Docker on **node-1 and node-2**.
 
-`node-0:~# sudo service docker restart`
+`$ sudo service docker restart`
 
 Note: if Docker Engine TLS verification is enabled, it is recommended to use TCP port 2376 instead. For the remainder of these exercises, we will not use Docker TLS verifications.
 
 **Step 3:** Create a unique cluster token on from node-0.  When you run the contianer, it will output a unique cluster token. You will use this token for the remainder of the tutorial.
 
-`node-0:~#export TOKEN=$(docker run --rm swarm create)`
+`node-0:~$export TOKEN=$(docker run --rm swarm create)`
 
 **Step 4:** Configure the Swarm Manager on node-0. The manager runs in a container and is configured to use a different TCP port (3375) than engine (2375).
 
-```node-0:~#docker run -d -p 3375:2375 swarm manage token://$TOKEN```
+```node-0:~$docker run -d -p 3375:2375 swarm manage token://$TOKEN```
 
-**Step 5:** Register the Swarm agents to the discovery service. Do this step on node-0. The node’s IP must be accessible from the Swarm Manager. Use the following command and replace with the proper node_ip and cluster_id to start an agent.
+**Step 5:** Register the Swarm agents to the discovery service. Do this step on node-0. The node’s IP must be accessible from the Swarm Manager. Use the following command and replace with the proper node_ip to start an agent.
 ```
-node-0:~#docker run -d swarm join --addr=<node_1_ip:2375> token://$TOKEN
-node-0:~#docker run -d swarm join --addr=<node_2_ip:2375> token://$TOKEN
+node-0:~$docker run -d swarm join --addr=<node_1_ip:2375> token://$TOKEN
+node-0:~$docker run -d swarm join --addr=<node_2_ip:2375> token://$TOKEN
 ```
-Please use node-1 and node-2's private IPs (10.x.x.x) and NOT their public IPs. To be safe, simply use their DNS names instead.
+Please use node-1 and node-2's private IPs (10.x.x.x) and NOT their public IPs. To be safe, simply use their **DNS names instead**.
 
 **Step 6:**  Confirm that the two nodes are part of the Swarm cluster:
 
 ```
-node-0:## docker -H tcp://0.0.0.0:3375 info
-Containers: 5
-Images: 5
+node-0:$ docker -H tcp://0.0.0.0:3375 info
+Containers: 0
+Images: 0
 Role: primary
 Strategy: spread
 Filters: health, port, dependency, affinity, constraint
@@ -218,7 +218,7 @@ Name: 5dc162006656
 
 
 ```
-# docker -H tcp://0.0.0.0:3375 version
+$ docker -H tcp://0.0.0.0:3375 version
 Client:
  Version:      1.9.0
  API version:  1.21
@@ -243,7 +243,7 @@ Server:
 
 Now that we have a Swarm cluster, you can now re-deploy DockChat on the Swarm Cluster.
 
-**Step 1 :** The first step is to point all Docker client commands at the Swarm manager instead of a single local engine. To do so, you need to set `DOCKER_HOST` to point at the Swarm Master's IP and TCP port. Remember that Swarm Master is just a container running and listening on port 3375.
+**Step 1 :** The first step is to point all Docker client commands at the Swarm manager instead of a single local engine on **node-0**. To do so, you need to set `DOCKER_HOST` to point at the Swarm Master's IP and TCP port. Remember that Swarm Master is just a container running and listening on port 3375.
 
 `export DOCKER_HOST={node-0-PrivateIP}:3375`
 
@@ -251,18 +251,18 @@ Now that we have a Swarm cluster, you can now re-deploy DockChat on the Swarm Cl
 
 
 ```
-node-0:~/dockchat# docker login
+node-0:~/dockchat$ docker login
 Username:
 WARNING: login credentials saved in /root/.docker/config.json
 Login Succeeded
 ```
 ```
-node-0# docker build -t {Your_Docker_Hub_username}/dockchat:v1 .
+node-0$ docker build -t {Your_Docker_Hub_username}/dockchat:v1 .
 ...
 Successfully built 40a0a638005a
 ```
 ```
-node-0# docker push {Your_Docker_Hub_username}/dockchat:v1
+node-0$ docker push {Your_Docker_Hub_username}/dockchat:v1
 ```
 You should see something like:
 
@@ -304,15 +304,15 @@ web:
    - "constraint:environment==staging"
 ```
 
-**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CICD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests success deploy to the **production** nodes.
+**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CICD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests succeed deploy to the **production** nodes.
 
 `mv docker-compose.yml staging.docker-compose.yml`
 
-**Step 6:** Now, you need to pull the images on all nodes, and deploy and check the services. But this team need to specify both the custom Docker Compose YAML file **and** a custom project name for this deployment. This is a requirement to ensure unique configuration file to project mapping.
+**Step 6:** Now, you need to pull the images on all nodes, and deploy and check the services. But this time need to specify both the custom Docker Compose YAML file **and** a custom project name for this deployment. This is a requirement to ensure unique configuration file to project mapping.
 
 ```
 
-node-0:~/dockchat# docker-compose -f staging.docker-compose.yml -p dockchat_staging pull
+node-0:~/dockchat$ docker-compose -f staging.docker-compose.yml -p dockchat_staging pull
 Pulling db (mongo:latest)...
 node-2: Pulling mongo:latest... : downloaded
 node-1: Pulling mongo:latest... : downloaded
@@ -320,12 +320,12 @@ Pulling web (nicolaka/dockchat:v1)...
 node-1: Pulling nicolaka/dockchat:v1... : downloaded
 node-2: Pulling nicolaka/dockchat:v1... : downloaded
 
-node-0:~/dockchat# docker-compose -f staging.docker-compose.yml -p dockchat_staging up -d
+node-0:~/dockchat$ docker-compose -f staging.docker-compose.yml -p dockchat_staging up -d
 
 Creating dockchatstaging_db_1
 Creating dockchatstaging_web_1
 
-node-0:~/dockchat# docker-compose -f staging.docker-compose.yml -p dockchat_staging ps
+node-0:~/dockchat$ docker-compose -f staging.docker-compose.yml -p dockchat_staging ps
         Name                      Command             State             Ports
 ---------------------------------------------------------------------------------------
 dockchatstaging_db_1    /entrypoint.sh --smallfiles   Up      27017/tcp
@@ -334,11 +334,11 @@ dockchatstaging_web_1   python webapp.py              Up      10.0.10.77:5000->5
 
 ```
 
-Notice that both containers were deployed on node-1 ( the staging node). This is because we constrained the deployment of both services only on the **'staging'** nodes. Also, since the two services are linked, Docker Compose will ensure they are deployed on the same node.
+Using `docker ps`'s NAMES column, you'll notice that both containers were deployed on **node-1** (the staging node). This is because we constrained the deployment of both services only on the **'staging'** nodes. Also, since the two services are linked, Docker Compose will ensure they are deployed on the same node.
 
 **Step 7:** Do the same for the **production** deployment:
 
-`node-0:~/dockchat#cp staging.docker-compose.yml production.docker-compose.yml `
+`node-0:~/dockchat$cp staging.docker-compose.yml production.docker-compose.yml `
 
 and change the following in the `production.docker-compose.yml`:
 
@@ -350,7 +350,7 @@ and change the following in the `production.docker-compose.yml`:
 **Step 8:** Deploy again using the `production.docker-compose.yml` :
 
 ```
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production pull
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production pull
 Pulling db (mongo:latest)...
 node-2: Pulling mongo:latest... : downloaded
 node-1: Pulling mongo:latest... : downloaded
@@ -358,11 +358,11 @@ Pulling web (nicolaka/dockchat:v1)...
 node-2: Pulling nicolaka/dockchat:v1... : downloaded
 node-1: Pulling nicolaka/dockchat:v1... : downloaded
 
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production up -d
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production up -d
 Creating dockchatproduction_db_1
 Creating dockchatproduction_web_1
 
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production ps
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production ps
           Name                       Command             State             Ports
 ------------------------------------------------------------------------------------------
 dockchatproduction_db_1    /entrypoint.sh --smallfiles   Up      27017/tcp
@@ -370,16 +370,16 @@ dockchatproduction_web_1   python webapp.py              Up      10.0.11.50:5000
 
 ```
 
-Note that now the two containers were deployed on Node 2, which is the production node.
+Using `docker ps`'s NAMES column, note that now the two containers were deployed on Node 2, which is the production node.
 
 ```
-ode-0:~/dockchat# docker ps
+ode-0:~/dockchat$ docker ps
 CONTAINER ID        IMAGE                  COMMAND                  CREATED              STATUS              PORTS                       NAMES
 618b949413e4        nicolaka/dockchat:v1   "python webapp.py"       About a minute ago   Up About a minute   10.0.11.50:5000->5000/tcp   node-2/dockchatproduction_web_1
 30e0105aa493        mongo                  "/entrypoint.sh --sma"   About a minute ago   Up About a minute   27017/tcp                   node-2/dockchatproduction_db_1,node-2/dockchatproduction_web_1/db,node-2/dockchatproduction_web_1/db_1,node-2/dockchatproduction_web_1/dockchatproduction_db_1
 f77b3a038ba8        nicolaka/dockchat:v1   "python webapp.py"       3 minutes ago        Up 3 minutes        10.0.10.77:5000->5000/tcp   node-1/dockchatstaging_web_1
 e136e52638bd        mongo                  "/entrypoint.sh --sma"   3 minutes ago        Up 3 minutes        27017/tcp                   node-1/dockchatstaging_db_1,node-1/dockchatstaging_web_1/db,node-1/dockchatstaging_web_1/db_1,node-1/dockchatstaging_web_1/dockchatstaging_db_1
-root@node-0:~/dockchat#
+root@node-0:~/dockchat$
 ```
 You can check out the app by going to http://{node-1-PUBLIC IP}:5000 for the **staging** deployment and to http://{node-2-PUBLIC IP}:5000 for the **production** deployment.
 
@@ -392,7 +392,7 @@ In this example, you'll use Interlock to dynamically register your **web** servi
 **Step 1:** Stop the production deployment  ( I know that sounds silly :) but it is needed because we need to add certain environment vars to the **web** service containers.
 
 ```
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production stop
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production stop
 Stopping dockchatproduction_web_1 ... done
 Stopping dockchatproduction_db_1 ... done
 ```
@@ -437,7 +437,7 @@ interlock:
 **Step 3:** Re-deploy the service and check that all containers are up:
 
 ```
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production pull
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production pull
 Pulling db (mongo:latest)...
 node-2: Pulling mongo:latest... : downloaded
 node-1: Pulling mongo:latest... : downloaded
@@ -449,12 +449,12 @@ node-2: Pulling ehazlett/interlock:latest... : downloaded
 node-1: Pulling ehazlett/interlock:latest... : downloaded
 
 
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production up -d
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production up -d
 Creating dockchatproduction_db_1
 Creating dockchatproduction_web_1
 Creating dockchatproduction_interlock_1
 
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production ps
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production ps
              Name                           Command               State               Ports
 --------------------------------------------------------------------------------------------------------
 dockchatproduction_db_1          /entrypoint.sh --smallfiles      Up      27017/tcp
@@ -466,7 +466,7 @@ dockchatproduction_web_1         python webapp.py                 Up      10.0.1
 **Step 4:** To test the app from your browser, you need to add a new entry in your local `/etc/hosts` pointing to `dockchat.com` as follows:
 
 ```
-mylaptop# vim /etc/hosts
+mylaptop$ vim /etc/hosts
 
 (+) {PUBLIC_IP_OF_NODE-2}   dockchat.com
 ```
@@ -476,7 +476,7 @@ Then go to `dockchat.com` from your browser and test if it works.
 **staging** Finally, we need to scale the app, and that can be done easily with the `docker-compose scale` funcationality.
 
 ```
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production scale web=10
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production scale web=10
 
 Creating and starting 2 ... done
 Creating and starting 3 ... done
@@ -489,7 +489,7 @@ Creating and starting 9 ... done
 Creating and starting 10 ... done
 
 
-node-0:~/dockchat# docker-compose -f production.docker-compose.yml -p dockchat_production ps
+node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production ps
 
              Name                           Command               State               Ports
 --------------------------------------------------------------------------------------------------------
