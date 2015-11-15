@@ -6,6 +6,7 @@
 > **Time**: 30-40 mins
 
 > **Tasks**:
+> 
 - [Prerequisites](#prerequisites)
 - [Task 1: Set up a key-value store](#task-1-set-up-a-key-value-store)
 - [Task 2: Configure the engines to use key-value store](#task-2-configure-the-engine-to-use-key-value-store)
@@ -62,7 +63,7 @@ Finally, some of the actions in this lab require `sudo`. Where `sudo` is require
 
 ## Task 1: Set up a key-value store
 
-An overlay network requires a key-value store. The store maintains information about the network state which includes discovery, networks, endpoints, ip-addresses, and more. Engine supports Consul, etcd, and ZooKeeper (Distributed store) key-value stores. This example uses Consul.
+An overlay network requires a key-value store. The store maintains information about the network state which includes discovery, networks, endpoints, ip-addresses, and more. Engine supports Consul, etcd, and ZooKeeper (Distributed store) key-value store stores. This example uses Consul.
 
 1. Log into `node-0`.
 
@@ -176,17 +177,47 @@ Now that your three nodes are configured to use the key-value store, you can cre
 
 Once your network is created, you can start a container on any of the hosts and it automatically is part of the network. Start two containers.
 
-1.  Log into `node-1`.
+1. Log into `node-1`.
 
 2. Run a simple `busybox` container named `container1`.
 
 			$ docker run -itd --name container1 --net RED busybox
+			
 
 3. Log onto `node-2` and run a `busybox` container named `container2`.
 
 			$ docker run -itd --name container2 --net RED busybox
 
-4. Return to node-1.
+4. Return to node-1, and use `docker network inspect` to inspect the RED network. The `inspect` command only shows local containers info. 
+
+```
+node-1$ docker network inspect RED
+[
+    {
+        "Name": "RED",
+        "Id": "6f5f9bad52a6ca306e54b70cdac4707eb89b251271f89bf4d79effab28d90795",
+        "Scope": "global",
+        "Driver": "overlay",
+        "IPAM": {
+            "Driver": "default",
+            "Config": [
+                {
+                    "Subnet": "10.10.10.0/24"
+                }
+            ]
+        },
+        "Containers": {
+            "e9f06a4898d0e67e0f3fff806c08e1738cfdfa9c15e47c7d9fd8fd7368d95515": {
+                "EndpointID": "9e12ef3fc3779e09ed33d12d4a8954afbbf86eaf31c8e4eace5aaedcfa64e359",
+                "MacAddress": "02:42:0a:0a:1e:02",
+                "IPv4Address": "10.10.10.2/24",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {}
+    }
+]
+```
 
 5. Look at the `container1` network configuration.
 
