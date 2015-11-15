@@ -31,7 +31,7 @@ Before starting the lab, you need to set up your connection key.
 	&nbsp;
 	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html" target="_blank">Connecting from Linux or Mac with SSH</a>
 
-5. Connect to each instance in turn to confirm your credentials.
+5. Log in to each instance using the **`ubuntu`** username and ssh key.
 
 
 ## (Optional) Get a Docker Hub account
