@@ -33,6 +33,9 @@ Before starting the lab, you need to set up your connection key.
 
 5. Log in to each instance using the **`ubuntu`** username and ssh key.
 
+## Join the Chat Room
+
+We have set up a chat room for the Hands-On Labs. Please go to [here](http://app.lets-chat-dceu-hol.nicolaka752c19b5407142b8.svc.tutum.io/#!/). Sign up with a new account and join the **dceu** room.
 
 ## (Optional) Get a Docker Hub account
 
