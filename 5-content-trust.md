@@ -174,7 +174,7 @@ In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey
 
 Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end.
 
-Download and install the experimental Docker Toolbox [here](https://dl.dropboxusercontent.com/u/1047237/Docker%20Toolbox%20DockerCon%20EU%202015%20Demopack.pkg). Then open the downloaded package and follow the steps to complete the installation.
+Download and install the experimental Docker Toolbox [here](https://s3.eu-central-1.amazonaws.com/docker-toolbox-demopack/DockerToolbox-dockercon-demopack-edition-1.9.0d.pkg). Then open the downloaded package and follow the steps to complete the installation.
 
 After the installation is complete, launch the **Docker Quickstart Terminal**.  
 
