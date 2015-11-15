@@ -162,7 +162,7 @@ At this point, you have trust enabled.
 
 ## Task 5: Docker Content Trust with Yubikey
 
-**This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
+**This task can only be completed on Mac machines only, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
 
 In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing an experimental version of Docker Toolbox.
 
