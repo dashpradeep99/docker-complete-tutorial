@@ -1,6 +1,6 @@
 # Lab 5 : Docker Content Trust
 
-> **Difficulty**: Easy
+> **Difficulty**: Intermediate
 
 > **Time**: 20 mins
 
