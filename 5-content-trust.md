@@ -162,7 +162,7 @@ At this point, you have trust enabled.
 
 ## Task 5: Docker Content Trust with Yubikey
 
-**Please Note: This task can only be completed on Mac machines. All the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instancesThis task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
+**Please Note: This task can only be completed on Mac machines. All the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances. This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
 
     $ lsusb | grep Yubikey
     Bus 020 Device 031: ID 1050:0406 1050 Yubikey 4 U2F+CCID
@@ -170,7 +170,7 @@ At this point, you have trust enabled.
 In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing a spceial DockerCon Toolbox.
 
 
-**Step 1:** **Installing Experimental Docker Toolbox**
+**Step 1:** **Installing Docker Toolbox**
 
 Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end.
 
