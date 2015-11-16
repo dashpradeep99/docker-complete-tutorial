@@ -3,7 +3,7 @@
 
 > **Difficulty**: Advanced
 
-> **Time**: 30-40 mins
+> **Time**: 30-40 minutes
 
 > **Tasks**:
 > 
@@ -25,7 +25,7 @@ Before Docker 1.9, containers running on different hosts had to use the underlyi
 
 Docker 1.9 revamped networking and introduced a new native networking driver that enables multi-host networking. Multi-host networking makes possible communication among containers residing on separate hosts without relying on the hosts' TCP/IP stacks.
 
-This lab illustrates the basics of creating a mult-host network. Docker Engine
+This lab illustrates the basics of creating a multi-host network. Docker Engine
 supports this out-of-the-box through the `overlay` network.  Unlike `bridge`
 networks overlay networks require some pre-existing conditions before you can
 create one. These conditions are:
@@ -254,7 +254,7 @@ node-1$ docker network inspect RED
 	Every container in an overlay network also gets an `eth` interface in the
 	`docker_gwbridge` which allows the container to access the external world. The
 	`docker_gwbridge` is similar to Docker's default `bridge` network, but unlike
-	the `bridge` it restricts Inter-Container Communciation(ICC). Docker  creates
+	the `bridge` it restricts Inter-Container Communication(ICC). Docker  creates
 	only one `docker_gwbridge` bridge network per host regardless of the number of
 	overlay networks present.
 

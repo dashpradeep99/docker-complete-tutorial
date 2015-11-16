@@ -1,7 +1,7 @@
 # Lab 7 : Understanding Docker Volumes
 > **Difficulty**: Intermediate
 
-> **Time**: 30 mins
+> **Time**: 30 minutes
 
 > **Tasks**
 - [Prerequisites](#prerequisites)

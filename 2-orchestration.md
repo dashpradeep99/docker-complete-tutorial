@@ -3,7 +3,7 @@
 
 > **Difficulty**: Advanced
 
-> **Time**: 30-40 mins
+> **Time**: 30-40 minutes
 
 > **Tasks**:
 > 
@@ -19,14 +19,14 @@
 * Ensure that no containers are running on these nodes(`$ docker rm -f $(docker ps -q)`)
 * Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
 * Ensure that DOCKER_HOST is unset ( `$ unset DOCKER_HOST`)
-* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you subsitute the IP of the instance in certain commands/configuration files throughout this lab.
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you substitute the IP of the instance in certain commands/configuration files throughout this lab.
 * Note: Some commands may require `sudo`. 
 
 # Getting Started with Docker Compose and Swarm
 
 **Background**:
 
-Docker Compose and Docker Swarm are key elements of the Docker Ecosystem. Docker Compose is an open-source tool to orchestrate building and deploying multi-service,multi-container applications. Compose relies on a configuration YAML file (default name is **docker-compose.yml**) to build, create, and run containers against a single Docker Engine or Docker Swagrm cluster. The YAML configuration file has standard reference commands ( full list [here](https://docs.docker.com/compose/yml/) ) that  define how the container is created at runtime. Some of the most common commands used are: **build, image, command, ports, and links**. Compose should be already installed on your machine. To verify, issue the following command on all-nodes and ensure you see the currently installed version.
+Docker Compose and Docker Swarm are key elements of the Docker Ecosystem. Docker Compose is an open-source tool to orchestrate building and deploying multi-service,multi-container applications. Compose relies on a configuration YAML file (default name is **docker-compose.yml**) to build, create, and run containers against a single Docker Engine or Docker Swarm cluster. The YAML configuration file has standard reference commands ( full list [here](https://docs.docker.com/compose/yml/) ) that  define how the container is created at runtime. Some of the most common commands used are: **build, image, command, ports, and links**. Compose should be already installed on your machine. To verify, issue the following command on all-nodes and ensure you see the currently installed version.
 
 `node-0$ docker-compose version`
 
@@ -94,7 +94,7 @@ You can see that there are two service descriptions: db and web. Each of them de
 
 > * **ports:{HOST:CONTAINER}** will specify any network host-port mapping
 
-> * **links:{SERVICE:ALIAS}** will specify container linking parameters. Container linking is a mechanism to automatically provide access, network, and environment paramters for one container to discover and communicate with another contianer. In this example, we are linking the database container '**db**' TO the '**web**' container and giving it the alieas '**db**'.
+> * **links:{SERVICE:ALIAS}** will specify container linking parameters. Container linking is a mechanism to automatically provide access, network, and environment parameters for one container to discover and communicate with another container. In this example, we are linking the database container '**db**' TO the '**web**' container and giving it the alias '**db**'.
 
 > * **expose:{PORT}** informs Docker that the container listens on the specified network ports at runtime.
 
@@ -108,7 +108,7 @@ Name   Command   State   Ports
 
 **Step 4:** You now can build and run the app. It is recommended to ensure that all the images that need to be built, be built first before you run them. That is why **docker-compose** has the following two options :`build` and `up`.
 
-The `build` option builds an image for every service that has a `build:` paramter in the `docker-compose.yml` file but doesn't actually create any container from that image. The `up` option runs the services described in the `docker-compose.yml` file. The `up` option WILL build the services' images before it runs them. It is recommended to ensure that you successfully build all the requried images before running the containers from them as follows:
+The `build` option builds an image for every service that has a `build:` parameter in the `docker-compose.yml` file but doesn't actually create any container from that image. The `up` option runs the services described in the `docker-compose.yml` file. The `up` option WILL build the services' images before it runs them. It is recommended to ensure that you successfully build all the required images before running the containers from them as follows:
 
 ```
 node-0:~/dockchat$ docker-compose build
@@ -120,7 +120,7 @@ Successfully built b858d650581e
 
 ```
 node-0:~/dockchat$ docker-compose up  
-<snippit>
+<snippet>
 Creating dockchat_db_1
 Creating dockchat_web_1
 Attaching to dockchat_db_1, dockchat_web_1
@@ -131,7 +131,7 @@ web_1 |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 web_1 |  * Restarting with stat
 ```
 
-The output means that you have successfully created the two containers. To access the app, go in your web browser to http://{your node-0 public IP address}:5000 . You should see somthing like this:
+The output means that you have successfully created the two containers. To access the app, go in your web browser to http://{your node-0 public IP address}:5000 . You should see something like this:
 
 ![](images/orchestration-step1-1.png)
 
@@ -146,7 +146,7 @@ The output means that you have successfully created the two containers. To acces
 
 Swarm serves the standard Docker API, so any tool which already communicates with a Docker daemon can use Swarm to transparently scale to multiple hosts: Dokku, Compose, Krane, Flynn, Deis, DockerUI, Shipyard, Drone, Jenkins... and, of course, the Docker client itself.
 
-There are multiple ways to create a Swarm cluster full details [here](https://github.com/docker/swarm/tree/master/discovery). In this exercise you will use the Docker Hub token-based discovery service. You will create a Swarm Cluster with 2 nodes ( **node-1 and node-2**). The Swarm manager will be a container running on **node-0**. The two Swarm nodes will be labeled for deployment schedluing and filtering purposes later.
+There are multiple ways to create a Swarm cluster full details [here](https://github.com/docker/swarm/tree/master/discovery). In this exercise you will use the Docker Hub token-based discovery service. You will create a Swarm Cluster with 2 nodes ( **node-1 and node-2**). The Swarm manager will be a container running on **node-0**. The two Swarm nodes will be labeled for deployment scheduling and filtering purposes later.
 
 Follow the below steps to create a Swarm cluster:
 
@@ -171,9 +171,9 @@ DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --label=enviro
 
 `$ sudo service docker restart`
 
-Note: if Docker Engine TLS verification is enabled, it is recommended to use TCP port 2376 instead. For the remainder of these exercises, we will not use Docker TLS verifications.
+Note: if Docker Engine TLS verification is enabled, it is recommended to use TCP port 2376 instead. For the remainder of these exercises, we will not use Docker TLS verification.
 
-**Step 3:** Create a unique cluster token on from node-0.  When you run the contianer, it will output a unique cluster token. You will use this token for the remainder of the tutorial.
+**Step 3:** Create a unique cluster token on from node-0.  When you run the container, it will output a unique cluster token. You will use this token for the remainder of the tutorial.
 
 `node-0:~$export TOKEN=$(docker run --rm swarm create)`
 
@@ -275,7 +275,7 @@ You should see something like:
 (+) image: {Your_Docker_Hub_username}/dockchat:v1
 ```
 
-**Step 4 :** We will also use constraints/affinity rules to ensure Swarm selects the right nodes for deployment. Inititally, we labeled **node 1** as a staging node, and **node 2** as s production node. We can specify in the `docker-compose.yml` file certain constraints to ensure the service is deployed on the environment we specified. Add the following Compose paramters under **BOTH** the services (**db** and **web**)
+**Step 4 :** We will also use constraints/affinity rules to ensure Swarm selects the right nodes for deployment. Initially, we labeled **node 1** as a staging node, and **node 2** as s production node. We can specify in the `docker-compose.yml` file certain constraints to ensure the service is deployed on the environment we specified. Add the following Compose parameters under **BOTH** the services (**db** and **web**)
 
 ```
 (+) environment:
@@ -304,7 +304,7 @@ web:
    - "constraint:environment==staging"
 ```
 
-**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CICD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests succeed deploy to the **production** nodes.
+**Step 5:** Let's rename the file `staging.docker-compose.yml`. It is recommended to have unique Docker Compose files for each deployment for better version control and deployment isolation. For example, you can easily integrate a CI/CD workflow that deploys to **staging** first using the `staging.docker-compose.yml` then if certain tests succeed deploy to the **production** nodes.
 
 `mv docker-compose.yml staging.docker-compose.yml`
 
@@ -385,7 +385,7 @@ You can check out the app by going to http://{node-1-PUBLIC IP}:5000 for the **s
 
 ## Task 4: Scale DockChat with Interlock
 
-**DockChat** is becoming very popular and it's getting a lot of traffic! You need to scale it to accomodate the surge in the traffic. Good news is that you can use Compose to scale the **web** service to handle more traffic in the **production** deployment. Scaling a service that does host-port mapping ( **web**'s TCP Port 5000) will not work because you can only have a single service listen on the host's port 5000. Thereofre, you will need to remove host-port mapping to avoid this problem. But then how will you direct traffic to the contaier? Here comes **Interlock** which is an event-driven plugin that can register new containers to a service.
+**DockChat** is becoming very popular and it's getting a lot of traffic! You need to scale it to accommodate the surge in the traffic. Good news is that you can use Compose to scale the **web** service to handle more traffic in the **production** deployment. Scaling a service that does host-port mapping ( **web**'s TCP Port 5000) will not work because you can only have a single service listen on the host's port 5000. Therefore, you will need to remove host-port mapping to avoid this problem. But then how will you direct traffic to the container? Here comes **Interlock** which is an event-driven plugin that can register new containers to a service.
 
 In this example, you'll use Interlock to dynamically register your **web** service containers to an HAProxy load-balancing service. This way any container that is part of the **web** service can receive traffic directed at that service. Interlock can be easily deployed as a service in Compose!
 
@@ -405,7 +405,7 @@ Stopping dockchatproduction_db_1 ... done
  * Remove host-port mapping for the **web** service ( add `"5000"` instead of `"5000:5000"`).
 
 
-Your configruation file should look like:
+Your configuration file should look like:
 
 ```
 # Mongo DB
@@ -473,7 +473,7 @@ mylaptop$ vim /etc/hosts
 
 Then go to `dockchat.com` from your browser and test if it works.
 
-**staging** Finally, we need to scale the app, and that can be done easily with the `docker-compose scale` funcationality.
+**staging** Finally, we need to scale the app, and that can be done easily with the `docker-compose scale` functionality.
 
 ```
 node-0:~/dockchat$ docker-compose -f production.docker-compose.yml -p dockchat_production scale web=10

@@ -3,7 +3,7 @@
 
 > **Difficulty**: Intermediate
 
-> **Time**: 30 mins
+> **Time**: 30 minutes
 
 > **Tasks**:
 > 
@@ -18,7 +18,7 @@
 
 # Getting Started with Docker Trusted Registry (DTR)
 
-Docker Trusted Registry is a secure, on-premise, commercially supported,and enterprise-class image registry. Docker Trusted Registry features an easy-to-use web admin portal,  Active Directory / LDAP integration, cloud storage backends, image provanence, and highly secure authentication and authorization.
+Docker Trusted Registry is a secure, on-premise, commercially supported,and enterprise-class image registry. Docker Trusted Registry features an easy-to-use web admin portal,  Active Directory / LDAP integration, cloud storage backends, image provenance, and highly secure authentication and authorization.
 
 Docker released DTR 1.4 on November 12th, 2015. With 1.4 you have new awesome features like:
 
@@ -36,7 +36,7 @@ Docker released DTR 1.4 on November 12th, 2015. With 1.4 you have new awesome fe
 * Ensure that no containers are running on these containers.
 * Ensure that Docker engine uses default daemon options( `DOCKER_OPTS` should be commented out in `/etc/default/docker` file)
 * Ensure that DOCKER_HOST is unset ( `$unset DOCKER_HOST` )
-* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you substitue the IP of the instance in certain commands/configuration files throughout this lab.
+* Certain TCP ports are only allowed on the private AWS network. Therefore, you would need to use the private network (10.X.X.X) when you substitute the IP of the instance in certain commands/configuration files throughout this lab.
 
 ## Task 1: Install DTR
 
@@ -81,7 +81,7 @@ If you already have a DTR license you can use here. If not, please go [here](htt
 
 **Step 3:** **Configure Domain Name**
 
-Navigate to the '**General**' tab and provide the **node-0**'s pulic DNS name as "**Domain name**". Then click **"Save and Restart"**.
+Navigate to the '**General**' tab and provide the **node-0**'s public DNS name as "**Domain name**". Then click **"Save and Restart"**.
 
 ![](images/dtr-step2-dns.png)
 
@@ -123,7 +123,7 @@ Go to **Organizations** tab and click **New Organization**. Name the organizatio
 **Creating Repositories**
 
 
-Repositories can belong to an organization e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}** or to a user **{DTR Hostname}/{User Name}/{Repo Name}:{Tag}**. Any user can create a personal repository by going to **Repositories**>>**New Repository**. But only members of an organization owners team can create an organization repository. You can create a new organization repository by going to **Oranizations >> {Organization Name}** or by going to **Repositories**>>**New Repository** and selecting the desired organization namespace from the dropdown menu.
+Repositories can belong to an organization e.g **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}** or to a user **{DTR Hostname}/{User Name}/{Repo Name}:{Tag}**. Any user can create a personal repository by going to **Repositories**>>**New Repository**. But only members of an organization owners team can create an organization repository. You can create a new organization repository by going to **Organizations >> {Organization Name}** or by going to **Repositories**>>**New Repository** and selecting the desired organization namespace from the dropdown menu.
 
 Global members have access to all repos ( even repos that belong to organizations they do not belong to). The value of assigning repos to teams comes when you need certain non-global users to have access to team-level repos ONLY. In our case, this helps us achieve restricting **ahab** to the Frontend's **madrid** repo.
 
@@ -150,7 +150,7 @@ Creating the repository from the UI is required before being able to push to tha
 **Step 1:** Log into **node-1** and trust DTR using the following steps. The first step is to trust the SSL cert of DTR followed by user login. Since you need a minimum of read-write permissions to be able to push to a repo, please log in as **orca**. If any of the following commands fail, please use `sudo -e` before the command.
 
 ```
-### Make sure to substitue DTR_DOMAIN_NAME with the domain name of your DTR.
+### Make sure to substitute DTR_DOMAIN_NAME with the domain name of your DTR.
 
 node-1$ export DTR={DTR_DOMAIN_NAME}
 
@@ -178,7 +178,7 @@ Digest: sha256:87fcdf79b696560b61905297f3be7759e01130a4befdfe2cc9ece9234bbbab6f
 Status: Image is up to date for busybox:latest
  ```
 
-**Step 3:** In order to push an image to DTR, we need to name and tag it approprately following this format : **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}**
+**Step 3:** In order to push an image to DTR, we need to name and tag it appropriately following this format : **{DTR Hostname}/{Organization Name}/{Repo Name}:{Tag}**
 
  `node-1:~$ docker tag busybox:latest $DTR/engineering/barca:lona`
 
@@ -257,7 +257,7 @@ c51f86c28340: Pushed
 039b63dd2cba: Pushed
 latest: digest: sha256:0ec6285600961f4ded79bef0a3483f80b8e992df5922ae5bd4d78b1d13a10f6a size: 2746
 ```
-This step succeeeded because **ahab** is a member of the **Frontend** team. He has access to pull and push to **madrid** repo. 
+This step succeeded because **ahab** is a member of the **Frontend** team. He has access to pull and push to **madrid** repo. 
 
 **Step 10:** Try to push to **barca**:
 
@@ -276,15 +276,15 @@ Exactly as expected!!! This step failed because **ahab** is a not a member of th
 
 DTR supports multiple storage backends : Local Filesystem, S3, Azure, and Swift. To avoid data loss due to host failures, it's recommended to use a cloud based service like Azure, S3, or OpenStack Swift to store image layers. If you use a cloud service for storage, DTR or host failures will not result in losing any images. The default storage backend is local host filesystem. You can configure the storage backend by going to **Settings**>>**Storage** and providing required information there. There is no need to do anything in this tutorial.
 
-DTR provides a streaming log for all containers that make up DTR ( auth , load-balancer, database, storage, regsitry, and index). If you navigate to the **Logs** tab you can select a DTR service and review its most recent logs.
+DTR provides a streaming log for all containers that make up DTR ( auth , load-balancer, database, storage, registry, and index). If you navigate to the **Logs** tab you can select a DTR service and review its most recent logs.
 
 ![](images/dtr-step5-1.png)
 
 ## Task 6: DTR API Console
 
-DTR is built on top of a powerful API that provides all of the functionality available in the UI, plus more. DTR's API uses standard HTTP verbs: GET/PUT/POST/DELETE with JSON-formatted resutls. To make it easy for developers to work with DTR, DTR 1.4 provides an API Console coupled with corresponding documentation. You can use the API console to post directly to the API and easily see the results.
+DTR is built on top of a powerful API that provides all of the functionality available in the UI, plus more. DTR's API uses standard HTTP verbs: GET/PUT/POST/DELETE with JSON-formatted results. To make it easy for developers to work with DTR, DTR 1.4 provides an API Console coupled with corresponding documentation. You can use the API console to post directly to the API and easily see the results.
 
-**Step 1:** Hover over **admin** ( or whichiver user you're loggin in with) on top right corner and click on the **API Docs** button. You can see full documentation and detailed API endpoint and action descriptions.
+**Step 1:** Hover over **admin** ( or whichever user you're login in with) on top right corner and click on the **API Docs** button. You can see full documentation and detailed API endpoint and action descriptions.
 
 **Step 2**(Optional): Feel free to try making any call against the API and observe the result.
 

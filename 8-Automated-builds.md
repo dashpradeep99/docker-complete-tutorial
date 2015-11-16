@@ -56,12 +56,12 @@ After forking the demo repo, you'll clone the code to one of your nodes. The dem
 2. Click the Fork button in the upper right hand corner of the page.
 
   GitHub redirects you into your own version of the tutorial repository. When it
-  is done, your browser URL should be `https://github.com/<your githhub user
+  is done, your browser URL should be `https://github.com/<your github user
   name>/dceu_tutorial8`.
 
 3. Open a terminal window and SSH into your `node-3` host.
 
-  		ssh -i <identity file> <user>@<Node-3 IP Addresst>
+  		ssh -i <identity file> <user>@<Node-3 IP Address>
 
 	For example:
 
@@ -203,7 +203,7 @@ The Build Details page shows a log of your build systems:
 
 6. In your web browser, navigate to your `node-3` IP address.
 
-    You should see aweb page with the text `"Hola, Barcelona"`.
+    You should see a web page with the text `"Hola, Barcelona"`.
 
 7. Switch back to your terminal window, stop and remove your running container
 
@@ -251,8 +251,8 @@ the GitHub repo. This change will trigger an automated build of your
 
 4. Set your Git config if you haven't already.
 
-      git config --gobal user.email "you@youremail.com"
-      git config --gobal user.name "Firstname Lastname"
+      git config --global user.email "you@youremail.com"
+      git config --global user.name "Firstname Lastname"
 
 5. Add the updated file to your GitHub repo
 
@@ -346,7 +346,7 @@ If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup r
 
 10. Enter the repository name.
 
-		<githug username>/dceu_tutorial8
+		<github username>/dceu_tutorial8
 
 11. Press I understand the consequences, to delete this repository.
 

@@ -1,8 +1,8 @@
 # Lab 5 : Docker Content Trust
 
-> **Difficulty**: Easy
+> **Difficulty**: Intermediate
 
-> **Time**: 20 mins
+> **Time**: 20 minutes
 
 > **Tasks**:
 >
@@ -11,7 +11,7 @@
 * [Task 2: Enable Content Trust](#task-2-enable-content-trust)
 * [Task 3: Push a signed image](#task-3-push-a-signed-image)
 * [Task 4: Pulling images](#task-4-pulling-images)
-* [Task 5: Docker Content Trust with Yubikey](#task-5-signing-an-image-with-yubikey)
+* [Task 5: Docker Content Trust with Yubikey](#task-5-docker-content-trust-with-yubikey)
 
 
 
@@ -160,18 +160,21 @@ At this point, you have trust enabled.
         Digest: sha256:357cb702777f1bdf9a6241e8cf9d17b05d30fc203e7e4e51464a067e826c7906
         Status: Downloaded newer image for kizbitz/dctrust:signed
 
-## Task 5: Docker Content Trust with Yubikey (Mac/Linux  ONLY)
+## Task 5: Docker Content Trust with Yubikey
 
-**This task can only be completed on Linux/Mac machines, all the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances**
+**Please Note: This task can only be completed on Mac machines. All the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances. This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
 
-In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub.
-This step requires installing an experimentel version of Docker Toolbox. 
+    $ lsusb | grep Yubikey
+    Bus 020 Device 031: ID 1050:0406 1050 Yubikey 4 U2F+CCID
 
-**Step 1:** **Installing Experimental Docker Toolbox**
+In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing a spceial DockerCon Toolbox.
 
-Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end. 
 
-Download and install the experimental Docker Toolbox [here](https://dl.dropboxusercontent.com/u/1047237/Docker%20Toolbox%20DockerCon%20EU%202015%20Demopack.pkg). Then open the downloaded package and follow the steps to complete the installation. 
+**Step 1:** **Installing Docker Toolbox**
+
+Please note that this step will require you to have updated version of virtualbox and therefore would require you to stop any Virtualbox VMs. It will also require a laptop restart at the end.
+
+Download and install the experimental Docker Toolbox [here](https://s3.eu-central-1.amazonaws.com/docker-toolbox-demopack/DockerToolbox-dockercon-demopack-edition-1.9.0d.pkg). Then open the downloaded package and follow the steps to complete the installation.
 
 After the installation is complete, launch the **Docker Quickstart Terminal**.  
 
@@ -189,7 +192,7 @@ My-Macbook-Pro:~ user$ notary key list
 
 **Step 4:** Generate a new Root Key
 
-##WARNING: The root key is really important. You should be careful not lose it or delete it. Make sure to use a dummy repo in this step in the case you delete it accidentanly.
+##WARNING: The root key is really important. You should be careful not lose it or delete it. Make sure to use a dummy repo in this step in the case you delete it accidentally.
 
 To generate a new root key, simply do the following:
 
@@ -203,7 +206,7 @@ password manager to generate the passphrase and keep it safe. There will be no
 way to recover this key. You can find the key in your config directory.
 Enter passphrase for new root key with ID 37e0ee8: <ENTER A PASSWORD>
 Repeat passphrase for new root key with ID 37e0ee8:<ENTER SAME PASSWORD>
-Generated new ecdsa root key with keyID: 
+Generated new ecdsa root key with keyID:
 ****************************
 ```
 
