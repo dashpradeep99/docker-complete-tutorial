@@ -44,7 +44,7 @@ The goal of this lab is help you gain an understanding of Docker’s SaaS-based 
 
 
 ## Lab 5. [Docker Content Trust](5-content-trust.md)
-**Difficulty**: Easy
+**Difficulty**: Magic
 
 In this lab, you'll examine how Docker Notary feature works. You'll be creating signed images, distributing them through Docker Hub, and ensuring that only trusted images can be distributed in your environment.
 
