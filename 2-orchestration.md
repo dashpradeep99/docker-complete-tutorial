@@ -432,6 +432,8 @@ interlock:
     - "80:80"
   volumes:
     - /var/lib/docker:/etc/docker
+  environment:
+   - "constraint:environment==production"
   command: "--swarm-url tcp://$DOCKER_HOST --debug --plugin haproxy start"
 ```
 **Step 3:** Re-deploy the service and check that all containers are up:
