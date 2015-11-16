@@ -29,9 +29,7 @@ images they use are signed. Both publishers and consumers can be either
 individuals or organizations. Docker’s content trust supports users and
 automated processes pipelines.
 
-Content trust is currently only available for users of the public Docker Hub. It
-is currently not available for the Docker Trusted Registry or for private
-registries.
+Docker Content Trust works with Docker Hub as well as Docker Trusted Registry (with Notary integration experimental feature in 1.4). 
 
 ## Prerequisites
 
