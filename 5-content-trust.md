@@ -162,13 +162,14 @@ At this point, you have trust enabled.
 
 ## Task 5: Docker Content Trust with Yubikey
 
-**Please Note: This task can only be completed on Mac machines. All the following steps will be completed from the local Docker Quickstart Terminal and NOT from your EC2 instances. This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
+**Please Note: This task can only be completed on Mac/Linux machines. All the following steps will be completed from the local Docker Toolbox (DockerCon edition) and NOT from your EC2 instances. This task requires a Yubikey 4 (Edge/Neo will not work). `lsusb` can tell you about which version you have. In order for this tutorial to work the output should include:**
 
     $ lsusb | grep Yubikey
     Bus 020 Device 031: ID 1050:0406 1050 Yubikey 4 U2F+CCID
 
-In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing a spceial DockerCon Toolbox.
+In this task, you will use the [Yubikey](https://www.yubico.com/products/yubikey-hardware/yubikey-2/) to sign an image and push it to Docker Hub. This step requires installing a spceial DockerCon Toolbox. 
 
+### For MAC Users:
 
 **Step 1:** **Installing Docker Toolbox**
 
@@ -270,7 +271,104 @@ Repeat passphrase for new repository key with ID 4ec62d9 (docker.io/DOCKER_HUB_U
 Please touch the attached Yubikey to perform signing.
 Finished initializing "docker.io/DOCKER_HUB_USERNAME/alpine"
 ```
+Congrats! you have signed and pushed a new image using the Yubikey. Docker users with enabled Docker Content Trust can pull the image that you just pushed.
 
+### For Linux Users:
+
+Before you start, ensure there is a Docker engine running on your Linux machine.
+You will need to run the experimental version of Docker Engine inside a container on your machine. You will mount the Yubikey into the container and go through signing and pushing images within the container itself.
+
+**Step 1:** Run Docker Experimental inside a Container
+
+```
+$ docker run -it --rm --privileged -v /dev/bus/usb:/dev/bus/usb dockersecurity/dct_lab:latest
+```
+
+**Step 2:** Insert the Yubikey
+
+**Step 3:** In the container, run Smart Card Daemon and Docker Daemon
+
+```
+# pcscd
+# docker daemon > /dev/null 2>&1 &
+
+```
+
+**Step 4:** Enable Docker Content Trust
+
+```
+# export DOCKER_CONTENT_TRUST=1
+```
+
+**Step 5:** Login to Docker Hub and pull a dummy image
+
+```
+# docker login
+Username: <DOCKER_HUB_USERNAME>
+Password:<YOUR_PASSWORD>
+Email:<YOUR_EMAIL>
+WARNING: login credentials saved in /Users/<YOUR_USERNAME>/.docker/config.json
+Login Succeeded
+
+
+# docker pull alpine
+$Using default tag: latest
+Pull (1 of 1): alpine:latest@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec: Pulling from library/alpine
+3b4d28ce80e4: Pull complete 
+Digest: sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+Status: Downloaded newer image for alpine@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec
+Tagging alpine@sha256:074de05bbd8554cf454a19094df34985c8674f54e14474731427a2a31d1970ec as alpine:latest
+```
+
+**Step 6:** Check Available Root Keys on Yubikey. You should see no keys.
+
+```
+# notary key list
+
+No signing keys found.
+
+```
+
+**Step 7:** Tag , Sign, and Push an Image
+
+In this step, you will tag the image and push it to Docker Hub. Since there are no available root keys on Yubikey, Docker will automatically generate one upon the first push. Please follow the instructions below:
+
+```
+# docker tag alpine:latest <DOCKER_HUB_USERNAME>/<REPO_NAME>:signed
+# docker push <DOCKER_HUB_USERNAME>/<REPO_NAME>:signed
+
+The push refers to a repository [docker.io/<DOCKER_HUB_USERNAME>/dct_demo] (len: 1)
+3b4d28ce80e4: Pushed 
+latest: digest: sha256:61b63b333e5f6132c70e3258701b75d787ac37536bc457873c23886627e64f86 size: 1611
+Signing and pushing trust metadata
+You are about to create a new root signing key passphrase. This passphrase
+will be used to protect the most sensitive key in your signing system. Please
+choose a long, complex passphrase and be careful to keep the password and the
+key file itself secure and backed up. It is highly recommended that you use a
+password manager to generate the passphrase and keep it safe. There will be no
+way to recover this key. You can find the key in your config directory.
+Enter passphrase for new root key with ID dbe580a: 
+Repeat passphrase for new root key with ID dbe580a: 
+Please touch the attached Yubikey to perform signing.
+Enter passphrase for new repository key with ID fbe7380 (docker.io/<DOCKER_HUB_USERNAME>/<REPO_NAME>):  <ENTER A PASSWORD>
+Repeat passphrase for new repository key with ID fbe7380 (docker.io/<DOCKER_HUB_USERNAME>/<REPO_NAME>):<ENTER A PASSWORD> 
+Please touch the attached Yubikey to perform signing.
+Finished initializing "docker.io/<DOCKER_HUB_USERNAME>/<REPO_NAME>"
+```
+**Step 8:** Check the new key
+
+You will notice that a new root key  was created. It is stored both in the Yubikey as well as on disk for backup.
+
+```
+# notary key list
+
+    ROLE                GUN                                           KEY ID                                             LOCATION               
+------------------------------------------------------------------------------------------------------------------------------------------------
+  root                                  ***************   file (/root/.docker/trust/private)  
+  root                                  ***************   yubikey               
+
+```
 Congrats! you have signed and pushed a new image using the Yubikey. Docker users with enabled Docker Content Trust can pull the image that you just pushed.
 
 
