@@ -25,7 +25,11 @@ Before starting the lab, you need to set up your connection key.
 
 4. Follow the AWS instructions for your operating system to setup the key.
 
-	* <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Windows with PuTTy</a>
+	* For Mac, use the chmod command to make sure your private key file isn't publicly viewable. For example, if the name of your private key file is my-key-pair.pem, use the following command:
+
+`chmod 400 /path/my-key-pair.pem`
+
+Then, login using `ssh -i /path/my-key-pair.pem ubuntu@*********.compute-1.amazonaws.com`
 
 		**NOTE**: You can skip the step *"Converting Your Private Key Using PuTTYgen*."" The PPK file attached to your email is in the right format for PuTTy.
 	&nbsp;
