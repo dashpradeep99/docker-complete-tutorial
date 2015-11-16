@@ -33,7 +33,7 @@ Before starting the lab, you need to set up your connection key.
 	
 	* For **Windows**, Follow the instructions below.You can skip the step *"Converting Your Private Key Using PuTTYgen*. The PPK file attached to your email is in the right format for PuTTy.
 	   
-	<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Putty</a>
+			<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Putty</a>
 
 ## Join the Chat Room
 
