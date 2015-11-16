@@ -188,7 +188,7 @@ Once your network is created, you can start a container on any of the hosts and 
 
 			$ docker run -itd --name container2 --net RED busybox
 
-4. Return to node-1, and use `docker network inspect` to inspect the RED network. The `inspect` command only shows local containers info. 
+4. Return to node-1, and use `docker network inspect` to inspect the RED network. The `inspect` command only shows local containers info.
 
 ```
 node-1$ docker network inspect RED
