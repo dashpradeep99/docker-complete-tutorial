@@ -1,6 +1,6 @@
 # DockerCon EU 2015 Hands-On Labs (HOL)
 
-[dceu](http://blog.docker.com/media/2015/08/dceu15_logo.png)
+![dceu](http://blog.docker.com/media/2015/08/dceu15_logo.png)
 
 Welcome to DockerCon! This repo contains a series of hands-on labs to help you gain experience in various Docker features, products, and solutions. Depending on your experience, each lab requires between 15-30 minutes to complete. They range in difficulty from easy to advanced.
 
