@@ -181,10 +181,10 @@ Note: if Docker Engine TLS verification is enabled, it is recommended to use TCP
 
 ```node-0:~$docker run -d -p 3375:2375 swarm manage token://$TOKEN```
 
-**Step 5:** Register the Swarm agents to the discovery service. Do this step on node-0. The node’s IP must be accessible from the Swarm Manager. Use the following command and replace with the proper node_ip to start an agent.
+**Step 5:** Register the Swarm agents to the discovery service. Do this step on node-0. The node’s IP must be accessible from the Swarm Manager. Use the following command and replace with the proper **private** node_ip to start an agent.
 ```
-node-0:~$docker run -d swarm join --addr=<node_1_ip:2375> token://$TOKEN
-node-0:~$docker run -d swarm join --addr=<node_2_ip:2375> token://$TOKEN
+node-0:~$docker run -d swarm join --addr=<node_1_private_ip:2375> token://$TOKEN
+node-0:~$docker run -d swarm join --addr=<node_2_private_ip:2375> token://$TOKEN
 ```
 Please use node-1 and node-2's private IPs (10.x.x.x) and NOT their public IPs. To be safe, simply use their **DNS names instead**.
 
