@@ -33,7 +33,7 @@ create one. These conditions are:
 * Access to a key-value store. Engine supports Consul, etcd, ZooKeeper (Distributed store), and BoltDB (Local store) key-value stores.
 * A cluster of hosts with connectivity to the key-value store.
 * A properly configured Engine `daemon` on each host in the cluster.
-* Underlying host network most allow the following TCP/UDP Ports:
+* Underlying host network must allow the following TCP/UDP Ports:
 
 		Docker Engine port (e.g TCP 2375)
 		VXLAN: UDP 4789
