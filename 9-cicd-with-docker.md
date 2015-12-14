@@ -10,12 +10,12 @@
 > 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Task 1: Jenkins Setup](#jenkins-setup)
-- [Task 2: Github Repo and Webhooks](#github-repo-and-webhooks)
-- [Task 3: DTR Setup](#dtr-setup)
-- [Task 4. The Build Jobs](#the-build-jobs)
-- [Task 5: The Deploy Job](#the-deploy-job)
-- [Task 6: Deploying the App](#depliying-the-app)
+- [Task 1: Jenkins Setup](#task-1-jenkins-setup)
+- [Task 2: Github Repo and Webhooks](#task-2-github-repo-and-webhooks)
+- [Task 3: DTR Setup](#task-3-dtr-setup)
+- [Task 4: The Build Jobs](#task-4-the-build-jobs)
+- [Task 5: The Deploy Job](#task-5-the-deploy-job)
+- [Task 6: Deploying the App](#task-6-depliying-the-app)
 
 # Overview
 
@@ -57,7 +57,7 @@ result-app:
 * `node-2` will be a Swarm Node.
 * `node-3` will be a Swarm Node.
 
-## Prerequisites
+# Prerequisites
 
 * This lab only works with a cloud-based setup ( local Docker Machine setup will not work).
 * You will use all four nodes : `node-0`,`node-1`,`node-2`, and `node-3`. 
@@ -71,7 +71,7 @@ result-app:
 
 **Note :** Finally, some of the actions in this lab require `sudo`. Where `sudo` is required, the lab so indicates.
 
-## Task 1: Jenkins Setup
+# Task 1: Jenkins Setup
 
 **Step 1:** Log in to  `node-0` :
 
