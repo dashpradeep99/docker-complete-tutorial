@@ -15,7 +15,7 @@
 - [Task 3: DTR Setup](#task-3-dtr-setup)
 - [Task 4: The Build Jobs](#task-4-the-build-jobs)
 - [Task 5: The Deploy Job](#task-5-the-deploy-job)
-- [Task 6: Deploying the App](#task-6-depliying-the-app)
+- [Task 6: Deploying the App](#task-6-deploying-the-app)
 
 # Overview
 
