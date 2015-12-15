@@ -274,4 +274,4 @@ In this tutorial you learned how to create a full CICD pipeline using Docker, Gi
 
 ## Related information
 
-* [Docker and continuous Integration](https://www.docker.com/products/use-cases)
+* [Docker and Continuous Integration](https://www.docker.com/products/use-cases)
