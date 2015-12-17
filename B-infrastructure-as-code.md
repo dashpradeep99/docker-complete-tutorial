@@ -12,7 +12,8 @@
 
 ## What is a Dockerfile?
 A Dockerfile is a manifest that has instructions on what goes into an docker image. Because all commands are expressed as plain text code, the image can be reconstructed in a predictable and automated manner if necessary.
-Every line in the Dockerfile create a new layer in the image. Keeping the numbers of layers low without adversely impacting the readability of the Dockerfile is necessary to build optimized images.
+
+Every line in the Dockerfile will create a new layer in the image on a build. Keeping the numbers of layers low without adversely impacting the readability of the Dockerfile is necessary to build optimized images.
 
 ## Prerequisites
 
