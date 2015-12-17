@@ -67,3 +67,4 @@ Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them
 * [Docker Networking](6-networking.md)
 * [Understanding Docker Volumes](7-volumes.md)
 * [Automated Builds with Docker Hub and GitHub](8-Automated-builds.md)
+* [Infrastructure as code - Dockerfile best practices](B-infrastructure-as-code.md)
