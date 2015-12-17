@@ -7,8 +7,8 @@
 > **Tasks**:
 >
 >* [Prerequisites](#prerequisites)
->* [Task 1: Review Dockerfile](#review-dockerfile)
-* [Task 2: Steps to optimize the image](#steps-to-optimize--the-image)
+>* [Task 1: Review Dockerfile](#task-1:-review-the-unoptimized-dockerfile)
+* [Task 2: Steps to optimize the image](#task-2:-steps-to-optimize-the-image)
 
 ## What is a Dockerfile?
 A Dockerfile is a manifest that has instructions on what goes into an docker image. Because all commands are expressed as plain text code, the image can be reconstructed in a predictable and automated manner if necessary.
@@ -27,7 +27,7 @@ In other words, we'll fix a defective Dockerfile. Remember, optimization is a pr
 * A file editor (vi, emacs, nano).
 * A version control respository (Git, SVN Perforce etc) *Not shown here.*
 
-## Task 1: Review unoptimized Dockerfile
+## Task 1: Review the unoptimized Dockerfile
 ```
 FROM ubuntu
 MAINTAINER user@acme.com
@@ -97,7 +97,7 @@ CMD ["nginx", "-g", "daemon off;"]
    CMD ["nginx", "-g", "daemon off;"]
    ```   
    
-11. Let's build a new image using the updated Dockerfile. We'll tag it as `0.2` as follows: `docker build -t nginx-img:0.2 .`
+11. Let's build a new image using the updated & hopefully improved Dockerfile. We'll tag it as `0.2` as follows: `docker build -t nginx-img:0.2 .`
 12. Running `docker history nginx-img:0.2` should show that the number of layers has indeed been reduced.
 
    ```
