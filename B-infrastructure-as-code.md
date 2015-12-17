@@ -30,10 +30,11 @@ RUN apt-get install -y nginx
 RUN rm -rf /var/lib/apt/lists/*
 COPY index.html /usr/share/nginx/html
 EXPOSE 80
-LABEL vendor=Example\ Corp.
+LABEL vendor=Acme\ Example\ Corp.
 LABEL version="0.9.0-beta"
 LABEL is-beta=true
 LABEL release-date="2016-01-01"
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
 ## Task 2: Steps to optimize the image
