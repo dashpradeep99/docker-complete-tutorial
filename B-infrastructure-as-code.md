@@ -7,8 +7,8 @@
 > **Tasks**:
 >
 >* [Prerequisites](#prerequisites)
->* [Task 1: Review Dockerfile](#task-1:-review-the-unoptimized-dockerfile)
-* [Task 2: Steps to optimize the image](#task-2:-steps-to-optimize-the-image)
+>* [Task 1: Review Dockerfile](#task-1-review-the-unoptimized-dockerfile)
+* [Task 2: Steps to optimize the image](#task-2-steps-to-optimize-the-image)
 
 ## What is a Dockerfile?
 A Dockerfile is a manifest that has instructions on what goes into an docker image. Because all commands are expressed as plain text code, the image can be reconstructed in a predictable and automated manner if necessary.
