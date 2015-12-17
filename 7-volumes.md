@@ -101,7 +101,8 @@ In this task, you're going to take a quick look at where Docker stores volume da
 		$ docker volume inspect barcelona
 
 	Your output should be similar to:
-		[
+	
+ 		[
    			{
         		"Name": "barcelona",
         		"Driver": "local",
