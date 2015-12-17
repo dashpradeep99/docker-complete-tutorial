@@ -66,4 +66,5 @@ Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them
 * [Docker Content Trust](5-content-trust.md)
 * [Docker Networking](6-networking.md)
 * [Understanding Docker Volumes](7-volumes.md)
+* [Continuous Integration and Continious Delivery(CICD) with Docker, GitHub, and Jenkins](9-cicd-with-docker.md)
 * [Automated Builds with Docker Hub and GitHub](8-Automated-builds.md)
