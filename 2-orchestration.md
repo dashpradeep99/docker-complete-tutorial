@@ -347,6 +347,12 @@ and change the following in the `production.docker-compose.yml`:
 (+) - "constraint:environment==production"
 
 ```
+
+sed is your friend, it can do the replacement for you:
+```
+sed -i "s/staging/production/g"  production.docker-compose.yml 
+```
+
 **Step 8:** Deploy again using the `production.docker-compose.yml` :
 
 ```
