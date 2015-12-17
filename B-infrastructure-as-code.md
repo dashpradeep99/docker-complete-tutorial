@@ -13,7 +13,7 @@
 ## What is a Dockerfile?
 A Dockerfile is a manifest that has instructions on what goes into an docker image. Because all commands are expressed as plain text code, the image can be reconstructed in a predictable and automated manner if necessary.
 
-Every line in the Dockerfile will create a new layer in the image on a build. Keeping the numbers of layers low without adversely impacting the readability of the Dockerfile is necessary to build optimized images.
+Every line in the Dockerfile will create a new layer in the image on a build. Keeping the number of layers small without impacting the readability of the Dockerfile is necessary to build optimized images.
 
 ## Prerequisites
 
@@ -42,7 +42,7 @@ LABEL release-date="2016-01-01"
 2. Create a file `Dockerfile` inside this folder using the contents from Task 1.
 3. Create a file `inde,html` inside this folder with some basic html content `<h1>Hello World</h1>` will do too.
 4. Build an image using `docker build -t nginx-img:0.1 .`
-5. View all layers that go to make the image. `docker history nginz-img:0.1`
+5. View all layers & their sizes that go to make the image. `docker history nginz-img:0.1`
 6. Test that the image works by running a container with it: `docker run -d -p 80:80 nginx-img:0.1`
 7. Navigate to `http://<node-ip>` and you should see the rendering of the `index.html`
 8. Optimize the Dockerfile making sure to go through steps 4-7.
