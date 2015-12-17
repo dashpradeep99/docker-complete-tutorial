@@ -78,7 +78,7 @@ CMD ["nginx", "-g", "daemon off;"]
 7. Navigate to `http://<node-ip>` and you should see the rendering of the `index.html`
 8. Let's clean up before we attempt to optimize the Dockerfile. `docker rm -f www1`
 9. Optionally, consider checking in this working Dockerfile into a source control repository.
-10. Modify the Dockerfile to reduce the number of layers & pin the version of the base image. `vi Dockerfile`
+10. Modify the Dockerfile to reduce the number of layers & pin the version of the base image. We'll also ensure we use proper labelling convention: `vi Dockerfile`
 
    ```
    FROM ubuntu:14.04
@@ -90,10 +90,10 @@ CMD ["nginx", "-g", "daemon off;"]
      rm -rf /var/lib/apt/lists/*
    COPY index.html /usr/share/nginx/html
    EXPOSE 80
-   LABEL vendor=Acme\ Example\ Corp. \
-     version="0.9.0-beta" \
-     is-beta=true \
-     release-date="2016-01-01"
+   LABEL com.acme.vendor=Acme\ Example\ Corp. \
+     com.acme.version="0.9.0-beta" \
+     com.acme.is-beta=true \
+     com.acme.release-date="2016-01-01"
    CMD ["nginx", "-g", "daemon off;"]
    ```   
    
@@ -113,5 +113,11 @@ CMD ["nginx", "-g", "daemon off;"]
    1796d1c62d0c        9 days ago          /bin/sh -c echo '#!/bin/sh' > /usr/sbin/polic   194.5 kB
    0bf056161913        9 days ago          /bin/sh -c #(nop) ADD file:9b5ba3935021955492   187.7 MB
    ```
-13. Ensure that every optimization step is followed by a validation step (steps 8-9) to ensure that the image is functionally adequate and does not break any of its base requirements.
+13. Check that the labels are still available: `docker inspect --format '{{json .Config.Labels}}' nginx-img:0.2`
+
+    ```
+{"com.acme.is-beta":"true","com.acme.release-date":"2016-01-01","com.acme.vendor":"Acme Example Corp.","com.acme.version":"0.9.0-beta"}
+    ```
+    
+14. Ensure that every optimization step is followed by a validation step (steps 6-9 & 13) to ensure that the image is functionally adequate and does not break any of its base requirements.
 14. Next, consider using a `VOLUME` to make development more flexible.
