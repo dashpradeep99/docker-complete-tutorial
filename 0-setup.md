@@ -1,4 +1,20 @@
-# Set up your system for the labs
+Note: These labs were set up originally for DockerCon EU 2015. During DockerCon, participants were able to go through the labs using a Docker-provided cloud setup. If you wish to complete the labs using your own setup please do the following:
+
+# Set up your own cloud setup for the labs
+
+To complete all the labs, we encourage you to launch (4) cloud instances (referenced as node-0,node-1,node-2,node-3) with the following requirements:
+
+* Ubuntu 14.04 Based 
+* Linux Kernel 3.16+
+* Docker 1.9+ 
+* Docker Compose 1.5+
+* On same VLAN
+* Your preferred text editor(vim/nano/emacs)
+* git
+
+Note: You can use Docker Machine with VirtualBox to go through the labs. However, some labs will require public access ( e.g from Github) and thus will not work with a local Docker Machine setup.
+
+# Use the provided DCEU AWS Setup ( during DockerCon only)
 
 The Docker Hands-on labs require that you connect to four AWS EC2 instances on their own sub-network. Docker has networked and launched the instances for you. This page explains how to set up your system to connect to these instances for the labs.
 
@@ -35,10 +51,6 @@ Before starting the lab, you need to set up your connection key.
 	   
 		<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">Connecting from Putty</a>
 
-## Join the Chat Room
-
-We have set up a chat room for the Hands-On Labs. Please go to [here](http://app.lets-chat-dceu-hol.nicolaka752c19b5407142b8.svc.tutum.io/#!/). Sign up with a new account and join the **dceu** room.
-
 ## (Optional) Get a Docker Hub account
 
 Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them. Docker Hub accounts are completely free. To create one:
@@ -66,6 +78,6 @@ Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them
 * [Docker Content Trust](5-content-trust.md)
 * [Docker Networking](6-networking.md)
 * [Understanding Docker Volumes](7-volumes.md)
-* [Continuous Integration and Continious Delivery(CICD) with Docker, GitHub, and Jenkins](9-cicd-with-docker.md)
 * [Automated Builds with Docker Hub and GitHub](8-Automated-builds.md)
+* [Continuous Integration and Continious Delivery(CICD) with Docker, GitHub, and Jenkins](9-cicd-with-docker.md)
 * [Infrastructure as code - Dockerfile best practices](B-infrastructure-as-code.md)
