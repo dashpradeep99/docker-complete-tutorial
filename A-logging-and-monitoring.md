@@ -68,14 +68,10 @@ Now that we have a logging solution setup, we can later instruct DUCP to use our
 
 At this point you have successfully set up a simple ELK stack and retrieved common log queries.
 
-### Share on Twitter!
-
-<p>
-<a href="http://ctt.ec/R3e56" target=“_blank”>
-<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
-</p>
 
 ## Clean up
+
+For DockerCon Setup Only !!
 
 If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
 
