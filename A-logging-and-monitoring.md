@@ -1,8 +1,8 @@
 # Lab A : Setting up an ELK stack
 
-> **Difficulty**: ???
+> **Difficulty**: Easy
 
-> **Time**: ???
+> **Time**: 15 minutes
 
 > **Tasks**:
 >
@@ -13,70 +13,85 @@
 
 ## Introduction
 
-One of the more popular logging stacks is composed of Elasticsearch, Logstash and Kibana or ELK. The following example lab demonstrates how to set up an example deployment which can be used for logging.  
+One of the more popular logging stacks ELK. It is composed of Elasticsearch, Logstash and Kibana  (ELK). This lab will show you how to setup a simple deployment that can be used for logging.
 
 ## Task 1: Allocate storage space for logs
 
-We are all about containers, and our logging solution will be container-ized!    First, lets create some space to put some data
+We are all about containers, so our logging solution will be containerized!
 
- docker volume create --name orca-elasticsearch-data
+1. Lets create volume where we can store some log data
+
+		$ docker volume create --name orca-elasticsearch-data
+
+2. Check that the volume created successfully
+
+		$ docker volume ls
+		DRIVER              VOLUME NAME
+		local               orca-elasticsearch-data
+	
+	Other volumes may appear in the list above.
 
 ## Task 2: Compose containers
 
-We haven't composed our containers so that you can see and start each container separately
+1. Run the following three containers - elastisearch, logstash, and kibana:
 
-       $ docker run -d \
-       --name elasticsearch \ 
-       -v orca-elasticsearch-data:/usr/share/elasticsearch/data \
-       elasticsearch elasticsearch -Des.network.host=0.0.0.0
+   	    $ docker run -d --name elasticsearch -v orca-elasticsearch-data:/usr/share/elasticsearch/data elasticsearch elasticsearch -Des.network.host=0.0.0.0
 
-       $ docker run -d \
-       -p 514:514 \
-       --name logstash \
-       --link elasticsearch:es \
-       logstash \
-       sh -c "logstash -e 'input { syslog { } } output { stdout { } elasticsearch { hosts => [ \"es\" ] } } filter { json { source => \"message\" } }'"
+   	    $ docker run -d -p 514:514 --name logstash --link elasticsearch:es logstash sh -c "logstash -e 'input { syslog { } } output { stdout { } elasticsearch { hosts => [ \"es\" ] } } filter { json { source => \"message\" } }'"
 
-       $ docker run -d \ 
-       --name kibana \
-       --link elasticsearch:elasticsearch \
-       -p 5601:5601 \
-       kibana
+   	    $ docker run -d --name kibana --link elasticsearch:elasticsearch -p 5601:5601 kibana
+
+2. Verify all three containers are running.
+
+		docker ps
+		CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                    NAMES
+		922b7b4fb477        kibana              "/docker-entrypoint.s"   42 seconds ago       Up 42 seconds       0.0.0.0:5601->5601/tcp   kibana
+		04fd46e25ab1        logstash            "/docker-entrypoint.s"   About a minute ago   Up About a minute   0.0.0.0:514->514/tcp     logstash
+		5a561ce45cce        elasticsearch       "/docker-entrypoint.s"   3 minutes ago        Up 3 minutes        9200/tcp, 9300/tcp       elasticsearch
+
 
 ## Task 3: Connect and browse logs
 
-- You can then browse to your host system running kibana, port 5601 and browse log/event entries. You should specify the "time" field for indexing.  Note: When deployed in production, you should secure kibana (not described in this doc)
+Now that the three containers are up and running, you can view logs.
 
-- Some Example Searches.   Here are a few examples demonstrating some ways to view the aggregated log data:
+# I cannot get this part to work (nigelpoulton@hotmail.com)
 
--- Show all the modifications on the system
+1. Point your web browser to your node on port 5601
 
-       type:"api" AND (tags:"post" OR tags:"put" OR tags:"delete")
+	Example: `http://ec2-52-90-128-138.compute-1.amazonaws.com:5601/`
+	
+	From here you can browse and search log/event entries. 
 
--- Show all access from a given user
+	>**Note:** When deploying in production environments, you should secure kibana (not described in this doc).
 
-       username:"admin"
+2. Perform some example searches
 
--- Show all authentication failures on the system
+	- Show all the modifications on the system
 
-       type:"auth fail" 
+		`type:"api" AND (tags:"post" OR tags:"put" OR tags:"delete")`
+
+	- Show all access from a given user
+
+		`username:"admin"`
+
+	- Show all authentication failures on the system
+
+		`type:"auth fail" `
 
 
 Now that we have a logging solution setup, we can later instruct DUCP to use our logging solution to aggregate logging.
 
 ## Conclusion
 
-At this point you have successfully set up a simple ELK stack and retrieved common log queries.
+At this point you have successfully set up a simple ELK stack and ran common log queries.
 
 
 ## Clean up
 
-For DockerCon Setup Only !!
+If you plan to do another lab, you need to cleanup your AWS EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
 
-If you plan to do another lab, you need to cleanup your EC2 instances. Cleanup removes any environment variables, configuration changes, Docker images, and running containers. To do a clean up, log into each EC2 instance and run the following:
 
-```bash
-$ source /home/ubuntu/cleanup.sh
-```
+	$ source /home/ubuntu/cleanup.sh
+
 
 ## Related information
