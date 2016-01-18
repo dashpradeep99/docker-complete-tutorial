@@ -341,7 +341,7 @@ Feel free to continue exploring Docker volumes.
 ### Share on Twitter!
 
 <p>
-<a href="http://ctt.ec/fH5oh" target=“_blank”>
+<a href="http://ctt.ec/qG30I" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
