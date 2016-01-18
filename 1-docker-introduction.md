@@ -383,7 +383,7 @@ Congratulations, You have successfully completed this lab! You learned how to wo
 ### Share on Twitter!
 
 <p>
-<a href="http://ctt.ec/S8M4P" target=“_blank”>
+<a href="http://ctt.ec/lcHg0" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
