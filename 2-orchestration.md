@@ -531,7 +531,7 @@ Interested in scaling **DockChat** horizontally across multiple nodes ? You can 
 ### Share on Twitter!
 
 <p>
-<a href="http://ctt.ec/2cUZ6" target=“_blank”>
+<a href="http://ctt.ec/530As" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
