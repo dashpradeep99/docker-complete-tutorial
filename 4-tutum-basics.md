@@ -216,7 +216,7 @@ Try pulling down an Nginx image down from Docker hub, and launching a website (H
 ### Share on Twitter!
 
 <p>
-<a href="http://ctt.ec/ZW0wL" target=“_blank”>
+<a href="http://ctt.ec/9Ce0n" target=“_blank”>
 <img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
 </p>
 
