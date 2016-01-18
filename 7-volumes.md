@@ -296,7 +296,7 @@ In this example, you'll create a new file from one container in a directory that
 
 	You are now working in the shell of your Docker container.
 
-7. Create a new file in the `/foo` directory.
+7. Create a new file in the `/bar` directory.
 
 		Be careful to use the right single quote (‘) and double quotes ("). Also, be sure to use `>>` double pipes otherwise you will overwrite your original file.
 
