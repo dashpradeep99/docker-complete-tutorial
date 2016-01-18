@@ -272,6 +272,15 @@ Congrats! You have completed the tutorial!
 In this tutorial you learned how to create a full CICD pipeline using Docker, GitHub and Jenkins. You learned how to integrate that workflow with DTR to store the images and Docker Compose to deploy them on a Swarm Cluster.
 
 
+## Share on Twitter!
+
+<p>
+<a href="http://ctt.ec/98GCb" target=“_blank”>
+<img src="http://www.wyntercon.com/wp-content/uploads/2015/04/twitter-bird-blue-on-white-small.png" width="100" height="100">
+</p>
+
+
+
 ## Related information
 
 * [Docker and Continuous Integration](https://www.docker.com/products/use-cases)
