@@ -73,7 +73,7 @@ In this lab, you'll examine how to use GitHub and Docker hub to create a basic c
 
 In this lab, you will build and deploy The Awesome Voting App using a CI pipeline consisting of Docker, GitHub, Jenkins, and Docker Trusted Registry (DTR). The pipeline will be kicked off by a commit to a GitHub repository. The commit will cause Jenkins to run (3) build+push to DTR jobs on a Jenkins slave, and upon successful completion of these jobs, pull new images from DTR and deploy the app on Swarm using docker-compose
 
-## Lab 10. [Setting up an ELK Stack](10-logging-and-monitoring.md)
+## Lab 10. [Logging and Monitoring with ELK](10-logging-and-monitoring.md)
 **Difficulty**: Easy
 
 In this lab, you will set up a simple Elasticsearch, Logstash and Kibana stack and perform basic queries.
