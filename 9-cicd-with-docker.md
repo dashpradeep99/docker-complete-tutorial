@@ -103,7 +103,7 @@ The following procedure will install DTR on **node-0**.
 4. Proceed insecurely when you get a certificate warning
 5. Configure **Domain name**, **Authentication**, and **License**
     
-    Each of these operations is shown in steps 1 and 2 of Lab 3: Docker Orchestration.
+    Each of these operations is shown in steps 1 and 2 of Lab 3: DTR.
 
 ### Configure multi-host networking
 
