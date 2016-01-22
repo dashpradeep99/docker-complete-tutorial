@@ -1,4 +1,4 @@
-# Lab 08: Automated Image Builds with Docker Hub
+# Lab 08: automated image Builds with Docker Hub
 
 > **Difficulty**: Easy
 >
