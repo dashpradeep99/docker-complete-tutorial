@@ -4,7 +4,7 @@
 > **Difficulty**: Advanced
 
 > **Time**: 75-90 minutes
-**NOTES:** This lab has a very complex setup - users have to go back to other labs and complete **parts** of them. This is quite disjointed and I imagine many lab users will get lost and frustrated.
+
 > **Tasks**:
 > 
 > 
