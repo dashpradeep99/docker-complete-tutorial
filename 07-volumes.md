@@ -1,4 +1,4 @@
-# Lab 7 : Understanding Docker Volumes
+# Lab 07 : Understanding Docker Volumes
 > **Difficulty**: Intermediate
 
 > **Time**: 30 minutes

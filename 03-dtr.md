@@ -1,5 +1,5 @@
 
-# Lab 3 : Docker Trusted Registry
+# Lab 03 : Docker Trusted Registry
 
 > **Difficulty**: Intermediate
 

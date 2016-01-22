@@ -1,5 +1,5 @@
 
-# Lab 2 : Docker Orchestration
+# Lab 02 : Docker Orchestration
 
 > **Difficulty**: Advanced
 

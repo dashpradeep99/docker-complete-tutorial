@@ -1,4 +1,4 @@
-# Lab 4: Tutum: Provision, Deploy, Manage
+# Lab 04: Tutum: Provision, Deploy, Manage
 
 > **Difficulty**: Beginner
 

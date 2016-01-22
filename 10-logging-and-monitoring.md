@@ -1,4 +1,4 @@
-# Lab A : Setting up an ELK stack
+# Lab 10 : Setting up an ELK stack
 
 > **Difficulty**: Easy
 

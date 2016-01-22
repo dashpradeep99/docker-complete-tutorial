@@ -1,5 +1,5 @@
 
-# Lab 6: Docker Networking
+# Lab 06: Docker Networking
 
 > **Difficulty**: Advanced
 

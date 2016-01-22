@@ -1,4 +1,4 @@
-# Lab 5 : Docker Content Trust
+# Lab 05 : Docker Content Trust
 
 > **Difficulty**: Magic
 

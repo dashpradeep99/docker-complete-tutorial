@@ -1,4 +1,4 @@
-# Lab C: Docker Universal Control Plane
+# Lab 12: Docker Universal Control Plane
 
 ##NOTE
 This lab is for participants of the Docker Universal Control Plane beta program. It will not work unless you have access to the UCP binaries. 

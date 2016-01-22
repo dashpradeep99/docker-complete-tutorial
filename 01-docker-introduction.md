@@ -1,5 +1,5 @@
 
-# Lab 1 : Introduction to Docker
+# Lab 01 : Introduction to Docker
 
 > **Difficulty**: Easy
 

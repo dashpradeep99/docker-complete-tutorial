@@ -1,4 +1,4 @@
-# Lab B: Infrastructure as Code: Image building best practices
+# Lab 11: Infrastructure as Code: Image building best practices
 
 > **Difficulty**: Easy
 >
