@@ -82,4 +82,4 @@ Labs **1**, **2**, **4** and **8** require a Docker Hub account to complete them
 * [Continuous Integration and Continious Delivery(CICD) with Docker, GitHub, and Jenkins](09-cicd-with-docker.md)
 * [Logging and Monitoring using ELK](10-logging-and-monitoring.md)
 * [Infrastructure as code - Dockerfile best practices](11-infrastructure-as-code.md)
-* [Docker Unified Control Plane](12-ducp.md)
+* [Docker Universal Control Plane](12-ducp.md)
