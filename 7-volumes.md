@@ -33,6 +33,8 @@ In this task, you're going to create a new container and add a file to it.
 
 		ssh -i user23.pem ubuntu@ec2-52-24-109.us-west-2.compute.amazonaws.com`
 
+    > **Note:** Your .pem filename and instance name will be different to those shown above. 
+
 2. Pull down the official Nginx image.
 
 		$ docker pull nginx
@@ -94,7 +96,7 @@ In this task, you're going to create a new container and add a file to it.
 
 Docker manages volumes independently from the storage driver system it uses to manage the container layers. This allows for data persistence; The volume is not destroyed when the container is destroyed.
 
-In this task, you're going to take a quick look at where Docker stores volume data. Then, you'll change the volume on the Docker host file system and see the change made back in the container.
+In this task, you're going to take a quick look at where Docker stores volume data. Then, you'll change the volume on the Docker host file system and see the change appear in the container.
 
 1. Inspect the `barcelona` volume values.
 
@@ -147,7 +149,7 @@ In this task, you're going to take a quick look at where Docker stores volume da
 		$ ls /barcelona
 		file.txt file2.txt
 
-	 The file you created from the Docker host shell `file2.txt` should also
+	 The file you created from the Docker host shell `file2.txt` should
 	 appear inside your running container.
 
 9. Exit the container and return to your Docker host.
@@ -201,7 +203,7 @@ By default, when you destroy a container Docker does not remove any volumes asso
 		$ docker volume ls
 		DRIVER              VOLUME NAME
 
-	The* `barcelona` volume is no longer listed, although other volumes may be.
+	The `barcelona` volume is no longer listed, although other volumes may be.
 
 ## Task 4: Map a host directory to a Docker volume
 
@@ -298,7 +300,7 @@ In this example, you'll create a new file from one container in a directory that
 
 7. Create a new file in the `/bar` directory.
 
-		Be careful to use the right single quote (‘) and double quotes ("). Also, be sure to use `>>` double pipes otherwise you will overwrite your original file.
+	Be careful to use the right single quote (‘) and double quotes ("). Also, be sure to use `>>` double pipes otherwise you will overwrite your original file.
 
 		$ echo 'Y yo digo "adios"' >> /bar/file.txt
 
@@ -334,7 +336,7 @@ In this example, you'll create a new file from one container in a directory that
 
 ## Conclusion
 
-In this lab, you learned the basics of Docker volumes. You created a new Docker volume using the Docker client, and then explored the host file system to understand the relationship between the local file system and the mounted volume in the container. You then deleted our volume, and mapped a new volume to a specific directory on the host file system. Finally we looked at how you can share a volume between multiple containers.
+In this lab, you learned the basics of Docker volumes. You created a new Docker volume using the Docker client, and then explored the host file system to understand the relationship between the local file system and the mounted volume in the container. You then deleted the volume, and mapped a new volume to a specific directory on the host file system. Finally we looked at how you can share a volume between multiple containers.
 
 Feel free to continue exploring Docker volumes.
 
