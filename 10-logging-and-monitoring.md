@@ -54,7 +54,7 @@ We are all about containers, so our logging solution will be containerized!
 
 Now that the three containers are up and running, you can view logs.
 
-# I cannot get this part to work (nigelpoulton@hotmail.com)
+
 
 1. Point your web browser to your node on port 5601
 
