@@ -17,7 +17,9 @@
 - [Task 7: Cross-Network Communication](#task-7-cross-network-communication)
 - [Task 8: Reconnecting Containers](#task-8-reconnecting-containers)
 
+# Note
 
+Note: This tutorial was built using Docker v1.9. In v1.10, Docker uses DNS-based container discovery instead of `/etc/hosts`. If you're using 1.10, some outputs might differ from what is shown in this tutorial. Functionality should remain the same.
 
 # Get started with multi-host networking
 
