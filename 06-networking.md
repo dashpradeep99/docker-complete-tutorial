@@ -103,7 +103,7 @@ On `node-1`, `node-2`,and `node-3`, reconfigure the Docker daemon to listen on T
 
 		DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://<NODE-0-PRIVATE-IP>:8500/network --cluster-advertise=eth0:2375"
 
-Note: node-0 has to be healthy and reachable by each of the node-1,2,3.
+	Note: node-0 has to be healthy and reachable by each of the node-1,2,3.
 
 4. Save and close the file.
 
